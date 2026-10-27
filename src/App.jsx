@@ -6,7 +6,7 @@ import SplashScreen from './components/SplashScreen.jsx'
 import About from './pages/About.jsx'
 import Article from './pages/Article.jsx'
 import Assessment from './pages/Assessment.jsx'
-import ComingSoon from './pages/ComingSoon.jsx'
+import Assistant from './pages/Assistant.jsx'
 import Contact from './pages/Contact.jsx'
 import Content from './pages/Content.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
@@ -22,10 +22,6 @@ import Relaxation from './pages/Relaxation.jsx'
 import Register from './pages/Register.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
 import Terms from './pages/Terms.jsx'
-
-const upcoming = [
-  ['assistant', 'المساعد الذكي'],
-]
 
 export default function App() {
   return (
@@ -48,11 +44,9 @@ export default function App() {
           <Route path="content" element={<Content />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
+          <Route path="assistant" element={<Assistant />} />
           <Route path="content/:slug" element={<Article />} />
           <Route path="journal" element={<RequireAuth><Journal /></RequireAuth>} />
-          {upcoming.map(([path, title]) => (
-            <Route key={path} path={path} element={<ComingSoon title={title} />} />
-          ))}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
