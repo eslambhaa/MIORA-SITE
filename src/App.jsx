@@ -5,6 +5,7 @@ import Layout from './components/Layout.jsx'
 import SplashScreen from './components/SplashScreen.jsx'
 import About from './pages/About.jsx'
 import Article from './pages/Article.jsx'
+import Assessment from './pages/Assessment.jsx'
 import ComingSoon from './pages/ComingSoon.jsx'
 import Contact from './pages/Contact.jsx'
 import Content from './pages/Content.jsx'
@@ -23,7 +24,6 @@ import Terms from './pages/Terms.jsx'
 const upcoming = [
   ['assistant', 'المساعد الذكي'],
   ['relaxation', 'تمارين الاسترخاء'],
-  ['assessment', 'التقييمات الذاتية'],
 ]
 
 export default function App() {
@@ -45,6 +45,7 @@ export default function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="content" element={<Content />} />
+          <Route path="assessment" element={<Assessment />} />
           <Route path="content/:slug" element={<Article />} />
           <Route path="journal" element={<RequireAuth><ComingSoon title="مذكراتي" /></RequireAuth>} />
           {upcoming.map(([path, title]) => (
