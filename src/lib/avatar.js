@@ -1,9 +1,9 @@
 import { supabase } from './supabase.js'
 
 // Profile pictures are private: one small image per user in the "avatars" bucket.
-// The picture is redrawn on a canvas before upload, which shrinks it to 256px and
-// drops hidden metadata (camera, location) from the original file.
-const SIZE = 256
+// The picture is redrawn on a canvas before upload (see AvatarCropDialog), which
+// shrinks it to 256px and drops hidden metadata (camera, location) from the file.
+export const AVATAR_SIZE = 256
 const MAX_INPUT_BYTES = 10 * 1024 * 1024
 export const AVATAR_ACCEPT = 'image/jpeg,image/png,image/webp'
 
@@ -11,30 +11,24 @@ export class AvatarError extends Error {}
 
 export const avatarPath = (userId) => `${userId}/avatar.webp`
 
-function encode(canvas, type) {
-  return new Promise((resolve) => canvas.toBlob(resolve, type, 0.85))
-}
-
-export async function prepareAvatar(file) {
+export async function loadAvatarBitmap(file) {
   if (!file || !AVATAR_ACCEPT.split(',').includes(file.type)) throw new AvatarError('type')
   if (file.size > MAX_INPUT_BYTES) throw new AvatarError('size')
-  let bitmap
   try {
-    bitmap = await createImageBitmap(file)
+    return await createImageBitmap(file)
   } catch {
     throw new AvatarError('decode')
   }
-  const side = Math.min(bitmap.width, bitmap.height)
-  const canvas = document.createElement('canvas')
-  canvas.width = SIZE
-  canvas.height = SIZE
-  const context = canvas.getContext('2d')
-  context.imageSmoothingQuality = 'high'
-  context.drawImage(bitmap, (bitmap.width - side) / 2, (bitmap.height - side) / 2, side, side, 0, 0, SIZE, SIZE)
-  bitmap.close?.()
-  let blob = await encode(canvas, 'image/webp')
+}
+
+function toBlob(canvas, type) {
+  return new Promise((resolve) => canvas.toBlob(resolve, type, 0.85))
+}
+
+export async function encodeAvatar(canvas) {
+  let blob = await toBlob(canvas, 'image/webp')
   // Some browsers (older Safari) cannot encode WebP and silently return PNG.
-  if (!blob || blob.type !== 'image/webp') blob = await encode(canvas, 'image/jpeg')
+  if (!blob || blob.type !== 'image/webp') blob = await toBlob(canvas, 'image/jpeg')
   if (!blob) throw new AvatarError('decode')
   return blob
 }

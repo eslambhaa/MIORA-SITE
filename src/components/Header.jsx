@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useAuth } from '../auth/AuthProvider.jsx'
+import { useAvatar } from '../lib/avatarStore.js'
 
 const links = [
   { to: '/', label: 'الرئيسية', end: true },
@@ -22,6 +23,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const { user } = useAuth()
+  const avatar = useAvatar()
 
   useEffect(() => {
     setMenuOpen(false)
@@ -58,11 +60,15 @@ export default function Header() {
           ))}
         </ul>
         <div className="col-start-3 flex items-center gap-2 justify-self-end">
-          <Link to={user ? '/profile' : '/login'} aria-label={user ? 'ملفي الشخصي' : 'تسجيل الدخول'} className={iconButton}>
-            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M13.3333 6.66667C13.3333 8.50762 11.8409 10 10 10C8.15905 10 6.66667 8.50762 6.66667 6.66667C6.66667 4.82572 8.15905 3.33333 10 3.33333C11.8409 3.33333 13.3333 4.82572 13.3333 6.66667Z" />
-              <path d="M3.33333 18.3333C3.33333 16.5652 4.03571 14.8695 5.28595 13.6193C6.5362 12.369 8.23189 11.6667 10 11.6667C11.7681 11.6667 13.4638 12.369 14.714 13.6193C15.9643 14.8695 16.6667 16.5652 16.6667 18.3333" />
-            </svg>
+          <Link to={user ? '/profile' : '/login'} aria-label={user ? 'ملفي الشخصي' : 'تسجيل الدخول'} className={`${iconButton} overflow-hidden`}>
+            {avatar ? (
+              <img src={avatar} alt="" width="44" height="44" className="size-full object-cover" />
+            ) : (
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M13.3333 6.66667C13.3333 8.50762 11.8409 10 10 10C8.15905 10 6.66667 8.50762 6.66667 6.66667C6.66667 4.82572 8.15905 3.33333 10 3.33333C11.8409 3.33333 13.3333 4.82572 13.3333 6.66667Z" />
+                <path d="M3.33333 18.3333C3.33333 16.5652 4.03571 14.8695 5.28595 13.6193C6.5362 12.369 8.23189 11.6667 10 11.6667C11.7681 11.6667 13.4638 12.369 14.714 13.6193C15.9643 14.8695 16.6667 16.5652 16.6667 18.3333" />
+              </svg>
+            )}
           </Link>
           <button
             type="button"

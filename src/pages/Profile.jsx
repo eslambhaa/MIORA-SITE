@@ -2,13 +2,17 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../auth/AuthProvider.jsx'
 import { FormAlert, inputClass, secondaryButton } from '../components/auth/fields.jsx'
+import AvatarCropDialog from '../components/profile/AvatarCropDialog.jsx'
 import DeleteAccountDialog from '../components/profile/DeleteAccountDialog.jsx'
-import { AVATAR_ACCEPT, AvatarError, avatarUrl, prepareAvatar, removeAvatar, uploadAvatar } from '../lib/avatar.js'
+import { AVATAR_ACCEPT, AvatarError, loadAvatarBitmap, removeAvatar, uploadAvatar } from '../lib/avatar.js'
+import { clearAvatar, refreshAvatar, useAvatar } from '../lib/avatarStore.js'
 import { downloadMyData } from '../lib/exportData.js'
+import { moodStreak, streakText } from '../lib/streak.js'
 import { supabase } from '../lib/supabase.js'
 
 const NAME_MAX = 50
 const RECENT_NOTES = 3
+const STREAK_LOOKBACK = 400
 
 // Figma 2:4998: activity summary, recent notes, identity card, quick links.
 const summary = [
@@ -46,79 +50,91 @@ const dangerButton =
 
 function IdentityCard({ user, name, hasAvatar, onAvatarChange, onSignOut }) {
   const inputRef = useRef(null)
-  const [url, setUrl] = useState('')
+  const url = useAvatar()
+  const [bitmap, setBitmap] = useState(null)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+  const [status, setStatus] = useState('')
 
-  useEffect(() => {
-    let active = true
-    if (!hasAvatar) {
-      setUrl('')
-      return undefined
-    }
-    avatarUrl(user.id)
-      .then((signed) => active && setUrl(signed))
-      .catch(() => active && setUrl(''))
-    return () => {
-      active = false
-    }
-  }, [user.id, hasAvatar])
+  function closeCrop() {
+    bitmap?.close?.()
+    setBitmap(null)
+    inputRef.current?.focus()
+  }
 
   async function choose(event) {
     const file = event.target.files?.[0]
     event.target.value = ''
     if (!file) return
-    setBusy(true)
     setError('')
+    setStatus('')
     try {
-      const blob = await prepareAvatar(file)
-      await uploadAvatar(user.id, blob)
-      onAvatarChange(new Date().toISOString())
-      setUrl(await avatarUrl(user.id))
+      setBitmap(await loadAvatarBitmap(file))
     } catch (problem) {
-      setError(problem instanceof AvatarError ? avatarErrors[problem.message] : 'تعذّر حفظ الصورة. تحقق من الاتصال ثم حاول مرة أخرى.')
+      setError(problem instanceof AvatarError ? avatarErrors[problem.message] : avatarErrors.decode)
     }
-    setBusy(false)
+  }
+
+  async function save(blob) {
+    await uploadAvatar(user.id, blob)
+    onAvatarChange(new Date().toISOString())
+    await refreshAvatar(user.id).catch(() => {})
+    setStatus('حُفظت صورتك.')
+    closeCrop()
   }
 
   async function remove() {
     setBusy(true)
     setError('')
+    setStatus('')
     try {
       await removeAvatar(user.id)
+      clearAvatar()
       onAvatarChange(null)
+      setStatus('أُزيلت الصورة.')
     } catch {
       setError('تعذّر إزالة الصورة الآن. حاول مرة أخرى.')
     }
     setBusy(false)
   }
 
+  const shownUrl = hasAvatar ? url : ''
+
   return (
     <section aria-label="حسابك" className={`${panel} flex flex-col items-center gap-4 p-[26px] text-center lg:w-[273px] lg:shrink-0`}>
       <span className="grid size-[65px] place-items-center overflow-hidden rounded-full bg-(--color-page-guide-selected)">
-        {url ? (
-          <img src={url} alt="صورتك الشخصية" width="65" height="65" className="size-full object-cover" />
+        {shownUrl ? (
+          <img src={shownUrl} alt="صورتك الشخصية" width="65" height="65" className="size-full object-cover" />
         ) : (
           <img src="/icons/profile/avatar.svg" alt="" width="30" height="30" />
         )}
       </span>
       <p className="text-xl leading-[20.8px] tracking-[-0.02em] break-all">{name}</p>
-      <input ref={inputRef} type="file" accept={AVATAR_ACCEPT} onChange={choose} className="sr-only" tabIndex={-1} aria-hidden="true" />
+      <input
+        ref={inputRef}
+        id="avatar-input"
+        type="file"
+        accept={AVATAR_ACCEPT}
+        onChange={choose}
+        className="sr-only"
+        tabIndex={-1}
+        aria-hidden="true"
+      />
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={busy}
         className="flex min-h-[53px] w-full max-w-[219px] cursor-pointer items-center justify-center rounded-[8px] bg-(--color-page-button) px-4 text-lg leading-[20.8px] text-white outline-(--color-page-primary) transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 motion-reduce:transition-none"
       >
-        {busy ? 'جارٍ الحفظ…' : 'تعديل الصورة الشخصية'}
+        تعديل الصورة الشخصية
       </button>
-      {hasAvatar && !busy && (
-        <button type="button" onClick={remove} className={`-mt-2 cursor-pointer text-sm leading-6 ${link}`}>
-          إزالة الصورة
+      {hasAvatar && (
+        <button type="button" onClick={remove} disabled={busy} className={`-mt-2 cursor-pointer text-sm leading-6 disabled:opacity-60 ${link}`}>
+          {busy ? 'جارٍ الإزالة…' : 'إزالة الصورة'}
         </button>
       )}
-      <p role="status" className="sr-only">
-        {busy ? 'جارٍ حفظ الصورة' : ''}
+      <p role="status" className={status ? 'text-sm leading-6 text-(color:--color-page-muted)' : 'sr-only'}>
+        {status}
       </p>
       {error && (
         <p role="alert" className="text-sm leading-6 text-(color:--color-page-error-text)">
@@ -132,11 +148,12 @@ function IdentityCard({ user, name, hasAvatar, onAvatarChange, onSignOut }) {
       >
         تسجيل الخروج
       </button>
+      <AvatarCropDialog bitmap={bitmap} onCancel={closeCrop} onSave={save} />
     </section>
   )
 }
 
-function ActivitySummary({ loadState, counts, notes }) {
+function ActivitySummary({ loadState, counts, notes, streak }) {
   return (
     <section aria-labelledby="summary-title" className={`${panel} min-w-0 flex-1 p-[26px]`}>
       <h2 id="summary-title" className="text-base leading-[20.8px] tracking-[-0.02em]">
@@ -153,6 +170,20 @@ function ActivitySummary({ loadState, counts, notes }) {
           </li>
         ))}
       </ul>
+      {loadState === 'ready' && (
+        <p className="mt-3 flex items-start gap-2 rounded-[14px] bg-(--color-page-guide-selected) px-4 py-3 text-sm leading-6">
+          <img src="/icons/profile/stat-mood.svg" alt="" width="18" height="18" className="mt-[3px] size-[18px] shrink-0" />
+          {streakText(streak) ?? (
+            <span>
+              سجّل شعورك اليوم من{' '}
+              <Link to="/" className={link}>
+                الصفحة الرئيسية
+              </Link>
+              . مرة واحدة في اليوم تكفي.
+            </span>
+          )}
+        </p>
+      )}
       <h3 className="pt-[30px] text-base leading-[20.8px] tracking-[-0.02em]">آخر الملاحظات</h3>
       {loadState === 'ready' && notes.length > 0 ? (
         <ul className="grid gap-1 pt-2">
@@ -191,6 +222,7 @@ export default function Profile() {
   const [avatarAt, setAvatarAt] = useState(null)
   const [counts, setCounts] = useState({})
   const [notes, setNotes] = useState([])
+  const [streak, setStreak] = useState({ count: 0, today: false })
 
   const [nameBusy, setNameBusy] = useState(false)
   const [nameMessage, setNameMessage] = useState({ tone: 'success', text: '' })
@@ -210,10 +242,11 @@ export default function Profile() {
     Promise.all([
       supabase.from('profiles').select('display_name, assistant_consent_at, avatar_updated_at').eq('id', user.id).maybeSingle(),
       supabase.from('journal_entries').select('id, title, updated_at').order('updated_at', { ascending: false }).limit(RECENT_NOTES),
+      supabase.from('mood_logs').select('logged_on').order('logged_on', { ascending: false }).limit(STREAK_LOOKBACK),
       ...summary.map(({ table }) => supabase.from(table).select('id', { count: 'exact', head: true })),
-    ]).then(([profile, recent, ...results]) => {
+    ]).then(([profile, recent, moods, ...results]) => {
       if (!active) return
-      if (profile.error || recent.error || results.some((result) => result.error)) {
+      if (profile.error || recent.error || moods.error || results.some((result) => result.error)) {
         setLoadState('error')
         return
       }
@@ -223,6 +256,7 @@ export default function Profile() {
       setConsentAt(profile.data?.assistant_consent_at ?? null)
       setAvatarAt(profile.data?.avatar_updated_at ?? null)
       setNotes(recent.data ?? [])
+      setStreak(moodStreak((moods.data ?? []).map((row) => row.logged_on)))
       setCounts(Object.fromEntries(summary.map(({ table }, index) => [table, results[index].count ?? 0])))
       setLoadState('ready')
     })
@@ -314,7 +348,7 @@ export default function Profile() {
               onAvatarChange={setAvatarAt}
               onSignOut={signOut}
             />
-            <ActivitySummary loadState={loadState} counts={counts} notes={notes} />
+            <ActivitySummary loadState={loadState} counts={counts} notes={notes} streak={streak} />
           </div>
 
           <nav aria-label="اختصارات">
