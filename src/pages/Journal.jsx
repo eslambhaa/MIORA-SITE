@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { FormAlert, inputClass } from '../components/auth/fields.jsx'
+import NoteDialog from '../components/NoteDialog.jsx'
 import { supabase } from '../lib/supabase.js'
 
 const PAGE_SIZE = 20
@@ -350,8 +351,23 @@ function Editor({ entryId, onDone }) {
 export default function Journal() {
   const [params, setParams] = useSearchParams()
   const [flash, setFlash] = useState('')
+  const [noteOpen, setNoteOpen] = useState(false)
+  const [listKey, setListKey] = useState(0)
   const raw = params.get('entry')
-  const entryId = raw === 'new' || /^\d{1,18}$/.test(raw ?? '') ? raw : null
+  const entryId = /^\d{1,18}$/.test(raw ?? '') ? raw : null
+
+  // /journal?new=1 (and the older ?entry=new) open the new-note popup.
+  useEffect(() => {
+    if (params.get('new') === '1' || raw === 'new') {
+      setNoteOpen(true)
+      setParams({}, { replace: true })
+    }
+  }, [params])
+
+  function newNote() {
+    setFlash('')
+    setNoteOpen(true)
+  }
 
   function open(id) {
     setFlash('')
@@ -376,7 +392,7 @@ export default function Journal() {
         </section>
         <section className="px-6 pt-2 pb-[105px] lg:px-[58px]">
           <div className="mx-auto grid max-w-[1050px] items-start gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-[58px]">
-            <div>{entryId ? <Editor key={entryId} entryId={entryId} onDone={done} /> : <EntryList onOpen={open} onNew={() => open('new')} flash={flash} />}</div>
+            <div>{entryId ? <Editor key={entryId} entryId={entryId} onDone={done} /> : <EntryList key={listKey} onOpen={open} onNew={newNote} flash={flash} />}</div>
             <aside aria-labelledby="journal-privacy" className="rounded-[20px] bg-(--color-page-guide-selected) p-[25px] lg:mt-[107px]">
               <h2 id="journal-privacy" className="flex items-center gap-2 text-base leading-[20.8px] tracking-[-0.02em] text-(color:--color-page-primary)">
                 <img src="/icons/journal/shield.svg" alt="" width="20" height="20" />
@@ -392,6 +408,14 @@ export default function Journal() {
           </div>
         </section>
       </main>
+      <NoteDialog
+        open={noteOpen}
+        onClose={() => setNoteOpen(false)}
+        onSaved={() => {
+          setFlash('حُفظت الملاحظة.')
+          setListKey((value) => value + 1)
+        }}
+      />
     </>
   )
 }

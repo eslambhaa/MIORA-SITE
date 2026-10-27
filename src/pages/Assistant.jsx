@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useAuth } from '../auth/AuthProvider.jsx'
 import { FormAlert } from '../components/auth/fields.jsx'
+import NoteDialog from '../components/NoteDialog.jsx'
 import { parseReply } from '../data/assistantActions.js'
 import { supabase } from '../lib/supabase.js'
 
@@ -134,7 +135,10 @@ function Arrow({ className = '' }) {
   )
 }
 
-function Bubble({ message }) {
+const actionClass =
+  'inline-flex min-h-10 items-center gap-2 rounded-full border border-(--color-page-button) bg-(--color-page-surface) px-4 text-sm leading-6 font-bold text-(color:--color-page-primary) outline-(--color-page-primary) transition-colors duration-200 hover:bg-(--color-page-guide-selected) motion-reduce:transition-none'
+
+function Bubble({ message, onWriteNote }) {
   const mine = message.role === 'user'
   const reply = mine ? null : parseReply(cleanReply(message.content))
   return (
@@ -151,16 +155,19 @@ function Bubble({ message }) {
       </div>
       {reply?.actions.length > 0 && (
         <div className="flex max-w-[85%] flex-wrap gap-2">
-          {reply.actions.map((action) => (
-            <Link
-              key={action.key}
-              to={action.to}
-              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-(--color-page-button) bg-(--color-page-surface) px-4 text-sm leading-6 font-bold text-(color:--color-page-primary) outline-(--color-page-primary) transition-colors duration-200 hover:bg-(--color-page-guide-selected) motion-reduce:transition-none"
-            >
-              {action.label}
-              <Arrow />
-            </Link>
-          ))}
+          {reply.actions.map((action) =>
+            action.key === 'journal' ? (
+              <button key={action.key} type="button" onClick={onWriteNote} className={`cursor-pointer ${actionClass}`}>
+                {action.label}
+                <Arrow />
+              </button>
+            ) : (
+              <Link key={action.key} to={action.to} className={actionClass}>
+                {action.label}
+                <Arrow />
+              </Link>
+            ),
+          )}
         </div>
       )}
     </li>
@@ -262,6 +269,8 @@ function Chat({ user, onWithdraw }) {
   const endRef = useRef(null)
   const inputRef = useRef(null)
   const justCreated = useRef(null)
+  const [noteOpen, setNoteOpen] = useState(false)
+  const [noteSaved, setNoteSaved] = useState(false)
 
   async function loadConversations() {
     setListState('loading')
@@ -435,7 +444,7 @@ function Chat({ user, onWithdraw }) {
             {threadState === 'ready' && !empty && (
               <ul role="log" aria-live="polite" aria-label="المحادثة" className="grid max-h-[520px] gap-3 overflow-y-auto pe-1">
                 {messages.map((message) => (
-                  <Bubble key={message.id} message={message} />
+                  <Bubble key={message.id} message={message} onWriteNote={() => setNoteOpen(true)} />
                 ))}
                 {sending && (
                   <li className="flex justify-end">
@@ -508,6 +517,16 @@ function Chat({ user, onWithdraw }) {
         />
       </div>
 
+      <NoteDialog open={noteOpen} onClose={() => setNoteOpen(false)} onSaved={() => setNoteSaved(true)} />
+      {noteSaved && (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-(--radius-page-input) bg-(--color-page-success-bg) px-4 py-3 text-base leading-7 text-(color:--color-page-success-text)">
+          <p role="status">حُفظت الملاحظة في مذكراتك.</p>
+          <span className="flex gap-4 text-sm">
+            <Link to="/journal" className="font-bold underline underline-offset-4 outline-(--color-page-primary)">افتح مذكراتي</Link>
+            <button type="button" onClick={() => setNoteSaved(false)} className="cursor-pointer underline underline-offset-4 outline-(--color-page-primary)">إخفاء</button>
+          </span>
+        </div>
+      )}
       <div className="mt-6 grid gap-3">
         <CrisisNote />
         <p className="text-sm leading-6 text-(color:--color-page-muted)">

@@ -174,7 +174,7 @@ function Result({ topic, answers, saveState, signedIn, onRestart }) {
         </p>
       )}
       <div className="flex flex-wrap justify-center gap-3 pt-7">
-        <Link to="/journal" className={`${primaryButton} shadow-(--shadow-page-button)`}>
+        <Link to="/journal?new=1" className={`${primaryButton} shadow-(--shadow-page-button)`}>
           اكتب ملاحظة
         </Link>
         <Link to="/relaxation" className={secondaryButton}>

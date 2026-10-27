@@ -63,7 +63,7 @@ export default function MoodCheckIn() {
               </div>
               <div className="flex flex-wrap gap-3">
                 <Link
-                  to="/journal"
+                  to="/journal?new=1"
                   className="inline-flex min-h-12 items-center justify-center rounded-(--radius-page-button) border border-(--color-page-border) bg-(--color-page-surface) px-[22px] py-2.5 text-base leading-7 font-bold text-(color:--color-page-heading) shadow-(--shadow-home-soft) outline-white"
                 >
                   اكتب في مذكراتك
