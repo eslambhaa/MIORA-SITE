@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { authErrorMessage } from '../auth/errors.js'
+import { passwordHint, passwordProblem } from '../auth/password.js'
 import AuthCard from '../components/auth/AuthCard.jsx'
 import { Field, FormAlert, PasswordField, primaryButton, textLink } from '../components/auth/fields.jsx'
 import GoogleButton from '../components/auth/GoogleButton.jsx'
@@ -24,6 +25,11 @@ export default function Register() {
     const password = String(form.get('password'))
     if (!name) {
       setError('اكتب اسمك الأول.')
+      return
+    }
+    const problem = passwordProblem(password)
+    if (problem) {
+      setError(problem)
       return
     }
     setBusy(true)
@@ -70,7 +76,7 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="mt-[14px] flex flex-col gap-[14px]">
           <Field id="register-name" name="name" type="text" label="الاسم" placeholder="اسمك الأول" autoComplete="given-name" required maxLength={50} />
           <Field id="register-email" name="email" type="email" label="البريد الإلكتروني" placeholder="name@example.com" dir="ltr" className="text-right" autoComplete="email" required />
-          <PasswordField id="register-password" name="password" label="كلمة المرور" placeholder="٨ أحرف على الأقل" autoComplete="new-password" required minLength={8} maxLength={72} hint="8 أحرف على الأقل. يفضّل أن تجمع بين حروف وأرقام." />
+          <PasswordField id="register-password" name="password" label="كلمة المرور" placeholder="٨ أحرف على الأقل" autoComplete="new-password" required minLength={8} maxLength={72} hint={passwordHint} />
           <div className="flex items-start gap-3">
             <input id="register-consent" name="consent" type="checkbox" required className="mt-1.5 size-5 shrink-0 cursor-pointer accent-(--color-page-button) outline-(--color-page-primary)" />
             <label htmlFor="register-consent" className="text-base leading-7">
