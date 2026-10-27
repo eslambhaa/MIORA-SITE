@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router'
 import { useAuth } from '../auth/AuthProvider.jsx'
 import { FormAlert } from '../components/auth/fields.jsx'
+import { parseReply } from '../data/assistantActions.js'
 import { supabase } from '../lib/supabase.js'
 
 const MAX_MESSAGE = 1000
@@ -135,8 +136,9 @@ function Arrow({ className = '' }) {
 
 function Bubble({ message }) {
   const mine = message.role === 'user'
+  const reply = mine ? null : parseReply(cleanReply(message.content))
   return (
-    <li className={`flex ${mine ? 'justify-start' : 'justify-end'}`}>
+    <li className={`flex flex-col gap-2 ${mine ? 'items-start' : 'items-end'}`}>
       <div
         className={`max-w-[85%] rounded-[18px] px-[18px] py-3 text-base leading-7 whitespace-pre-wrap [overflow-wrap:anywhere] ${
           mine
@@ -145,8 +147,22 @@ function Bubble({ message }) {
         }`}
       >
         <span className="sr-only">{mine ? 'أنت: ' : 'المساعد: '}</span>
-        {mine ? message.content : cleanReply(message.content)}
+        {mine ? message.content : reply.text}
       </div>
+      {reply?.actions.length > 0 && (
+        <div className="flex max-w-[85%] flex-wrap gap-2">
+          {reply.actions.map((action) => (
+            <Link
+              key={action.key}
+              to={action.to}
+              className="inline-flex min-h-10 items-center gap-2 rounded-full border border-(--color-page-button) bg-(--color-page-surface) px-4 text-sm leading-6 font-bold text-(color:--color-page-primary) outline-(--color-page-primary) transition-colors duration-200 hover:bg-(--color-page-guide-selected) motion-reduce:transition-none"
+            >
+              {action.label}
+              <Arrow />
+            </Link>
+          ))}
+        </div>
+      )}
     </li>
   )
 }

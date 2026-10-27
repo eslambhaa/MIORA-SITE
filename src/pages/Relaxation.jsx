@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useAuth } from '../auth/AuthProvider.jsx'
 import { breathPhase, exercises } from '../data/exercises.js'
 import { supabase } from '../lib/supabase.js'
@@ -89,6 +89,16 @@ export default function Relaxation() {
   const [done, setDone] = useState(null)
   const [now, setNow] = useState(() => Date.now())
   const finishing = useRef(false)
+  const { hash } = useLocation()
+  const target = hash.slice(1)
+
+  useEffect(() => {
+    if (!target) return
+    const card = document.getElementById(target)
+    if (!card) return
+    card.scrollIntoView({ block: 'center', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+    card.querySelector('button')?.focus({ preventScroll: true })
+  }, [target])
 
   useEffect(() => {
     if (!session) return undefined
@@ -157,7 +167,8 @@ export default function Relaxation() {
               return (
                 <li
                   key={exercise.id}
-                  className={`flex min-h-[310px] flex-col rounded-[22px] border bg-(--color-page-surface) p-[25px] transition-colors duration-200 motion-reduce:transition-none ${active ? 'border-(--color-page-button)' : 'border-(--color-page-border)'}`}
+                  id={exercise.id}
+                  className={`flex min-h-[310px] flex-col rounded-[22px] border bg-(--color-page-surface) p-[25px] transition-colors duration-200 motion-reduce:transition-none ${active || (!session && target === exercise.id) ? 'border-(--color-page-button)' : 'border-(--color-page-border)'}`}
                 >
                   <span className="grid size-[55px] place-items-center rounded-[17px] bg-(--color-page-guide-selected)">
                     <img src={exercise.icon} alt="" width="28" height="28" className="size-7" />
