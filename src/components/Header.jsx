@@ -64,12 +64,6 @@ export default function Header() {
               <path d="M3.33333 18.3333C3.33333 16.5652 4.03571 14.8695 5.28595 13.6193C6.5362 12.369 8.23189 11.6667 10 11.6667C11.7681 11.6667 13.4638 12.369 14.714 13.6193C15.9643 14.8695 16.6667 16.5652 16.6667 18.3333" />
             </svg>
           </Link>
-          <button type="button" aria-label="الإشعارات" className={iconButton}>
-            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-              <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
-            </svg>
-          </button>
           <button
             type="button"
             aria-label="القائمة"
