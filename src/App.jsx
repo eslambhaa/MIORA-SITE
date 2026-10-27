@@ -1,27 +1,30 @@
+import { lazy } from 'react'
 import { Route, Routes } from 'react-router'
 import GuestOnly from './auth/GuestOnly.jsx'
 import RequireAuth from './auth/RequireAuth.jsx'
 import Layout from './components/Layout.jsx'
 import SplashScreen from './components/SplashScreen.jsx'
-import About from './pages/About.jsx'
-import Article from './pages/Article.jsx'
-import Assessment from './pages/Assessment.jsx'
-import Assistant from './pages/Assistant.jsx'
-import Contact from './pages/Contact.jsx'
-import Content from './pages/Content.jsx'
-import ForgotPassword from './pages/ForgotPassword.jsx'
-import Help from './pages/Help.jsx'
 import Home from './pages/Home.jsx'
-import Journal from './pages/Journal.jsx'
-import Journey from './pages/Journey.jsx'
-import Login from './pages/Login.jsx'
-import NotFound from './pages/NotFound.jsx'
-import Privacy from './pages/Privacy.jsx'
-import Profile from './pages/Profile.jsx'
-import Relaxation from './pages/Relaxation.jsx'
-import Register from './pages/Register.jsx'
-import ResetPassword from './pages/ResetPassword.jsx'
-import Terms from './pages/Terms.jsx'
+
+// Every page except the home page loads on demand (smaller first download).
+const About = lazy(() => import('./pages/About.jsx'))
+const Article = lazy(() => import('./pages/Article.jsx'))
+const Assessment = lazy(() => import('./pages/Assessment.jsx'))
+const Assistant = lazy(() => import('./pages/Assistant.jsx'))
+const Contact = lazy(() => import('./pages/Contact.jsx'))
+const Content = lazy(() => import('./pages/Content.jsx'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword.jsx'))
+const Help = lazy(() => import('./pages/Help.jsx'))
+const Journal = lazy(() => import('./pages/Journal.jsx'))
+const Journey = lazy(() => import('./pages/Journey.jsx'))
+const Login = lazy(() => import('./pages/Login.jsx'))
+const NotFound = lazy(() => import('./pages/NotFound.jsx'))
+const Privacy = lazy(() => import('./pages/Privacy.jsx'))
+const Profile = lazy(() => import('./pages/Profile.jsx'))
+const Relaxation = lazy(() => import('./pages/Relaxation.jsx'))
+const Register = lazy(() => import('./pages/Register.jsx'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword.jsx'))
+const Terms = lazy(() => import('./pages/Terms.jsx'))
 
 export default function App() {
   return (
