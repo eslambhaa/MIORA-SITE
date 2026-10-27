@@ -40,6 +40,7 @@ export default function Login() {
       <AuthCard title="مرحبًا بعودتك">
         <form onSubmit={handleSubmit} className="mt-[14px] flex flex-col gap-[14px]" noValidate={false}>
           {params.get('reset') === '1' && <FormAlert tone="success">تم تغيير كلمة المرور. سجّل الدخول بكلمة المرور الجديدة.</FormAlert>}
+          {params.get('deleted') === '1' && <FormAlert tone="success">تم حذف حسابك وكل بياناتك نهائيًا. يمكنك إنشاء حساب جديد في أي وقت.</FormAlert>}
           <Field id="login-email" name="email" type="email" label="البريد الإلكتروني" placeholder="name@example.com" dir="ltr" className="text-right" autoComplete="email" required />
           <PasswordField id="login-password" name="password" label="كلمة المرور" placeholder="٨ أحرف على الأقل" autoComplete="current-password" required minLength={8} maxLength={72}>
             <Link to="/forgot-password" className={`text-sm ${textLink}`}>
