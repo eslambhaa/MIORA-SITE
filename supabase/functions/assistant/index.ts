@@ -2,7 +2,8 @@
 // consent and limits, asks Google Gemini, and stores both messages.
 // Secrets (set in Supabase, never in the frontend):
 //   GEMINI_API_KEY   required
-//   GEMINI_MODEL     optional, default "gemini-flash-latest"
+//   GEMINI_MODEL     optional, first model to try (default "gemini-flash-latest");
+//                    on overload or timeout it falls back to lighter models
 //   ALLOWED_ORIGIN   optional, default "http://localhost:5173"
 import { withSupabase } from 'npm:@supabase/server@1.9.2'
 
@@ -10,7 +11,8 @@ const MAX_MESSAGE = 1000
 const HISTORY = 12
 const PER_HOUR = 20
 const PER_DAY = 60
-const GEMINI_TIMEOUT_MS = 25_000
+const GEMINI_TIMEOUT_MS = 20_000
+const FALLBACK_MODELS = ['gemini-3.6-flash', 'gemini-3.5-flash-lite']
 
 const SYSTEM_PROMPT = `أنت "مساعد ميورا"، رفيق تعليمي داعم داخل منصة ميورا للعافية النفسية (مشروع تخرج).
 - لست طبيبًا ولا معالجًا نفسيًا. لا تشخّص، ولا تقترح أدوية أو جرعات، ولا تقدّم خطة علاجية.
@@ -50,10 +52,15 @@ function reply(status: number, body: Record<string, unknown>) {
   return Response.json(body, { status })
 }
 
-async function askGemini(history: { role: string; content: string }[]) {
-  const key = Deno.env.get('GEMINI_API_KEY')
-  if (!key) throw new Error('missing_key')
-  const model = Deno.env.get('GEMINI_MODEL') ?? 'gemini-flash-latest'
+class ProviderError extends Error {
+  retryable: boolean
+  constructor(message: string, retryable: boolean) {
+    super(message)
+    this.retryable = retryable
+  }
+}
+
+async function callModel(model: string, key: string, history: { role: string; content: string }[]) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS)
   try {
@@ -76,17 +83,52 @@ async function askGemini(history: { role: string; content: string }[]) {
         }),
       },
     )
-    if (response.status === 429) throw new Error('provider_busy')
-    if (!response.ok) throw new Error(`provider_${response.status}`)
+    if (!response.ok) {
+      // Log Google's error status/message only (never the user's text) to help diagnose.
+      let reason = ''
+      try {
+        const failure = await response.json()
+        reason = `${failure?.error?.status ?? ''} ${String(failure?.error?.message ?? '').slice(0, 160)}`
+      } catch {
+        reason = ''
+      }
+      const retryable = response.status === 429 || response.status === 404 || response.status >= 500
+      throw new ProviderError(`${model} ${response.status} ${reason}`.trim(), retryable)
+    }
     const data = await response.json()
     const text: string = (data?.candidates?.[0]?.content?.parts ?? [])
+      .filter((part: { thought?: boolean }) => !part.thought)
       .map((part: { text?: string }) => part.text ?? '')
       .join('')
       .trim()
     return text.slice(0, 4000)
+  } catch (error) {
+    if (error instanceof ProviderError) throw error
+    // Timeout (AbortError) or network failure: try the next model.
+    throw new ProviderError(`${model} ${error instanceof Error ? error.name : 'unknown'}`, true)
   } finally {
     clearTimeout(timer)
   }
+}
+
+async function askGemini(history: { role: string; content: string }[]) {
+  const key = Deno.env.get('GEMINI_API_KEY')
+  if (!key) throw new ProviderError('missing_key', false)
+  const first = Deno.env.get('GEMINI_MODEL') ?? 'gemini-flash-latest'
+  const models = [first, ...FALLBACK_MODELS.filter((m) => m !== first)]
+  const failures: string[] = []
+  for (const model of models) {
+    try {
+      return await callModel(model, key, history)
+    } catch (error) {
+      const failure = error instanceof ProviderError ? error : new ProviderError('unknown', false)
+      failures.push(failure.message)
+      if (!failure.retryable) break
+    }
+  }
+  console.error('assistant provider failure', failures.join(' | '))
+  const busy = failures.length > 0 && failures.every((f) => / (429|500|502|503|504|AbortError)\b/.test(f))
+  throw new Error(busy ? 'provider_busy' : 'provider_error')
 }
 
 export default {
@@ -134,7 +176,7 @@ export default {
     }
 
     let answer = ''
-    let crisis = CRISIS_PATTERNS.some((pattern) => pattern.test(message))
+    const crisis = CRISIS_PATTERNS.some((pattern) => pattern.test(message))
     if (crisis) {
       answer = CRISIS_REPLY
     } else {
@@ -152,7 +194,6 @@ export default {
         answer = await askGemini([...history, { role: 'user', content: message }])
       } catch (error) {
         const code = error instanceof Error && error.message === 'provider_busy' ? 'provider_busy' : 'provider_error'
-        console.error('assistant provider failure', error instanceof Error ? error.message : 'unknown')
         return reply(502, { error: code })
       }
       if (!answer) {
