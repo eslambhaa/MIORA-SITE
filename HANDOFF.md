@@ -54,3 +54,4 @@ react 19.3.1، react-dom 19.3.1، react-router 8.5.0، vite 8.3.5، @vitejs/plug
 - مفتاح Gemini: في المرحلة 8.
 - إعداد جوجل OAuth: في المرحلة 2.
 - Git: مفعّل على الفرع main، مع commit بعد كل مرحلة.
+- GitHub: https://github.com/eslambhaa/MIORA-SITE (خاص). يُرفع التحديث بعد كل مرحلة.
