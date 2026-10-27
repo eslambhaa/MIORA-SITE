@@ -1,3 +1,5 @@
+import Reveal from '../ui/Reveal.jsx'
+
 const steps = [
   { number: '01', label: 'اختار الوجهة' },
   { number: '02', label: 'اعرف ما تقدّمه' },
@@ -7,7 +9,7 @@ const steps = [
 export default function GuideBanner({ onExplore }) {
   return (
     <section aria-labelledby="guide-banner-title" className="px-4 pt-20 md:px-[46px]">
-      <div className="relative mx-auto grid max-w-[1073px] items-center gap-12 overflow-hidden rounded-[34px] bg-(--color-page-guide-panel) px-6 py-12 md:grid-cols-2 md:gap-[70px] md:p-[70px]">
+      <Reveal className="relative mx-auto grid max-w-[1073px] items-center gap-12 overflow-hidden rounded-[34px] bg-(--color-page-guide-panel) px-6 py-12 md:grid-cols-2 md:gap-[70px] md:p-[70px]">
         <div>
           <p className="pb-[19px] text-sm leading-[24.5px] font-bold text-(color:--color-home-banner-eyebrow)">أدوات تناسب لحظتك</p>
           <h2 id="guide-banner-title" className="text-[32px] leading-[1.3] tracking-[-0.02em] text-white md:text-[42px]">
@@ -37,7 +39,7 @@ export default function GuideBanner({ onExplore }) {
           ))}
         </ol>
         <span aria-hidden="true" className="pointer-events-none absolute -bottom-[220px] -left-[120px] size-[360px] rounded-full border-[70px] border-white/6" />
-      </div>
+      </Reveal>
     </section>
   )
 }

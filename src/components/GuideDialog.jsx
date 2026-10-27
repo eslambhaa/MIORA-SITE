@@ -56,7 +56,7 @@ export default function GuideDialog({ open, onClose }) {
           onClick={onClose}
           className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-full border border-(--color-page-border) outline-(--color-page-primary)"
         >
-          <img src="/icons/guide/close.svg" alt="" width="20" height="20" />
+          <img loading="lazy" src="/icons/guide/close.svg" alt="" width="20" height="20" />
         </button>
       </div>
       <div className="mt-2 grid gap-5 md:grid-cols-[minmax(0,1fr)_314px]">
@@ -73,10 +73,10 @@ export default function GuideDialog({ open, onClose }) {
                   className={`${itemBase} ${isSelected ? itemSelected : itemIdle}`}
                 >
                   <span className="grid size-[34px] shrink-0 place-items-center rounded-[10px] bg-(--color-page-surface) drop-shadow-[0_4px_2px_rgb(0_0_0/0.25)]">
-                    <img src={`/icons/guide/${item.icon}.svg`} alt="" width="18" height="18" />
+                    <img loading="lazy" src={`/icons/guide/${item.icon}.svg`} alt="" width="18" height="18" />
                   </span>
                   <span className="flex-1">{item.label}</span>
-                  <img src="/icons/guide/chevron.svg" alt="" width="16" height="16" className="shrink-0 -scale-x-100" />
+                  <img loading="lazy" src="/icons/guide/chevron.svg" alt="" width="16" height="16" className="shrink-0 -scale-x-100" />
                 </button>
               </li>
             )
@@ -88,9 +88,9 @@ export default function GuideDialog({ open, onClose }) {
         >
           <span className="grid size-[62px] place-items-center rounded-[18px] bg-white/12">
             {selected.id === 'home' ? (
-              <img src="/icons/guide/home-large.svg" alt="" width="30" height="30" />
+              <img loading="lazy" src="/icons/guide/home-large.svg" alt="" width="30" height="30" />
             ) : (
-              <img src={`/icons/guide/${selected.icon}.svg`} alt="" width="30" height="30" className="size-[30px] brightness-0 invert" />
+              <img loading="lazy" src={`/icons/guide/${selected.icon}.svg`} alt="" width="30" height="30" className="size-[30px] brightness-0 invert" />
             )}
           </span>
           <p className="mt-5 text-[13px] leading-[22.75px] text-(color:--color-page-guide-panel-muted)">الوجهة المختارة</p>
@@ -102,7 +102,7 @@ export default function GuideDialog({ open, onClose }) {
             className="mt-auto inline-flex min-h-12 cursor-pointer items-center justify-center gap-2.5 rounded-(--radius-page-button) border border-transparent bg-white px-[22px] py-2.5 text-base leading-7 font-bold text-(color:--color-page-guide-panel) shadow-(--shadow-page-button) outline-white"
           >
             افتح الصفحة
-            <img src="/icons/guide/arrow.svg" alt="" width="18" height="18" className="-scale-x-100" />
+            <img loading="lazy" src="/icons/guide/arrow.svg" alt="" width="18" height="18" className="-scale-x-100" />
           </button>
         </section>
       </div>

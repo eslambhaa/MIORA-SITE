@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { moods } from '../../data/moods.js'
+import Reveal from '../ui/Reveal.jsx'
 import SectionTitle from './SectionTitle.jsx'
 import { useTodayMood } from './useTodayMood.js'
 
@@ -26,8 +27,8 @@ export default function MoodCheckIn() {
         <fieldset className="mt-[42px]" disabled={status === 'saving'}>
           <legend className="sr-only">اختر شعورك الآن</legend>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
-            {moods.map((item) => (
-              <label key={item.id} className="group relative cursor-pointer">
+            {moods.map((item, index) => (
+              <Reveal as="label" key={item.id} index={index} className="group relative cursor-pointer">
                 <input
                   type="radio"
                   name="mood"
@@ -45,7 +46,7 @@ export default function MoodCheckIn() {
                 <span aria-hidden="true" className="absolute top-[9px] left-[9px] hidden size-[22px] place-items-center rounded-full bg-(--color-page-button) peer-checked:grid">
                   <img src="/icons/home/check.svg" alt="" width="14" height="14" />
                 </span>
-              </label>
+              </Reveal>
             ))}
           </div>
         </fieldset>

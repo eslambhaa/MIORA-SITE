@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import { reflectionTools } from '../../data/tools.js'
+import Reveal from '../ui/Reveal.jsx'
 import SectionTitle from './SectionTitle.jsx'
 
 export default function ReflectionTools() {
@@ -13,8 +14,8 @@ export default function ReflectionTools() {
           description="أسئلة بسيطة تساعدك على فهم مشاعرك وعاداتك بشكل أوضح، وتمنحك مساحة للتأمل واكتشاف خطوات مناسبة لك."
         />
         <ul className="mt-[42px] grid gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
-          {reflectionTools.map((tool) => (
-            <li key={tool.id}>
+          {reflectionTools.map((tool, index) => (
+            <Reveal as="li" key={tool.id} index={index + 1}>
               <article className="flex h-full min-h-[340px] flex-col items-start rounded-[22px] border border-(--color-page-border) bg-(--color-page-surface) p-[26px]">
                 <span className={`grid size-[58px] place-items-center rounded-[17px] ${tool.tint}`}>
                   <img src={`/icons/home/${tool.icon}.svg`} alt="" width="28" height="28" />
@@ -31,7 +32,7 @@ export default function ReflectionTools() {
                   <img src="/icons/home/tool-arrow.svg" alt="" width="18" height="18" className="-scale-x-100" />
                 </Link>
               </article>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>

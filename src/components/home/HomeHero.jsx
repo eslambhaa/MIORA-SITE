@@ -26,6 +26,7 @@ export default function HomeHero({ onExplore }) {
             alt="ضوء صباح هادئ بجوار نافذة وكوب دافئ"
             width="860"
             height="1290"
+            fetchPriority="high"
             className="absolute right-0 bottom-0 h-[95.3%] w-[94.7%] animate-hero-image rounded-t-[51%] rounded-b-[23%] object-cover shadow-(--shadow-page-guide)"
           />
           <div className="absolute top-[0.6%] left-[-4.4%] flex size-[100px] flex-col items-center justify-center gap-1 rounded-full bg-(--color-page-guide-selected) text-center animate-hero-float drop-shadow-[0_8px_12px_rgb(31_43_82/0.07)] sm:size-[130px]">

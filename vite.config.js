@@ -33,10 +33,30 @@ function contentSecurityPolicy(supabaseUrl) {
   }
 }
 
+// Preload the Arabic Almarai files (regular + bold) so text does not jump
+// when the font arrives. Their hashed names are only known after bundling.
+function preloadFonts() {
+  return {
+    name: 'miora-font-preload',
+    apply: 'build',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html, { bundle }) {
+        const files = Object.keys(bundle ?? {}).filter((name) => /almarai-arabic-(400|700)-normal-.*\.woff2$/.test(name))
+        return files.map((file) => ({
+          tag: 'link',
+          attrs: { rel: 'preload', href: `/${file}`, as: 'font', type: 'font/woff2', crossorigin: '' },
+          injectTo: 'head',
+        }))
+      },
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
   return {
-    plugins: [react(), tailwindcss(), contentSecurityPolicy(env.VITE_SUPABASE_URL)],
+    plugins: [react(), tailwindcss(), contentSecurityPolicy(env.VITE_SUPABASE_URL), preloadFonts()],
     build: {
       rolldownOptions: {
         output: {

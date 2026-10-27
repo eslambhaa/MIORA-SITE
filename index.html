@@ -15,7 +15,19 @@
     <meta property="og:description" content="تعلّم عن مشاعرك، وجرّب تمارين قصيرة للاسترخاء، واكتب مذكراتك في مساحة آمنة." />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="flex min-h-screen items-center justify-center bg-(--color-page-bg) px-6">
+        <div role="status" class="flex animate-loader-in flex-col items-center gap-5 text-(color:--color-page-muted)">
+          <span class="relative grid size-[88px] place-items-center">
+            <span aria-hidden="true" class="absolute inset-0 animate-loader-ring rounded-full border-2 border-(--color-page-button) motion-reduce:animate-none"></span>
+            <span class="grid size-[72px] place-items-center rounded-full bg-(--color-page-surface) shadow-(--shadow-home-soft)">
+              <img src="/images/logo-header.webp" alt="" width="48" height="48" class="size-12" />
+            </span>
+          </span>
+          <span class="text-base leading-7">جارٍ تحميل ميورا…</span>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

@@ -48,7 +48,7 @@ export default function Header() {
           to="/"
           className="flex h-[58px] w-[72px] items-center justify-center justify-self-start rounded-(--radius-page-logo) px-2 py-0.5 outline-(--color-page-primary)"
         >
-          <img src="/logo.png" alt="ميورا" width="54" height="54" className="size-[54px] object-contain" />
+          <img src="/images/logo-header.webp" alt="ميورا" width="54" height="54" fetchPriority="high" className="size-[54px] object-contain" />
         </Link>
         <ul className="hidden items-center justify-center gap-1.5 md:flex">
           {links.map((link) => (

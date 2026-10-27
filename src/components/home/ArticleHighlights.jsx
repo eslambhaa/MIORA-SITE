@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { articles } from '../../data/articles.js'
 import ArticleCard from '../content/ArticleCard.jsx'
+import Reveal from '../ui/Reveal.jsx'
 import SectionTitle from './SectionTitle.jsx'
 
 export default function ArticleHighlights() {
@@ -19,10 +20,10 @@ export default function ArticleHighlights() {
           </Link>
         </div>
         <ul className="mt-10 grid gap-[22px] md:grid-cols-3">
-          {articles.slice(0, 3).map((article) => (
-            <li key={article.slug}>
+          {articles.slice(0, 3).map((article, index) => (
+            <Reveal as="li" key={article.slug} index={index + 1}>
               <ArticleCard article={article} />
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>

@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from 'react-router'
+import PageLoader from '../components/ui/PageLoader.jsx'
 import { useAuth } from './AuthProvider.jsx'
 
 export default function RequireAuth({ children }) {
@@ -6,11 +7,7 @@ export default function RequireAuth({ children }) {
   const location = useLocation()
 
   if (loading) {
-    return (
-      <main className="flex flex-1 items-center justify-center px-6 py-24">
-        <p role="status" className="text-lg text-(color:--color-page-muted)">جارٍ التحقق من الجلسة…</p>
-      </main>
-    )
+    return <PageLoader label="جارٍ التحقق من الجلسة…" />
   }
 
   if (!user) {
