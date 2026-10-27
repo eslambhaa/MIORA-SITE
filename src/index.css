@@ -1,5 +1,58 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-hero-image: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-float 7s ease-in-out 900ms infinite;
+  --animate-hero-float: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-float 6s ease-in-out 900ms infinite;
+  --animate-hero-float-late: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) 250ms both, hero-float 6.5s ease-in-out 1.6s infinite;
+  --animate-hero-arch: hero-sway 9s ease-in-out infinite;
+  --animate-pulse-dot: pulse-dot 1.8s ease-out infinite;
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      scale: 0.94;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  @keyframes hero-float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -10px;
+    }
+  }
+
+  @keyframes hero-sway {
+    0%,
+    100% {
+      rotate: 4deg;
+    }
+    50% {
+      rotate: 1.5deg;
+    }
+  }
+
+  @keyframes pulse-dot {
+    0% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgb(84 166 139 / 0.55);
+    }
+    50% {
+      opacity: 0.55;
+    }
+    100% {
+      opacity: 1;
+      box-shadow: 0 0 0 10px rgb(84 166 139 / 0);
+    }
+  }
+}
+
 :root {
   --font-sans: "Almarai", "Tajawal", system-ui, sans-serif;
   --color-primary: #2a3b9e;

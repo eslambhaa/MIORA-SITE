@@ -20,20 +20,20 @@ export default function HomeHero({ onExplore }) {
           </div>
         </div>
         <div className="relative mx-auto aspect-[454/510] w-full max-w-[454px]">
-          <div aria-hidden="true" className="absolute top-[-2.7%] left-[-3.5%] h-[92%] w-[91%] rotate-4 rounded-t-[47%] rounded-b-[22%] border border-(--color-home-arch)" />
+          <div aria-hidden="true" className="absolute top-[-2.7%] left-[-3.5%] h-[92%] w-[91%] rotate-4 animate-hero-arch rounded-t-[47%] rounded-b-[22%] border border-(--color-home-arch)" />
           <img
             src="/images/home/hero-morning-window.webp"
             alt="ضوء صباح هادئ بجوار نافذة وكوب دافئ"
             width="860"
             height="1290"
-            className="absolute right-0 bottom-0 h-[95.3%] w-[94.7%] rounded-t-[51%] rounded-b-[23%] object-cover shadow-(--shadow-page-guide)"
+            className="absolute right-0 bottom-0 h-[95.3%] w-[94.7%] animate-hero-image rounded-t-[51%] rounded-b-[23%] object-cover shadow-(--shadow-page-guide)"
           />
-          <div className="absolute top-[0.6%] left-[-4.4%] flex size-[100px] flex-col items-center justify-center gap-1 rounded-full bg-(--color-page-guide-selected) text-center drop-shadow-[0_8px_12px_rgb(31_43_82/0.07)] sm:size-[130px]">
+          <div className="absolute top-[0.6%] left-[-4.4%] flex size-[100px] flex-col items-center justify-center gap-1 rounded-full bg-(--color-page-guide-selected) text-center animate-hero-float drop-shadow-[0_8px_12px_rgb(31_43_82/0.07)] sm:size-[130px]">
             <img src="/icons/home/breath.svg" alt="" width="28" height="28" />
             <span className="px-2 text-[13px] leading-[22.75px] text-(color:--color-page-primary)">خد نفسًا هادئًا</span>
           </div>
-          <div className="absolute top-[77.6%] right-0 flex items-center gap-3 rounded-2xl bg-white/70 px-[18px] py-[15px] shadow-(--shadow-page-guide) backdrop-blur-[30px] md:right-[-9%]">
-            <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-(--color-home-green) shadow-[0_0_0_7px_rgb(84_166_139/0.14)]" />
+          <div className="absolute top-[77.6%] right-0 flex items-center gap-3 rounded-2xl bg-white/70 animate-hero-float-late px-[18px] py-[15px] shadow-(--shadow-page-guide) backdrop-blur-[30px] md:right-[-9%]">
+            <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-(--color-home-green) animate-pulse-dot" />
             <span className="flex flex-col">
               <span className="text-base leading-7 font-bold">لحظة لنفسك</span>
               <span className="text-[12.8px] leading-[22.4px] text-(color:--color-page-muted)">ابدأ بما تشعر به الآن</span>
