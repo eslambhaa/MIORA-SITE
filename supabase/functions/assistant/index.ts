@@ -8,6 +8,8 @@
 import { withSupabase } from 'npm:@supabase/server@1.9.2'
 
 const MAX_MESSAGE = 1000
+const MAX_OUTPUT_TOKENS = 4096
+const TITLE_LENGTH = 60
 const HISTORY = 12
 const PER_HOUR = 20
 const PER_DAY = 60
@@ -60,7 +62,12 @@ class ProviderError extends Error {
   }
 }
 
-async function callModel(model: string, key: string, history: { role: string; content: string }[]) {
+async function callModel(
+  model: string,
+  key: string,
+  history: { role: string; content: string }[],
+  lowThinking: boolean,
+) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS)
   try {
@@ -73,7 +80,12 @@ async function callModel(model: string, key: string, history: { role: string; co
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents: history.map((m) => ({ role: m.role, parts: [{ text: m.content }] })),
-          generationConfig: { maxOutputTokens: 700, temperature: 0.7 },
+          generationConfig: {
+            maxOutputTokens: MAX_OUTPUT_TOKENS,
+            temperature: 0.7,
+            // Short supportive replies need little reasoning; thinking tokens count against the output limit.
+            ...(lowThinking ? { thinkingConfig: { thinkingLevel: 'low' } } : {}),
+          },
           safetySettings: [
             { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
             { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
@@ -92,10 +104,15 @@ async function callModel(model: string, key: string, history: { role: string; co
       } catch {
         reason = ''
       }
+      if (response.status === 400 && lowThinking && /thinking/i.test(reason)) {
+        // This model does not accept a thinking level: retry it once without one.
+        return await callModel(model, key, history, false)
+      }
       const retryable = response.status === 429 || response.status === 404 || response.status >= 500
       throw new ProviderError(`${model} ${response.status} ${reason}`.trim(), retryable)
     }
     const data = await response.json()
+    if (data?.candidates?.[0]?.finishReason === 'MAX_TOKENS') console.warn('assistant reply hit the output limit', model)
     const text: string = (data?.candidates?.[0]?.content?.parts ?? [])
       .filter((part: { thought?: boolean }) => !part.thought)
       .map((part: { text?: string }) => part.text ?? '')
@@ -119,7 +136,7 @@ async function askGemini(history: { role: string; content: string }[]) {
   const failures: string[] = []
   for (const model of models) {
     try {
-      return await callModel(model, key, history)
+      return await callModel(model, key, history, !model.includes('lite'))
     } catch (error) {
       const failure = error instanceof ProviderError ? error : new ProviderError('unknown', false)
       failures.push(failure.message)
@@ -138,9 +155,16 @@ export default {
     if (!userId) return reply(401, { error: 'unauthorized' })
 
     let message = ''
+    let conversationId: number | null = null
     try {
       const body = await req.json()
       message = typeof body?.message === 'string' ? body.message.trim() : ''
+      if (body?.conversation_id !== undefined && body?.conversation_id !== null) {
+        if (!Number.isSafeInteger(body.conversation_id) || body.conversation_id <= 0) {
+          return reply(400, { error: 'invalid_conversation' })
+        }
+        conversationId = body.conversation_id
+      }
     } catch {
       return reply(400, { error: 'invalid_body' })
     }
@@ -175,20 +199,37 @@ export default {
       return reply(500, { error: 'server_error' })
     }
 
+    // An existing conversation must belong to this user.
+    if (conversationId !== null) {
+      const { data: owned, error: ownedError } = await admin
+        .from('assistant_conversations')
+        .select('id')
+        .eq('id', conversationId)
+        .eq('user_id', userId)
+        .maybeSingle()
+      if (ownedError) return reply(500, { error: 'server_error' })
+      if (!owned) return reply(404, { error: 'conversation_not_found' })
+    }
+
     let answer = ''
     const crisis = CRISIS_PATTERNS.some((pattern) => pattern.test(message))
     if (crisis) {
       answer = CRISIS_REPLY
     } else {
-      const { data: past, error: pastError } = await admin
-        .from('assistant_messages')
-        .select('role, content')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .order('id', { ascending: false })
-        .limit(HISTORY)
-      if (pastError) return reply(500, { error: 'server_error' })
-      const history = [...(past ?? [])].reverse()
+      let past: { role: string; content: string }[] = []
+      if (conversationId !== null) {
+        const { data, error: pastError } = await admin
+          .from('assistant_messages')
+          .select('role, content')
+          .eq('conversation_id', conversationId)
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .order('id', { ascending: false })
+          .limit(HISTORY)
+        if (pastError) return reply(500, { error: 'server_error' })
+        past = data ?? []
+      }
+      const history = [...past].reverse()
       while (history.length && history[0].role !== 'user') history.shift()
       try {
         answer = await askGemini([...history, { role: 'user', content: message }])
@@ -201,15 +242,39 @@ export default {
       }
     }
 
+    // Create the conversation only once there is a reply to keep.
+    let conversation: { id: number; title: string; updated_at: string } | null = null
+    if (conversationId === null) {
+      const flat = message.replace(/\s+/g, ' ')
+      const title = flat.length > TITLE_LENGTH ? `${flat.slice(0, TITLE_LENGTH - 1)}…` : flat
+      const { data, error } = await admin
+        .from('assistant_conversations')
+        .insert({ user_id: userId, title })
+        .select('id, title, updated_at')
+        .single()
+      if (error || !data) return reply(500, { error: 'server_error' })
+      conversation = data
+    } else {
+      const { data, error } = await admin
+        .from('assistant_conversations')
+        .update({ updated_at: new Date().toISOString() })
+        .eq('id', conversationId)
+        .eq('user_id', userId)
+        .select('id, title, updated_at')
+        .single()
+      if (error || !data) return reply(500, { error: 'server_error' })
+      conversation = data
+    }
+
     const { data: saved, error: saveError } = await admin
       .from('assistant_messages')
       .insert([
-        { user_id: userId, role: 'user', content: message },
-        { user_id: userId, role: 'model', content: answer },
+        { user_id: userId, conversation_id: conversation.id, role: 'user', content: message },
+        { user_id: userId, conversation_id: conversation.id, role: 'model', content: answer },
       ])
       .select('id, role, content, created_at')
     if (saveError) return reply(500, { error: 'server_error' })
 
-    return reply(200, { messages: saved, crisis })
+    return reply(200, { conversation, messages: saved, crisis })
   }),
 }
