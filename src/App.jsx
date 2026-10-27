@@ -6,6 +6,7 @@ import ComingSoon from './pages/ComingSoon.jsx'
 import Contact from './pages/Contact.jsx'
 import Help from './pages/Help.jsx'
 import Home from './pages/Home.jsx'
+import Journey from './pages/Journey.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Privacy from './pages/Privacy.jsx'
 import Terms from './pages/Terms.jsx'
@@ -17,7 +18,6 @@ const upcoming = [
   ['relaxation', 'تمارين الاسترخاء'],
   ['assessment', 'التقييمات الذاتية'],
   ['profile', 'ملفي الشخصي'],
-  ['journey', 'رحلة العافية النفسية'],
   ['login', 'تسجيل الدخول'],
   ['register', 'إنشاء حساب'],
 ]
@@ -34,6 +34,7 @@ export default function App() {
           <Route path="contact" element={<Contact />} />
           <Route path="privacy" element={<Privacy />} />
           <Route path="terms" element={<Terms />} />
+          <Route path="journey" element={<Journey />} />
           {upcoming.map(([path, title]) => (
             <Route key={path} path={path} element={<ComingSoon title={title} />} />
           ))}
