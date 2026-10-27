@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content" />
     <title>ميورا</title>
     <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="stylesheet" href="/boot.css" />
     <meta name="description" content="ميورا مساحة تعليمية داعمة تساعدك على فهم مشاعرك وبناء عادات أكثر توازنًا، خطوة بخطوة. لا تحل محل التشخيص أو العلاج المتخصص." />
     <meta name="theme-color" content="#f7f8fc" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
@@ -16,15 +17,12 @@
   </head>
   <body>
     <div id="root">
-      <div class="flex min-h-screen items-center justify-center bg-(--color-page-bg) px-6">
-        <div role="status" class="flex animate-loader-in flex-col items-center gap-5 text-(color:--color-page-muted)">
-          <span class="relative grid size-[88px] place-items-center">
-            <span aria-hidden="true" class="absolute inset-0 animate-loader-ring rounded-full border-2 border-(--color-page-button) motion-reduce:animate-none"></span>
-            <span class="grid size-[72px] place-items-center rounded-full bg-(--color-page-surface) shadow-(--shadow-home-soft)">
-              <img src="/images/logo-header.webp" alt="" width="48" height="48" class="size-12" />
-            </span>
+      <div class="boot">
+        <div role="status" class="boot__box">
+          <span class="boot__ring">
+            <span class="boot__logo"><img src="/images/logo-header.webp" alt="" width="48" height="48" /></span>
           </span>
-          <span class="text-base leading-7">جارٍ تحميل ميورا…</span>
+          <span>جارٍ تحميل ميورا…</span>
         </div>
       </div>
     </div>

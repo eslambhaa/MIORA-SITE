@@ -5,7 +5,7 @@ import SectionTitle from './SectionTitle.jsx'
 
 export default function ReflectionTools() {
   return (
-    <section aria-labelledby="tools-title" className="px-6 pt-[105px] pb-[82px]">
+    <section aria-labelledby="tools-title" className="slide px-6 pt-[105px] pb-[82px]">
       <div className="mx-auto max-w-[1026px]">
         <SectionTitle
           id="tools-title"

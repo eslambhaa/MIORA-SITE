@@ -207,3 +207,64 @@
     }
   }
 }
+
+/* Home page "presentation" scrolling: each section (.slide) grows in as it
+   enters the screen and shrinks back as it leaves, tied to the scroll position
+   (CSS scroll-driven animations). On desktop the page also settles at the start
+   of a section. Browsers without scroll timelines just scroll normally, and the
+   .reveal fade-ups inside still work. Nothing moves with "reduce motion". */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    scale: 0.86;
+    translate: 0 96px;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+  }
+  to {
+    opacity: 0.2;
+    scale: 0.9;
+    translate: 0 -48px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .slide {
+      transform-origin: 50% 50%;
+      animation:
+        slide-in linear both,
+        slide-out linear forwards;
+      animation-timeline: view(), view();
+      animation-range:
+        entry 0% entry 85%,
+        exit 0% exit 100%;
+    }
+  }
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  html:has(.slides) {
+    scroll-snap-type: y proximity;
+  }
+
+  .slides > .slide {
+    scroll-snap-align: start;
+    scroll-margin-top: 112px;
+  }
+
+  .slides > .slide:first-child {
+    scroll-margin-top: 0;
+  }
+}

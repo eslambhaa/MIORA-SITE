@@ -8,7 +8,7 @@ const steps = [
 
 export default function GuideBanner({ onExplore }) {
   return (
-    <section aria-labelledby="guide-banner-title" className="px-4 pt-20 md:px-[46px]">
+    <section aria-labelledby="guide-banner-title" className="slide px-4 pt-20 md:px-[46px]">
       <Reveal className="relative mx-auto grid max-w-[1073px] items-center gap-12 overflow-hidden rounded-[34px] bg-(--color-page-guide-panel) px-6 py-12 md:grid-cols-2 md:gap-[70px] md:p-[70px]">
         <div>
           <p className="pb-[19px] text-sm leading-[24.5px] font-bold text-(color:--color-home-banner-eyebrow)">أدوات تناسب لحظتك</p>

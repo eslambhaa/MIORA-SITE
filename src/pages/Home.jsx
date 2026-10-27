@@ -15,7 +15,7 @@ export default function Home() {
     <>
       <title>ميورا | مساحة هادئة. خطوة حقيقية.</title>
       <meta name="description" content="ميورا مساحة تعليمية للعافية النفسية: سجّل شعورك، تعرّف على أدوات التأمل، واقرأ محتوى مبسّطًا يساعدك في يومك." />
-      <main className="flex-1">
+      <main className="slides flex-1">
         <HomeHero onExplore={openGuide} />
         <MoodCheckIn />
         <GuideBanner onExplore={openGuide} />

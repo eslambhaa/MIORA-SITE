@@ -20,7 +20,7 @@ export default function MoodCheckIn() {
   if (status === 'checking' || status === 'done') return null
 
   return (
-    <section aria-labelledby="mood-title" className="bg-(--color-page-surface) px-6 py-[105px]">
+    <section aria-labelledby="mood-title" className="slide bg-(--color-page-surface) px-6 py-[105px]">
       <div className="mx-auto max-w-[1026px]">
         <SectionTitle id="mood-title" eyebrow="تسجيل شعورك" title="حاسس بإيه النهارده؟" description="اختار الأقرب لك، من غير ما تحتاج تبرّر أو تغيّر شعورك." />
         {!saved && (

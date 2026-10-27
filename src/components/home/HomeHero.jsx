@@ -1,6 +1,6 @@
 export default function HomeHero({ onExplore }) {
   return (
-    <section className="-mt-[112px] overflow-x-clip bg-(image:--gradient-home-hero) px-6 pt-[160px] pb-20 md:min-h-[780px] md:pt-[180px]">
+    <section className="slide -mt-[112px] overflow-x-clip bg-(image:--gradient-home-hero) px-6 pt-[160px] pb-20 md:min-h-[780px] md:pt-[180px]">
       <div className="mx-auto grid max-w-[1026px] items-center gap-14 md:grid-cols-[minmax(0,502px)_minmax(0,454px)] md:justify-between">
         <div>
           <p className="pb-4 text-sm leading-[24.5px] font-bold text-(color:--color-page-primary)">مساحة هادئة. خطوة حقيقية.</p>

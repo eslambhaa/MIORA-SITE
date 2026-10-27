@@ -6,7 +6,7 @@ import SectionTitle from './SectionTitle.jsx'
 
 export default function ArticleHighlights() {
   return (
-    <section aria-labelledby="articles-title" className="px-6 pt-0.5 pb-[105px]">
+    <section aria-labelledby="articles-title" className="slide px-6 pt-0.5 pb-[105px]">
       <div className="mx-auto max-w-[1026px]">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div className="min-w-0 md:flex-1 md:[&>div]:max-w-none">
