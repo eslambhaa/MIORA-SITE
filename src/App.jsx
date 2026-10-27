@@ -12,6 +12,7 @@ import Content from './pages/Content.jsx'
 import ForgotPassword from './pages/ForgotPassword.jsx'
 import Help from './pages/Help.jsx'
 import Home from './pages/Home.jsx'
+import Journal from './pages/Journal.jsx'
 import Journey from './pages/Journey.jsx'
 import Login from './pages/Login.jsx'
 import NotFound from './pages/NotFound.jsx'
@@ -48,7 +49,7 @@ export default function App() {
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
           <Route path="content/:slug" element={<Article />} />
-          <Route path="journal" element={<RequireAuth><ComingSoon title="مذكراتي" /></RequireAuth>} />
+          <Route path="journal" element={<RequireAuth><Journal /></RequireAuth>} />
           {upcoming.map(([path, title]) => (
             <Route key={path} path={path} element={<ComingSoon title={title} />} />
           ))}
