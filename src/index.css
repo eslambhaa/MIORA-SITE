@@ -29,6 +29,12 @@
   --radius-page-card: 18px;
   --shadow-page-card: 0 4px 2px rgb(0 0 0 / 0.25);
   --gradient-page-glow: radial-gradient(686px 686px at 50% 90px, #e9eeff 0%, rgb(233 238 255 / 0) 58%);
+  --color-page-guide-selected: #e9eeff;
+  --color-page-guide-panel: #223b94;
+  --color-page-guide-panel-muted: #cbd4f4;
+  --color-page-guide-panel-text: #d8dff6;
+  --color-page-guide-backdrop: rgb(32 36 58 / 0.6);
+  --shadow-page-guide: 0 18px 60px 0 rgb(31 43 82 / 0.1);
 }
 
 @layer base {
