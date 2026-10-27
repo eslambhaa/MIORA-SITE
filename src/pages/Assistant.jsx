@@ -531,10 +531,10 @@ function Chat({ user, onWithdraw }) {
                 <FormAlert>{error}</FormAlert>
               </div>
             )}
-            <label htmlFor="assistant-input" className="sr-only md:not-sr-only md:block md:text-sm md:leading-6 md:text-(color:--color-page-muted)">
+            <label htmlFor="assistant-input" className="sr-only md:not-sr-only md:block md:pb-2 md:text-sm md:leading-6 md:text-(color:--color-page-muted)">
               اكتب ما يدور في بالك
             </label>
-            <div className="flex items-end gap-2 md:gap-4">
+            <div className="flex items-end gap-2 rounded-[26px] border border-(--color-page-border) bg-(--color-page-bg) p-1.5 ps-4 transition-[border-color,box-shadow] duration-200 focus-within:border-(--color-page-button) focus-within:shadow-[0_0_0_4px_var(--color-page-guide-selected)] motion-reduce:transition-none md:rounded-[18px] md:p-2 md:ps-5">
               <textarea
                 id="assistant-input"
                 ref={inputRef}
@@ -554,19 +554,19 @@ function Chat({ user, onWithdraw }) {
                 }}
                 placeholder="اكتب رسالتك هنا…"
                 aria-describedby="assistant-count"
-                className="max-h-[168px] min-h-12 w-full flex-1 resize-none rounded-[24px] border border-(--color-page-border) bg-(--color-page-bg) px-4 py-2.5 text-base leading-7 outline-(--color-page-primary) placeholder:text-(color:--color-page-muted) md:min-h-14 md:rounded-[10px] md:border-0 md:bg-transparent md:px-0 md:py-2"
+                className="max-h-[168px] min-h-10 w-full flex-1 resize-none self-center bg-transparent py-1.5 text-base leading-7 outline-none placeholder:text-(color:--color-page-muted) disabled:cursor-not-allowed md:min-h-11 md:py-2"
               />
               <button
                 type="submit"
                 aria-label="إرسال"
                 disabled={sending || !text.trim() || threadState !== 'ready'}
-                className={`${primaryButton} shrink-0 max-md:size-12 max-md:rounded-full max-md:px-0 max-md:py-0`}
+                className={`${primaryButton} min-h-11 shrink-0 shadow-none max-md:size-11 max-md:rounded-full max-md:px-0 max-md:py-0 md:rounded-[12px] md:px-5 md:py-2`}
               >
                 <span className="hidden md:inline">{sending ? 'جارٍ الإرسال…' : 'إرسال'}</span>
                 <Arrow />
               </button>
             </div>
-            <p id="assistant-count" className={`pt-1 text-xs leading-5 text-(color:--color-page-muted) ${text.length > 800 ? '' : 'max-md:hidden'}`}>
+            <p id="assistant-count" className={`px-2 pt-1.5 text-xs leading-5 text-(color:--color-page-muted) ${text.length > 800 ? '' : 'max-md:hidden'}`}>
               {arabicNumber.format(text.length)} من {arabicNumber.format(MAX_MESSAGE)}
               <span className="max-md:hidden"> · Enter للإرسال، و Shift+Enter لسطر جديد</span>
             </p>
