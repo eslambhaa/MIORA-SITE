@@ -14,7 +14,7 @@ export default function Layout() {
     <div className="flex min-h-screen flex-col bg-(--color-page-bg) text-(color:--color-page-heading) antialiased">
       <Header />
       <Outlet />
-      <Footer />
+      {pathname !== '/assistant' && <Footer />}
     </div>
   )
 }
