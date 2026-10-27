@@ -82,7 +82,7 @@ react 19.3.1، react-dom 19.3.1، react-router 8.5.0، vite 8.3.5، @vitejs/plug
 | 10 | المراجعة النهائية والأمان والتسليم |
 
 ## مفتوح
-- إعدادات لوحة Supabase المضبوطة: Confirm email، الحد الأدنى 8، متطلبات كلمة المرور (صغير/كبير/رقم/رمز)، Site URL و Redirect URLs على `http://localhost:5173`، الدخول المجهول مقفول. يتبقى: Google OAuth، وعند النشر تغيير الروابط لعنوان الموقع الحقيقي.
+- إعدادات لوحة Supabase المضبوطة: Confirm email، الحد الأدنى 8، متطلبات كلمة المرور (صغير/كبير/رقم/رمز)، Site URL و Redirect URLs على `http://localhost:5173`، الدخول المجهول مقفول. وGoogle OAuth مفعّل ومجرّب (مشروع Google Cloud "EslamBahaa"، Client "miora web"، التطبيق في وضع Testing بمستخدمين تجريبيين فقط). الدخول بجوجل بنفس الإيميل ربط الحسابين في مستخدم واحد. عند النشر: تغيير Site URL و Redirect URLs و Authorized JavaScript origins لعنوان الموقع الحقيقي، ونشر تطبيق Google (Publish app).
 - البريد الافتراضي في Supabase محدود (رسائل قليلة في الساعة) ومناسب للتجربة فقط؛ قبل النشر نحتاج SMTP خاص.
 - حجم حزمة JS ~540KB؛ تقسيم الصفحات (lazy loading) لاحقًا.
 - أوصاف الوجهات في النافذة (عدا الرئيسية) كتبتها أنا لأن Figma فيه وصف الرئيسية فقط.
