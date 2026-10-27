@@ -4,7 +4,6 @@
   --animate-hero-image: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-float 7s ease-in-out 900ms infinite;
   --animate-hero-float: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both, hero-float 6s ease-in-out 900ms infinite;
   --animate-hero-float-late: hero-in 900ms cubic-bezier(0.22, 1, 0.36, 1) 250ms both, hero-float 6.5s ease-in-out 1.6s infinite;
-  --animate-hero-arch: hero-sway 9s ease-in-out infinite;
   --animate-pulse-dot: pulse-dot 1.8s ease-out infinite;
 
   @keyframes hero-in {
@@ -28,27 +27,17 @@
     }
   }
 
-  @keyframes hero-sway {
-    0%,
-    100% {
-      rotate: 4deg;
-    }
-    50% {
-      rotate: 1.5deg;
-    }
-  }
-
   @keyframes pulse-dot {
     0% {
       opacity: 1;
-      box-shadow: 0 0 0 0 rgb(84 166 139 / 0.55);
+      box-shadow: 0 0 0 0 rgb(114 196 167 / 0.55);
     }
     50% {
       opacity: 0.55;
     }
     100% {
       opacity: 1;
-      box-shadow: 0 0 0 10px rgb(84 166 139 / 0);
+      box-shadow: 0 0 0 10px rgb(114 196 167 / 0);
     }
   }
 }
@@ -98,7 +87,7 @@
   --shadow-home-soft: 0 8px 12px 0 rgb(31 43 82 / 0.07);
   --shadow-home-chat: 0 12px 17.5px 0 rgb(41 70 174 / 0.35);
   --color-home-arch: #cfd8f8;
-  --color-home-green: #54a68b;
+  --color-home-green: #72c4a7;
   --color-home-status: #5468c4;
   --color-home-banner-eyebrow: #cdd7ff;
   --color-home-banner-text: #d9e0fa;
