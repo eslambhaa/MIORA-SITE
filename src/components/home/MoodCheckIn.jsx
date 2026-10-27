@@ -5,6 +5,18 @@ import Reveal from '../ui/Reveal.jsx'
 import SectionTitle from './SectionTitle.jsx'
 import { useTodayMood } from './useTodayMood.js'
 
+// Scroll story timing for the eight mood cards (desktop).
+const cardSteps = [
+  '[--from:12%] [--to:24%]',
+  '[--from:19%] [--to:31%]',
+  '[--from:26%] [--to:38%]',
+  '[--from:33%] [--to:45%]',
+  '[--from:40%] [--to:52%]',
+  '[--from:47%] [--to:59%]',
+  '[--from:54%] [--to:66%]',
+  '[--from:61%] [--to:73%]',
+]
+
 export default function MoodCheckIn() {
   const { mood, status, choose, signedIn } = useTodayMood()
   const selected = moods.find((item) => item.id === mood)
@@ -20,15 +32,15 @@ export default function MoodCheckIn() {
   if (status === 'checking' || status === 'done') return null
 
   return (
-    <section aria-labelledby="mood-title" className="slide bg-(--color-page-surface) px-6 py-[105px]">
-      <div className="mx-auto max-w-[1026px]">
-        <SectionTitle id="mood-title" eyebrow="تسجيل شعورك" title="حاسس بإيه النهارده؟" description="اختار الأقرب لك، من غير ما تحتاج تبرّر أو تغيّر شعورك." />
+    <section aria-labelledby="mood-title" className={`${saved ? '' : 'story story-200'} bg-(--color-page-surface) px-6 py-[105px]`}>
+      <div className="story__pin mx-auto max-w-[1026px]">
+        <SectionTitle className="step-up step-enter [--from:25%] [--to:4%]" id="mood-title" eyebrow="تسجيل شعورك" title="حاسس بإيه النهارده؟" description="اختار الأقرب لك، من غير ما تحتاج تبرّر أو تغيّر شعورك." />
         {!saved && (
         <fieldset className="mt-[42px]" disabled={status === 'saving'}>
           <legend className="sr-only">اختر شعورك الآن</legend>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
             {moods.map((item, index) => (
-              <Reveal as="label" key={item.id} index={index} className="group relative cursor-pointer">
+              <Reveal as="label" key={item.id} index={index} className={`step-pop ${cardSteps[index]} group relative cursor-pointer`}>
                 <input
                   type="radio"
                   name="mood"

@@ -208,63 +208,176 @@
   }
 }
 
-/* Home page "presentation" scrolling: each section (.slide) grows in as it
-   enters the screen and shrinks back as it leaves, tied to the scroll position
-   (CSS scroll-driven animations). On desktop the page also settles at the start
-   of a section. Browsers without scroll timelines just scroll normally, and the
-   .reveal fade-ups inside still work. Nothing moves with "reduce motion". */
-@keyframes slide-in {
+/* Home page scroll story (inspired by Apple AirPods Pro, WMF, Virtual Well-Being Hub).
+   Desktop only: each .story section is taller than the screen, its .story__pin
+   stays fixed while you scroll, and its pieces (.step-*) appear one by one,
+   each between --from and --to of the pinned part. Pure CSS scroll-driven
+   animations: no JavaScript on scroll. Phones, browsers without support and
+   "reduce motion" get the normal page (with the lighter .reveal fade-ups). */
+.scroll-cue {
+  display: none;
+}
+
+@keyframes step-up {
   from {
     opacity: 0;
-    scale: 0.86;
-    translate: 0 96px;
+    translate: 0 80px;
   }
   to {
     opacity: 1;
-    scale: 1;
     translate: 0 0;
   }
 }
 
-@keyframes slide-out {
+@keyframes step-pop {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes step-rise {
+  from {
+    opacity: 0;
+    translate: 0 260px;
+    rotate: -7deg;
+    scale: 0.88;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    rotate: 0deg;
+    scale: 1;
+  }
+}
+
+@keyframes step-left {
+  from {
+    opacity: 0;
+    translate: -180px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes step-right {
+  from {
+    opacity: 0;
+    translate: 180px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes step-draw {
+  from {
+    scale: 0 1;
+  }
+  to {
+    scale: 1 1;
+  }
+}
+
+@keyframes step-out {
   from {
     opacity: 1;
-    scale: 1;
-    translate: 0 0;
   }
   to {
-    opacity: 0.2;
-    scale: 0.9;
-    translate: 0 -48px;
+    opacity: 0;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .slide {
-      transform-origin: 50% 50%;
-      animation:
-        slide-in linear both,
-        slide-out linear forwards;
-      animation-timeline: view(), view();
-      animation-range:
-        entry 0% entry 85%,
-        exit 0% exit 100%;
+    .story {
+      view-timeline: --story block;
+      padding-top: 0;
+      padding-bottom: 0;
     }
-  }
-}
 
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-  html:has(.slides) {
-    scroll-snap-type: y proximity;
-  }
+    .story-180 {
+      height: 180vh;
+    }
 
-  .slides > .slide {
-    scroll-snap-align: start;
-    scroll-margin-top: 112px;
-  }
+    .story-200 {
+      height: 200vh;
+    }
 
-  .slides > .slide:first-child {
-    scroll-margin-top: 0;
+    .story-220 {
+      height: 220vh;
+    }
+
+    .story__pin {
+      position: sticky;
+      top: 0;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100vh;
+      padding-top: 112px;
+      padding-bottom: 32px;
+    }
+
+    .scroll-cue {
+      display: flex;
+    }
+
+    .step-up,
+    .step-pop,
+    .step-rise,
+    .step-left,
+    .step-right,
+    .step-draw,
+    .step-out {
+      animation-duration: auto;
+      animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+      animation-fill-mode: both;
+      animation-timeline: --story;
+      animation-range: contain var(--from, 0%) contain var(--to, 25%);
+    }
+
+    .step-up {
+      animation-name: step-up;
+    }
+
+    .step-pop {
+      animation-name: step-pop;
+    }
+
+    .step-rise {
+      animation-name: step-rise;
+    }
+
+    .step-left {
+      animation-name: step-left;
+    }
+
+    .step-right {
+      animation-name: step-right;
+    }
+
+    .step-draw {
+      animation-name: step-draw;
+      transform-origin: right center;
+    }
+
+    .step-out {
+      animation-name: step-out;
+    }
+
+    /* First piece of a section: starts while the section is still entering the
+       screen (--from % of "entry"), so there is never an empty screen. */
+    .step-enter {
+      animation-range: entry var(--from, 30%) contain var(--to, 5%);
+    }
   }
 }

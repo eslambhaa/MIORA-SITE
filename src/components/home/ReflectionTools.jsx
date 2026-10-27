@@ -3,11 +3,20 @@ import { reflectionTools } from '../../data/tools.js'
 import Reveal from '../ui/Reveal.jsx'
 import SectionTitle from './SectionTitle.jsx'
 
+// Scroll story timing for the four cards (desktop).
+const cardSteps = [
+  '[--from:14%] [--to:32%]',
+  '[--from:28%] [--to:46%]',
+  '[--from:42%] [--to:60%]',
+  '[--from:56%] [--to:74%]',
+]
+
 export default function ReflectionTools() {
   return (
-    <section aria-labelledby="tools-title" className="slide px-6 pt-[105px] pb-[82px]">
-      <div className="mx-auto max-w-[1026px]">
+    <section aria-labelledby="tools-title" className="story story-220 px-6 pt-[105px] pb-[82px]">
+      <div className="story__pin mx-auto max-w-[1026px]">
         <SectionTitle
+          className="step-up step-enter [--from:25%] [--to:4%]"
           id="tools-title"
           eyebrow="مساحة للتأمل"
           title="اكتشف نفسك بشكل أفضل"
@@ -15,7 +24,7 @@ export default function ReflectionTools() {
         />
         <ul className="mt-[42px] grid gap-[18px] sm:grid-cols-2 lg:grid-cols-4">
           {reflectionTools.map((tool, index) => (
-            <Reveal as="li" key={tool.id} index={index + 1}>
+            <Reveal as="li" key={tool.id} index={index + 1} className={`step-rise ${cardSteps[index]}`}>
               <article className="flex h-full min-h-[340px] flex-col items-start rounded-[22px] border border-(--color-page-border) bg-(--color-page-surface) p-[26px]">
                 <span className={`grid size-[58px] place-items-center rounded-[17px] ${tool.tint}`}>
                   <img src={`/icons/home/${tool.icon}.svg`} alt="" width="28" height="28" />
