@@ -17,13 +17,13 @@ import Login from './pages/Login.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Privacy from './pages/Privacy.jsx'
 import Profile from './pages/Profile.jsx'
+import Relaxation from './pages/Relaxation.jsx'
 import Register from './pages/Register.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
 import Terms from './pages/Terms.jsx'
 
 const upcoming = [
   ['assistant', 'المساعد الذكي'],
-  ['relaxation', 'تمارين الاسترخاء'],
 ]
 
 export default function App() {
@@ -46,6 +46,7 @@ export default function App() {
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="content" element={<Content />} />
           <Route path="assessment" element={<Assessment />} />
+          <Route path="relaxation" element={<Relaxation />} />
           <Route path="content/:slug" element={<Article />} />
           <Route path="journal" element={<RequireAuth><ComingSoon title="مذكراتي" /></RequireAuth>} />
           {upcoming.map(([path, title]) => (
