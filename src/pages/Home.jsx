@@ -1,23 +1,28 @@
 import { useState } from 'react'
 import GuideDialog from '../components/GuideDialog.jsx'
+import ArticleHighlights from '../components/home/ArticleHighlights.jsx'
+import ChatButton from '../components/home/ChatButton.jsx'
+import GuideBanner from '../components/home/GuideBanner.jsx'
+import HomeHero from '../components/home/HomeHero.jsx'
+import MoodCheckIn from '../components/home/MoodCheckIn.jsx'
+import ReflectionTools from '../components/home/ReflectionTools.jsx'
 
 export default function Home() {
   const [guideOpen, setGuideOpen] = useState(false)
+  const openGuide = () => setGuideOpen(true)
 
   return (
     <>
       <title>ميورا | مساحة هادئة. خطوة حقيقية.</title>
-      <main className="flex flex-1 flex-col items-center justify-center gap-4 px-6 py-24 text-center">
-        <h1 className="text-4xl leading-[1.3] md:text-[58px]">مساحة هادئة. خطوة حقيقية.</h1>
-        <p className="max-w-xl text-lg leading-8 text-(color:--color-page-muted)">الصفحة الرئيسية الكاملة تُبنى في المرحلة 3.</p>
-        <button
-          type="button"
-          onClick={() => setGuideOpen(true)}
-          className="min-h-12 cursor-pointer rounded-(--radius-page-button) border border-transparent bg-(--color-page-button) px-[22px] py-2.5 text-base leading-7 font-bold text-(color:--color-page-surface) shadow-(--shadow-page-button) outline-(--color-page-primary)"
-        >
-          استكشف المنصة
-        </button>
+      <meta name="description" content="ميورا مساحة تعليمية للعافية النفسية: سجّل شعورك، تعرّف على أدوات التأمل، واقرأ محتوى مبسّطًا يساعدك في يومك." />
+      <main className="flex-1">
+        <HomeHero onExplore={openGuide} />
+        <MoodCheckIn />
+        <GuideBanner onExplore={openGuide} />
+        <ReflectionTools />
+        <ArticleHighlights />
       </main>
+      <ChatButton />
       <GuideDialog open={guideOpen} onClose={() => setGuideOpen(false)} />
     </>
   )

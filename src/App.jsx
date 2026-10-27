@@ -43,6 +43,7 @@ export default function App() {
           <Route path="forgot-password" element={<GuestOnly><ForgotPassword /></GuestOnly>} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
+          <Route path="content/:slug" element={<ComingSoon title="المقال" />} />
           <Route path="journal" element={<RequireAuth><ComingSoon title="مذكراتي" /></RequireAuth>} />
           {upcoming.map(([path, title]) => (
             <Route key={path} path={path} element={<ComingSoon title={title} />} />

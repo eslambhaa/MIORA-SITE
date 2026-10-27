@@ -41,6 +41,17 @@
   --color-page-error-text: #a1251b;
   --color-page-success-bg: #e7f6ee;
   --color-page-success-text: #1d6b45;
+  --gradient-home-hero: radial-gradient(331px circle at 12% 75%, rgb(232 213 190 / 0.34) 0%, rgb(232 213 190 / 0) 100%), radial-gradient(337px circle at 80% 20%, rgb(121 146 229 / 0.17) 0%, rgb(121 146 229 / 0) 100%);
+  --shadow-home-soft: 0 8px 12px 0 rgb(31 43 82 / 0.07);
+  --shadow-home-chat: 0 12px 17.5px 0 rgb(41 70 174 / 0.35);
+  --color-home-arch: #cfd8f8;
+  --color-home-green: #54a68b;
+  --color-home-status: #5468c4;
+  --color-home-banner-eyebrow: #cdd7ff;
+  --color-home-banner-text: #d9e0fa;
+  --color-home-tint-green: #e4f4ef;
+  --color-home-tint-purple: #f2eafb;
+  --color-home-tint-orange: #fff0db;
 }
 
 @layer base {
