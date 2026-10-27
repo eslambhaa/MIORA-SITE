@@ -7,12 +7,16 @@ import tailwindcss from '@tailwindcss/vite'
 function contentSecurityPolicy(supabaseUrl) {
   const supabase = supabaseUrl ? new URL(supabaseUrl) : null
   const connect = ["'self'"]
-  if (supabase) connect.push(supabase.origin, `wss://${supabase.host}`)
+  const images = ["'self'", 'data:']
+  if (supabase) {
+    connect.push(supabase.origin, `wss://${supabase.host}`)
+    images.push(supabase.origin) // private profile pictures (signed URLs)
+  }
   const policy = [
     "default-src 'self'",
     "script-src 'self'",
     "style-src 'self'",
-    "img-src 'self' data:",
+    `img-src ${images.join(' ')}`,
     "font-src 'self'",
     `connect-src ${connect.join(' ')}`,
     "object-src 'none'",

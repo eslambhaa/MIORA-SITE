@@ -3,6 +3,7 @@
 // Every user table (profiles, mood_logs, assessment_results, exercise_sessions,
 // journal_entries, assistant_conversations, assistant_messages) references
 // auth.users with ON DELETE CASCADE, so deleting the auth user removes all of it.
+// The profile picture in Storage (avatars/<id>/avatar.webp) is removed explicitly.
 // Secrets: ALLOWED_ORIGIN optional, default "http://localhost:5173".
 import { withSupabase } from 'npm:@supabase/server@1.9.2'
 
@@ -36,6 +37,13 @@ export default {
       return reply(400, { error: 'invalid_body' })
     }
     if (!confirmed) return reply(400, { error: 'confirmation_required' })
+
+    // Storage files are not covered by the cascade: remove the profile picture first.
+    const { error: storageError } = await ctx.supabaseAdmin.storage.from('avatars').remove([`${userId}/avatar.webp`])
+    if (storageError) {
+      console.error('delete-account avatar removal failed', storageError.name ?? '')
+      return reply(500, { error: 'server_error' })
+    }
 
     // shouldSoftDelete = false: a real delete, so cascades remove all user rows.
     const { error } = await ctx.supabaseAdmin.auth.admin.deleteUser(userId, false)
