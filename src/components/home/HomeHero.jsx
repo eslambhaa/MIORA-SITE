@@ -33,7 +33,7 @@ export default function HomeHero({ onExplore }) {
             <span className="px-2 text-[13px] leading-[22.75px] text-(color:--color-page-primary)">خد نفسًا هادئًا</span>
           </div>
           <div className="absolute top-[77.6%] right-0 flex items-center gap-3 rounded-2xl bg-white/70 animate-hero-float-late px-[18px] py-[15px] shadow-(--shadow-page-guide) backdrop-blur-[30px] md:right-[-9%]">
-            <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-(--color-home-green) animate-pulse-dot" />
+            <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-(--color-home-green) shadow-[0_0_0_7px_rgb(94_194_105/0.35)] animate-pulse-dot" />
             <span className="flex flex-col">
               <span className="text-base leading-7 font-bold">لحظة لنفسك</span>
               <span className="text-[12.8px] leading-[22.4px] text-(color:--color-page-muted)">ابدأ بما تشعر به الآن</span>
