@@ -71,7 +71,8 @@ export function useResources(enabled) {
       .then(({ data, error }) => {
         if (ignore) return
         if (error) return setStatus('error')
-        const clean = data.filter((row) => safeEmbedUrl(row.embed_url))
+        // Playable rows only: a player address, or (podcasts) a direct audio file from the publisher's feed.
+        const clean = data.filter((row) => safeEmbedUrl(row.embed_url) || (row.kind === 'podcast' && /^https:\/\//.test(row.audio_url ?? '')))
         writeCache(clean)
         setRows(clean)
         setStatus('ready')
