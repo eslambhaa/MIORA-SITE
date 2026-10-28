@@ -1,18 +1,11 @@
-import { useState } from 'react'
-import { safeEmbedUrl } from '../../lib/resources.js'
+import { Link } from 'react-router'
+import { mediaPath } from '../../lib/resources.js'
 
-const kindLabel = { video: 'فيديو', podcast: 'بودكاست' }
+export const kindLabel = { video: 'فيديو', podcast: 'بودكاست' }
 
-// Apple draws the same 175px player for a show and for an episode, with the play bar in a fixed band
-// (measured from the live embed at 175px high). Podcasts show only that band; the title and source
-// are already on our card.
-const PODCAST_FRAME = 175
-const BAR_TOP = 122
-const BAR_HEIGHT = 36
-
-function KindIcon({ kind }) {
+export function KindIcon({ kind, size = 26 }) {
   return (
-    <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg aria-hidden="true" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {kind === 'video' ? (
         <>
           <rect x="3" y="5" width="18" height="14" rx="3" />
@@ -29,13 +22,10 @@ function KindIcon({ kind }) {
   )
 }
 
-// The player is only loaded after the visitor presses play: nothing is sent to YouTube or Apple before that.
+// A summary card, like an article card: the player lives on the episode's own page.
 export default function MediaCard({ item, headingLevel = 'h2' }) {
-  const [playing, setPlaying] = useState(false)
   const Heading = headingLevel
-  const src = safeEmbedUrl(item.embed_url)
   const isVideo = item.kind === 'video'
-
   return (
     <article className="flex h-full flex-col rounded-[20px] border border-(--color-page-border) bg-(--color-page-surface) p-[22px]">
       <div className="flex items-center gap-3">
@@ -48,37 +38,14 @@ export default function MediaCard({ item, headingLevel = 'h2' }) {
       <Heading className="pt-4 text-[21px] leading-[1.5] tracking-[-0.02em]">{item.title}</Heading>
       <p className="pt-1 text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.source}</p>
       <p className="pt-2.5 text-base leading-7 text-(color:--color-page-muted)">{item.description}</p>
-      <div className="mt-auto pt-4">
-        {playing && src ? (
-          <div className={isVideo ? '' : 'overflow-hidden rounded-[14px]'} style={isVideo ? undefined : { height: BAR_HEIGHT }}>
-            <iframe
-              src={src}
-              title={`${kindLabel[item.kind]}: ${item.title}`}
-              width="100%"
-              loading="lazy"
-              allow={isVideo ? 'encrypted-media; picture-in-picture; fullscreen' : 'autoplay *; encrypted-media *; clipboard-write'}
-              allowFullScreen={isVideo}
-              referrerPolicy="strict-origin-when-cross-origin"
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
-              className={`block w-full border-0 ${isVideo ? 'aspect-video rounded-[14px]' : ''}`}
-              style={isVideo ? undefined : { height: PODCAST_FRAME, marginTop: -BAR_TOP }}
-            />
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setPlaying(true)}
-            className="inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-(--radius-page-button) bg-(--color-page-button) px-[22px] text-base font-bold text-white outline-(--color-page-primary)"
-          >
-            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z" /></svg>
-            {isVideo ? 'شاهد هنا' : 'استمع هنا'}
-            <span className="sr-only">: {item.title}</span>
-          </button>
-        )}
-        {playing && (
-          <p className="pt-2 text-[13px] leading-[22.75px] text-(color:--color-page-muted)">يُشغَّل من {isVideo ? 'YouTube' : 'Apple Podcasts'} داخل ميورا.</p>
-        )}
-      </div>
+      <Link
+        to={mediaPath(item)}
+        className="mt-auto inline-flex items-center gap-[7px] pt-4 text-base leading-7 font-bold text-(color:--color-page-primary) outline-(--color-page-primary) hover:underline"
+      >
+        {isVideo ? 'شاهد الحلقة' : 'استمع للحلقة'}
+        <span className="sr-only">: {item.title}</span>
+        <img src="/icons/home/read-arrow.svg" alt="" width="17" height="17" className="-scale-x-100" />
+      </Link>
     </article>
   )
 }
