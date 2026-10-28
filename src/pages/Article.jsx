@@ -78,14 +78,29 @@ export default function Article() {
                   ))}
                 </ul>
               </section>
-              <div role="note" className="mt-12 flex items-start gap-4 rounded-(--radius-page-card) bg-(--color-page-card) p-[22px] shadow-(--shadow-page-card)">
-                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 17.9125 20" fill="none" stroke="currentColor" strokeWidth="1.34344" strokeLinecap="round" strokeLinejoin="round" className="mt-2 shrink-0">
+              {article.sources?.length > 0 && (
+                <p className="mt-12 text-lg leading-9 text-(color:--color-page-muted)">
+                  <span className="font-bold text-(color:--color-page-heading)">للاستزادة: </span>
+                  {article.sources.map((source, index) => (
+                    <span key={source.url}>
+                      {index > 0 && ' · '}
+                      <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">
+                        {source.title}
+                      </a>{' '}
+                      ({source.org})
+                      <span className="sr-only"> يفتح في نافذة جديدة</span>
+                    </span>
+                  ))}
+                </p>
+              )}
+              <div role="note" className="mt-8 flex items-start gap-5 rounded-(--radius-page-card) bg-(--color-page-card) p-7 shadow-(--shadow-page-card)">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="26" height="29" viewBox="0 0 17.9125 20" fill="none" stroke="currentColor" strokeWidth="1.34344" strokeLinecap="round" strokeLinejoin="round" className="mt-2 shrink-0 text-(color:--color-page-primary)">
                   <path d="M8.95625 17.4635C8.95625 17.4635 14.9271 14.4781 14.9271 10V4.77552L8.95625 2.53646L2.98542 4.77552V10C2.98542 14.4781 8.95625 17.4635 8.95625 17.4635Z" />
                   <path d="M6.71719 10L8.2099 11.4927L11.1953 8.50729" />
                 </svg>
-                <p className="text-base leading-8">
+                <p className="text-lg leading-9 md:text-xl md:leading-10">
                   هذا المقال محتوى تعليمي عام، ولا يغني عن التشخيص أو العلاج المتخصص.{' '}
-                  <Link to="/help" className="text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">
+                  <Link to="/help" className="font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">
                     متى أطلب دعمًا متخصصًا؟
                   </Link>
                 </p>

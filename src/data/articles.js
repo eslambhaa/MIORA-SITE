@@ -56,6 +56,7 @@ export const articles = [
   },
   {
     slug: 'calm-space',
+    sources: [{ title: 'القيام بما يهم في أوقات الضغط النفسي', org: 'منظمة الصحة العالمية', url: 'https://www.who.int/docs/default-source/mental-health/sh-2020-ara.pdf?sfvrsn=880a39b7_2' }],
     title: 'مساحة هادئة وسط ضغط اليوم',
     excerpt: 'خطوات عملية قصيرة تساعدك على تهدئة إيقاع يوم مزدحم.',
     category: 'التوتر والضغط النفسي',
@@ -84,6 +85,7 @@ export const articles = [
   },
   {
     slug: 'mindful-breathing',
+    sources: [{ title: 'التعامل مع الضغوط النفسية', org: 'المكتب الإقليمي لمنظمة الصحة العالمية لشرق المتوسط', url: 'https://www.emro.who.int/mhps/ar/dealing_with_stress.html' }],
     title: 'التنفس الواعي في ثلاث دقائق',
     excerpt: 'تمرين بسيط يمكنك استخدامه عندما تحتاج إلى لحظة توقف.',
     category: 'مهارات التعامل',
@@ -250,6 +252,7 @@ export const articles = [
   },
   {
     slug: 'stress-and-habits',
+    sources: [{ title: 'القيام بما يهم في أوقات الضغط النفسي', org: 'منظمة الصحة العالمية', url: 'https://www.who.int/docs/default-source/mental-health/sh-2020-ara.pdf?sfvrsn=880a39b7_2' }],
     title: 'كيف تؤثر الضغوط في عاداتنا؟',
     excerpt: 'لاحظ الرابط بين المواقف الصعبة والسلوك المتكرر بهدوء.',
     category: 'التوتر والضغط النفسي',
