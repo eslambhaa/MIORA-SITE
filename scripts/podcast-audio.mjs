@@ -19,7 +19,7 @@ export function showId(value) {
 
 const text = (xml, tag) => {
   const match = xml.match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`, 'i'))
-  return match ? match[1].replace(/^<!\[CDATA\[|\]\]>$/g, '').trim() : ''
+  return match ? match[1].replace(/^<!\[CDATA\[|\]\]>$/g, '').replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g, '').trim() : ''
 }
 
 const entities = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&nbsp;': ' ' }
@@ -31,6 +31,7 @@ export function plain(value) {
     .replace(/<[^>]*>/g, '')
     .replace(/&(?:amp|lt|gt|quot|#39|nbsp);/g, (match) => entities[match])
     .replace(/https?:\/\/\S+/g, '')
+    .replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g, '')
     .replace(/[ \t]+/g, ' ')
     .replace(/\n\s*\n+/g, '\n\n')
     .trim()
@@ -70,14 +71,16 @@ export async function findEpisodes(show, words) {
   return { feed, name, items: items.length, usable: episodes.length, matches, latest: episodes.slice(0, 15), sample: items.slice(0, 2).map((item) => `${item.title || '(no title)'} -> ${item.raw}`) }
 }
 
-const dollar = (value) => `$m$${value}$m$`
+// Ordinary SQL strings (a single quote is doubled); dollar-quoting broke in the Supabase SQL editor.
+const dollar = (value) => `'${String(value).replaceAll("'", "''")}'`
 
 export function embedOf(link) {
   return link.replace('https://podcasts.apple.com/', 'https://embed.podcasts.apple.com/')
 }
 
 // One `insert` per episode: the episode title, the publisher's description and the audio file.
-export function insertSql({ name, link, topic }, episode) {
+export function insertSql({ name: fullName, link, topic }, episode) {
+  const name = fullName.replace(/^بودكاست\s+/, '')
   const details = episode.description.slice(0, 1990)
   const short = details.split('\n')[0].slice(0, 280) || `حلقة من بودكاست ${name}.`
   return `insert into public.resources (kind, title, source, description, details, url, embed_url, audio_url, topic, sort_order)
