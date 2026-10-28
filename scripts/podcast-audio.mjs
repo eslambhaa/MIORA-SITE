@@ -2,7 +2,7 @@
 // and prints the SQL that stores it in Miora's `resources` table.
 //
 // Run on your own computer (Node 18 or newer, no install needed):
-//   node scripts/podcast-audio.mjs "<Apple Podcasts show or episode link>" "<words from the episode title>"
+//   node scripts/podcast-audio.mjs "<Apple Podcasts show or episode link>" "<words from the episode title>" [row id]
 // Example:
 //   node scripts/podcast-audio.mjs "https://podcasts.apple.com/sa/podcast/x/id985515827" "كيف تفهم نفسك"
 //
@@ -51,7 +51,8 @@ export async function findEpisodes(show, words) {
 }
 
 async function main() {
-  const [link, words = ''] = process.argv.slice(2)
+  const [link, words = '', rowId = ''] = process.argv.slice(2)
+  const target = /^\d+$/.test(rowId) ? rowId : '<ROW ID>'
   const show = link && showId(link)
   if (!show) {
     console.log('Usage: node scripts/podcast-audio.mjs "<Apple Podcasts link>" "<words from the episode title>"')
@@ -65,7 +66,7 @@ async function main() {
   const list = matches.length ? matches : latest
   if (!matches.length && latest.length) console.log('No title matched; the latest episodes are:\n')
   for (const episode of list.slice(0, 15)) {
-    console.log(`${episode.title}\n  ${episode.date}  ${episode.duration}\n  update public.resources set audio_url = '${episode.audio.replaceAll("'", "''")}' where id = <ROW ID>;\n`)
+    console.log(`${episode.title}\n  ${episode.date}  ${episode.duration}\n  update public.resources set audio_url = '${episode.audio.replaceAll("'", "''")}' where id = ${target};\n`)
   }
 }
 
