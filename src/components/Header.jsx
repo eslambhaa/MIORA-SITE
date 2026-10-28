@@ -8,6 +8,7 @@ const links = [
   { to: '/', label: 'الرئيسية', end: true },
   { to: '/assistant', label: 'المساعد الذكي' },
   { to: '/content', label: 'المحتوى التوعوي' },
+  { to: '/addiction', label: 'الوعي بالإدمان' },
   { to: '/journal', label: 'مذكراتي' },
 ]
 
@@ -43,7 +44,7 @@ export default function Header() {
     <header className="relative z-50 px-4 py-5 md:sticky md:top-0">
       <nav
         aria-label="التنقل الرئيسي"
-        className="mx-auto grid min-h-[72px] max-w-[1050px] grid-cols-[auto_1fr_auto] items-center gap-[22px] rounded-full px-4 py-[7px] shadow-(--shadow-page-header) backdrop-blur-[18px] md:grid-cols-[96px_1fr_96px]"
+        className="mx-auto grid min-h-[72px] max-w-[1050px] grid-cols-[auto_1fr_auto] items-center gap-[22px] rounded-full px-4 py-[7px] shadow-(--shadow-page-header) backdrop-blur-[18px] lg:grid-cols-[96px_1fr_96px]"
       >
         <Link
           to="/"
@@ -51,7 +52,7 @@ export default function Header() {
         >
           <img src="/images/logo-header.webp" alt="ميورا" width="54" height="54" fetchPriority="high" className="size-[54px] object-contain" />
         </Link>
-        <ul className="hidden items-center justify-center gap-1.5 md:flex">
+        <ul className="hidden items-center justify-center gap-1.5 lg:flex">
           {links.map((link) => (
             <li key={link.to}>
               <NavLink to={link.to} end={link.end} className={navLink}>
@@ -78,7 +79,7 @@ export default function Header() {
             aria-expanded={menuOpen}
             aria-controls="mobile-menu"
             onClick={() => setMenuOpen((open) => !open)}
-            className={`${iconButton} md:hidden`}
+            className={`${iconButton} lg:hidden`}
           >
             <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M4 6h16" />
@@ -90,7 +91,7 @@ export default function Header() {
       </nav>
       <div
         id="mobile-menu"
-        className={`absolute inset-x-4 top-full rounded-(--radius-page-menu) bg-(--color-page-surface) p-2 shadow-(--shadow-page-header) md:hidden ${menuOpen ? 'block' : 'hidden'}`}
+        className={`absolute inset-x-4 top-full rounded-(--radius-page-menu) bg-(--color-page-surface) p-2 shadow-(--shadow-page-header) lg:hidden ${menuOpen ? 'block' : 'hidden'}`}
       >
         <ul className="flex flex-col">
           {links.map((link) => (
