@@ -21,6 +21,7 @@ const pages = {
   Login: () => import('./pages/Login.jsx'),
   MediaPage: () => import('./pages/MediaPage.jsx'),
   NotFound: () => import('./pages/NotFound.jsx'),
+  Notifications: () => import('./pages/Notifications.jsx'),
   Privacy: () => import('./pages/Privacy.jsx'),
   Profile: () => import('./pages/Profile.jsx'),
   Relaxation: () => import('./pages/Relaxation.jsx'),
@@ -42,6 +43,7 @@ const Journey = lazy(pages.Journey)
 const Login = lazy(pages.Login)
 const MediaPage = lazy(pages.MediaPage)
 const NotFound = lazy(pages.NotFound)
+const Notifications = lazy(pages.Notifications)
 const Privacy = lazy(pages.Privacy)
 const Profile = lazy(pages.Profile)
 const Relaxation = lazy(pages.Relaxation)
@@ -81,6 +83,7 @@ export default function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="content" element={<Content />} />
+          <Route path="notifications" element={<Notifications />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
           <Route path="assistant" element={<Assistant />} />
