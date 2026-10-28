@@ -93,7 +93,8 @@ export default function PodcastPlayer({ item }) {
         setTracks(list)
         setState('ready')
         await startTrack(list, 0)
-      } catch {
+      } catch (error) {
+        console.warn('podcast audio unavailable, using the Apple player:', error.message)
         setState('fallback')
       }
       return

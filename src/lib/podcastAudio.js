@@ -8,9 +8,11 @@ export function appleIds(value) {
     const url = new URL(value)
     const show = url.pathname.match(/\/id(\d+)/)?.[1]
     const episode = url.searchParams.get('i')
-    return { show: show ?? null, episode: episode && /^\d+$/.test(episode) ? episode : null }
+    // The first path part is the store country (/sa/podcast/...): an episode is only found in its own store.
+    const country = url.pathname.match(/^\/([a-z]{2})\//)?.[1] ?? null
+    return { show: show ?? null, episode: episode && /^\d+$/.test(episode) ? episode : null, country }
   } catch {
-    return { show: null, episode: null }
+    return { show: null, episode: null, country: null }
   }
 }
 
@@ -26,19 +28,23 @@ export async function loadTracks(item, signal) {
   const stored = httpsOnly(item.audio_url)
   if (stored) return [{ id: 'stored', title: item.title, src: stored }]
 
-  const { show, episode } = appleIds(item.url)
+  const { show, episode, country } = appleIds(item.url)
   const id = episode ?? show
   if (!id) throw new Error('no apple id')
 
-  const response = await fetch(`${LOOKUP}?id=${id}&entity=podcastEpisode&limit=25`, { signal })
-  if (!response.ok) throw new Error(`lookup ${response.status}`)
-  const { results } = await response.json()
-
-  const tracks = (Array.isArray(results) ? results : [])
-    .map((entry) => ({ id: String(entry.trackId), title: entry.trackName, src: httpsOnly(entry.episodeUrl) }))
-    .filter((track) => track.src && track.title)
-  if (tracks.length === 0) throw new Error('no episodes')
-  return tracks
+  // Try the row's own store first, then Apple's default one.
+  for (const store of [country, null]) {
+    const params = new URLSearchParams({ id, entity: 'podcastEpisode', limit: '25' })
+    if (store) params.set('country', store)
+    const response = await fetch(`${LOOKUP}?${params}`, { signal })
+    if (!response.ok) continue
+    const { results } = await response.json()
+    const tracks = (Array.isArray(results) ? results : [])
+      .map((entry) => ({ id: String(entry.trackId), title: entry.trackName, src: httpsOnly(entry.episodeUrl) }))
+      .filter((track) => track.src && track.title)
+    if (tracks.length > 0) return tracks
+  }
+  throw new Error(`no playable episodes for ${id}`)
 }
 
 export function formatTime(seconds) {
