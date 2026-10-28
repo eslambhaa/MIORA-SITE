@@ -22,6 +22,13 @@ export const auditLabels = {
   'emergency.show': 'إظهار رقم طوارئ',
   'emergency.hide': 'إخفاء رقم طوارئ',
   'emergency.delete': 'حذف رقم طوارئ مخفي',
+  'announcement.create': 'إضافة إعلان',
+  'announcement.update': 'تعديل إعلان',
+  'announcement.publish': 'إظهار إعلان',
+  'announcement.hide': 'إخفاء إعلان',
+  'announcement.delete': 'حذف إعلان مخفي',
+  'template.update': 'تعديل نص تذكير',
+  'backup.export': 'تنزيل نسخة احتياطية للمحتوى',
 }
 
 export async function listAdmins() {
