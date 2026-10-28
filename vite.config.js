@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 // Content Security Policy for production builds only (the dev server needs
-// inline scripts for hot reload). Only our own files and Supabase are allowed.
+// inline scripts for hot reload). Only our own files, Supabase and two player hosts are allowed.
 function contentSecurityPolicy(supabaseUrl) {
   const supabase = supabaseUrl ? new URL(supabaseUrl) : null
   const connect = ["'self'"]
@@ -22,7 +22,8 @@ function contentSecurityPolicy(supabaseUrl) {
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
-    "frame-src 'none'",
+    // Video and podcast players: only these two hosts, and only after a visitor presses play.
+    'frame-src https://www.youtube-nocookie.com https://embed.podcasts.apple.com',
   ].join('; ')
   return {
     name: 'miora-csp',
