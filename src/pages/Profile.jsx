@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { useIsAdmin } from '../auth/useIsAdmin.js'
 import { useAuth } from '../auth/AuthProvider.jsx'
 import { FormAlert, inputClass, secondaryButton } from '../components/auth/fields.jsx'
 import AvatarCropDialog from '../components/profile/AvatarCropDialog.jsx'
@@ -214,6 +215,7 @@ function ActivitySummary({ loadState, counts, notes, streak }) {
 
 export default function Profile() {
   const { user } = useAuth()
+  const isAdmin = useIsAdmin()
   const navigate = useNavigate()
 
   const [loadState, setLoadState] = useState('loading')
@@ -366,6 +368,21 @@ export default function Profile() {
                   </Link>
                 </li>
               ))}
+              {isAdmin === 'yes' && (
+                <li>
+                  <Link
+                    to="/admin"
+                    className={`${panel} flex min-h-[61.6px] items-center gap-[9px] rounded-[15px] p-4 text-base leading-7 outline-(--color-page-primary) transition-colors duration-200 hover:border-(--color-page-button) hover:bg-(--color-page-guide-selected) motion-reduce:transition-none`}
+                  >
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="size-5">
+                      <path d="M12 3 4 6v6c0 4.5 3.2 7.8 8 9 4.8-1.2 8-4.5 8-9V6l-8-3Z" />
+                      <path d="m9 12 2 2 4-4" />
+                    </svg>
+                    <span className="flex-1">لوحة التحكم</span>
+                    <img src="/icons/profile/chevron.svg" alt="" width="20" height="20" className="size-5 -scale-x-100" />
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
 

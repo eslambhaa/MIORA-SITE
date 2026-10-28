@@ -1,6 +1,7 @@
 import { lazy, useEffect } from 'react'
 import { Route, Routes } from 'react-router'
 import GuestOnly from './auth/GuestOnly.jsx'
+import RequireAdmin from './auth/RequireAdmin.jsx'
 import RequireAuth from './auth/RequireAuth.jsx'
 import Layout from './components/Layout.jsx'
 import SplashScreen from './components/SplashScreen.jsx'
@@ -9,6 +10,7 @@ import Home from './pages/Home.jsx'
 // Every page except the home page loads on demand (smaller first download).
 const pages = {
   About: () => import('./pages/About.jsx'),
+  Admin: () => import('./pages/Admin.jsx'),
   ComingSoon: () => import('./pages/ComingSoon.jsx'),
   Article: () => import('./pages/Article.jsx'),
   Assessment: () => import('./pages/Assessment.jsx'),
@@ -32,6 +34,7 @@ const pages = {
 }
 
 const About = lazy(pages.About)
+const Admin = lazy(pages.Admin)
 const ComingSoon = lazy(pages.ComingSoon)
 const Article = lazy(pages.Article)
 const Assessment = lazy(pages.Assessment)
@@ -86,6 +89,7 @@ export default function App() {
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="content" element={<Content />} />
           <Route path="addiction" element={<ComingSoon title="الوعي بالإدمان" />} />
+          <Route path="admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
           <Route path="notifications"element={<Notifications />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
