@@ -3,6 +3,13 @@ import { safeEmbedUrl } from '../../lib/resources.js'
 
 const kindLabel = { video: 'فيديو', podcast: 'بودكاست' }
 
+// Apple draws the same 175px player for a show and for an episode, with the play bar in a fixed band
+// (measured from the live embed at 175px high). Podcasts show only that band; the title and source
+// are already on our card.
+const PODCAST_FRAME = 175
+const BAR_TOP = 122
+const BAR_HEIGHT = 36
+
 function KindIcon({ kind }) {
   return (
     <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -28,9 +35,6 @@ export default function MediaCard({ item, headingLevel = 'h2' }) {
   const Heading = headingLevel
   const src = safeEmbedUrl(item.embed_url)
   const isVideo = item.kind === 'video'
-  // Apple shows: a taller player lists the episodes; a single episode needs less room.
-  const isEpisode = src?.includes('?i=') || src?.includes('&i=')
-  const height = isVideo ? undefined : isEpisode ? 175 : 450
 
   return (
     <article className="flex h-full flex-col rounded-[20px] border border-(--color-page-border) bg-(--color-page-surface) p-[22px]">
@@ -46,19 +50,20 @@ export default function MediaCard({ item, headingLevel = 'h2' }) {
       <p className="pt-2.5 text-base leading-7 text-(color:--color-page-muted)">{item.description}</p>
       <div className="mt-auto pt-4">
         {playing && src ? (
-          <iframe
-            src={src}
-            title={`${kindLabel[item.kind]}: ${item.title}`}
-            width="100%"
-            height={height}
-            loading="lazy"
-            allow={isVideo ? 'encrypted-media; picture-in-picture; fullscreen' : 'autoplay *; encrypted-media *; clipboard-write'}
-            allowFullScreen={isVideo}
-            referrerPolicy="strict-origin-when-cross-origin"
-            sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
-            className={`block w-full rounded-[14px] border-0 ${isVideo ? 'aspect-video' : ''}`}
-            style={height ? { height } : undefined}
-          />
+          <div className={isVideo ? '' : 'overflow-hidden rounded-[14px]'} style={isVideo ? undefined : { height: BAR_HEIGHT }}>
+            <iframe
+              src={src}
+              title={`${kindLabel[item.kind]}: ${item.title}`}
+              width="100%"
+              loading="lazy"
+              allow={isVideo ? 'encrypted-media; picture-in-picture; fullscreen' : 'autoplay *; encrypted-media *; clipboard-write'}
+              allowFullScreen={isVideo}
+              referrerPolicy="strict-origin-when-cross-origin"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-presentation allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+              className={`block w-full border-0 ${isVideo ? 'aspect-video rounded-[14px]' : ''}`}
+              style={isVideo ? undefined : { height: PODCAST_FRAME, marginTop: -BAR_TOP }}
+            />
+          </div>
         ) : (
           <button
             type="button"
