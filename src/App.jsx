@@ -15,6 +15,8 @@ const pages = {
   AdminArticleEdit: () => import('./pages/AdminArticleEdit.jsx'),
   AdminMedia: () => import('./pages/AdminMedia.jsx'),
   AdminMediaEdit: () => import('./pages/AdminMediaEdit.jsx'),
+  AdminMessages: () => import('./pages/AdminMessages.jsx'),
+  AdminEmergency: () => import('./pages/AdminEmergency.jsx'),
   ComingSoon: () => import('./pages/ComingSoon.jsx'),
   Article: () => import('./pages/Article.jsx'),
   Assessment: () => import('./pages/Assessment.jsx'),
@@ -43,6 +45,8 @@ const AdminArticles = lazy(pages.AdminArticles)
 const AdminArticleEdit = lazy(pages.AdminArticleEdit)
 const AdminMedia = lazy(pages.AdminMedia)
 const AdminMediaEdit = lazy(pages.AdminMediaEdit)
+const AdminMessages = lazy(pages.AdminMessages)
+const AdminEmergency = lazy(pages.AdminEmergency)
 const ComingSoon = lazy(pages.ComingSoon)
 const Article = lazy(pages.Article)
 const Assessment = lazy(pages.Assessment)
@@ -104,6 +108,8 @@ export default function App() {
           <Route path="admin/media" element={<RequireAdmin><AdminMedia /></RequireAdmin>} />
           <Route path="admin/media/new" element={<RequireAdmin><AdminMediaEdit key="new" isNew /></RequireAdmin>} />
           <Route path="admin/media/:id" element={<RequireAdmin><AdminMediaEdit key="edit" /></RequireAdmin>} />
+          <Route path="admin/messages" element={<RequireAdmin><AdminMessages /></RequireAdmin>} />
+          <Route path="admin/emergency" element={<RequireAdmin><AdminEmergency /></RequireAdmin>} />
           <Route path="notifications"element={<Notifications />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />

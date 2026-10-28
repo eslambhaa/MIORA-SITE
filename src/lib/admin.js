@@ -14,6 +14,14 @@ export const auditLabels = {
   'media.hide': 'إخفاء حلقة',
   'media.delete': 'حذف حلقة مخفية',
   'media.check': 'فحص روابط الحلقات',
+  'message.reply': 'تعليم رسالة بأنه تم الرد',
+  'message.reopen': 'إعادة رسالة إلى جديدة',
+  'message.delete': 'حذف رسالة تواصل',
+  'emergency.create': 'إضافة رقم طوارئ',
+  'emergency.update': 'تعديل رقم طوارئ',
+  'emergency.show': 'إظهار رقم طوارئ',
+  'emergency.hide': 'إخفاء رقم طوارئ',
+  'emergency.delete': 'حذف رقم طوارئ مخفي',
 }
 
 export async function listAdmins() {

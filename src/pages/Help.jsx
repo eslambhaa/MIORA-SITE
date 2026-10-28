@@ -1,14 +1,10 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router'
-
-const hotlines = [
-  { number: '123', title: 'الإسعاف', text: 'إذا كنت أنت أو غيرك في خطر الآن.' },
-  { number: '16328', title: 'الخط الساخن للدعم النفسي', text: 'من وزارة الصحة، على مدار الساعة.' },
-  { number: '105', title: 'الخط الساخن الموحد لوزارة الصحة', text: 'استفسارات صحية وتوجيه للخدمات.' },
-]
+import { groupByCountry, useEmergencyLines } from '../lib/emergency.js'
 
 export default function Help() {
   const { hash } = useLocation()
+  const groups = groupByCountry(useEmergencyLines())
 
   useEffect(() => {
     if (hash !== '#emergency') return
@@ -31,22 +27,27 @@ export default function Help() {
             <p className="pt-2 text-base leading-7">
               ميورا لا تقدّم خدمة طوارئ. إذا فكرت في إيذاء نفسك أو شعرت أنك غير آمن، اتصل فورًا بأحد هذه الأرقام، أو اذهب لأقرب قسم طوارئ، أو ابقَ مع شخص تثق به.
             </p>
-            <ul className="grid gap-3 pt-5 sm:grid-cols-3">
-              {hotlines.map((line) => (
-                <li key={line.number}>
-                  <a
-                    href={`tel:${line.number}`}
-                    className="flex h-full flex-col rounded-[16px] bg-(--color-page-surface) p-4 outline-(--color-page-primary) transition-shadow duration-200 hover:shadow-(--shadow-page-card) motion-reduce:transition-none"
-                  >
-                    <span dir="ltr" className="self-start text-[28px] leading-[1.3] font-extrabold text-(color:--color-page-primary)">
-                      {line.number}
-                    </span>
-                    <span className="pt-1 text-base leading-7 font-bold">{line.title}</span>
-                    <span className="text-sm leading-6 text-(color:--color-page-muted)">{line.text}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {groups.map((group) => (
+              <div key={group.country}>
+                {groups.length > 1 && <h3 className="pt-5 text-lg leading-7 font-bold">{group.country}</h3>}
+                <ul className={`grid gap-3 sm:grid-cols-3 ${groups.length > 1 ? 'pt-2' : 'pt-5'}`}>
+                  {group.lines.map((line) => (
+                    <li key={line.id}>
+                      <a
+                        href={`tel:${line.number}`}
+                        className="flex h-full flex-col rounded-[16px] bg-(--color-page-surface) p-4 outline-(--color-page-primary) transition-shadow duration-200 hover:shadow-(--shadow-page-card) motion-reduce:transition-none"
+                      >
+                        <span dir="ltr" className="self-start text-[28px] leading-[1.3] font-extrabold text-(color:--color-page-primary)">
+                          {line.number}
+                        </span>
+                        <span className="pt-1 text-base leading-7 font-bold">{line.title}</span>
+                        {line.note && <span className="text-sm leading-6 text-(color:--color-page-muted)">{line.note}</span>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </section>
         <section className="px-6 pb-[46px]">

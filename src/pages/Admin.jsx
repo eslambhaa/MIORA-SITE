@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import { adminErrorMessage, auditLabels, listAdmins, listAudit, setAdmin } from '../lib/admin.js'
+import { countMessages } from '../lib/adminMessages.js'
 
 const dateTime = new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' })
 
 const upcoming = [
-  { title: 'رسائل التواصل', text: 'قراءة وحالة الرد والحذف.' },
-  { title: 'أرقام الطوارئ', text: 'تعديل أرقام صفحة المساعدة.' },
   { title: 'الإحصاءات', text: 'أعداد مجمّعة فقط، بلا أي محتوى شخصي.' },
   { title: 'الإشعارات والنسخ الاحتياطي', text: 'رسائل الإشعارات وتصدير المحتوى.' },
 ]
@@ -179,6 +178,18 @@ function AuditSection({ refreshKey }) {
 
 export default function Admin() {
   const [auditKey, setAuditKey] = useState(0)
+  const [fresh, setFresh] = useState(null)
+
+  useEffect(() => {
+    let ignore = false
+    countMessages()
+      .then((counts) => !ignore && setFresh(counts.fresh))
+      .catch(() => {})
+    return () => {
+      ignore = true
+    }
+  }, [])
+
   return (
     <>
       <title>لوحة التحكم | ميورا</title>
@@ -208,6 +219,16 @@ export default function Admin() {
                 <p className="text-lg font-bold leading-7">الحلقات</p>
                 <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">إضافة الفيديو والبودكاست من رابط، وفحص أن الروابط ما زالت تعمل.</p>
                 <Link to="/admin/media" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الحلقات</Link>
+              </li>
+              <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">رسائل التواصل{fresh > 0 && <span className="ms-2 rounded-full bg-(--color-page-card) px-3 py-1 text-sm">{fresh} جديدة</span>}</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">قراءة ما أرسله الزوار، وتعليم الرد، والحذف.</p>
+                <Link to="/admin/messages" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الرسائل</Link>
+              </li>
+              <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">أرقام الطوارئ</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">تعديل الأرقام في بطاقة «إذا كنت في خطر الآن» بصفحة المساعدة.</p>
+                <Link to="/admin/emergency" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح أرقام الطوارئ</Link>
               </li>
             </ul>
           </section>
