@@ -121,7 +121,16 @@ export default function PodcastPlayer({ item }) {
 
   if (state === 'fallback') {
     const src = safeEmbedUrl(item.embed_url)
-    if (!src) return null
+    if (!src) {
+      return (
+        <p role="status" className="rounded-[22px] bg-(--color-page-card) p-5 text-center text-base leading-7">
+          تعذّر تشغيل هذه الحلقة الآن.{' '}
+          <a href={item.url} target="_blank" rel="noopener noreferrer" className="font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">
+            افتحها عند الناشر<span className="sr-only"> (يفتح في نافذة جديدة)</span>
+          </a>
+        </p>
+      )
+    }
     return (
       <div>
         <div className="rounded-[22px] bg-(--color-page-guide-panel) p-4">
@@ -208,7 +217,7 @@ export default function PodcastPlayer({ item }) {
           {item.url && (
             <a href={item.url} target="_blank" rel="noopener noreferrer" className={roundButton}>
               <Waves />
-              <span className="sr-only">افتح في Apple Podcasts (يفتح في نافذة جديدة)</span>
+              <span className="sr-only">{item.url.startsWith('https://podcasts.apple.com/') ? 'افتح في Apple Podcasts' : 'افتح صفحة الحلقة عند الناشر'} (يفتح في نافذة جديدة)</span>
             </a>
           )}
           <div ref={menuRef} className="relative">

@@ -8,6 +8,12 @@ export const auditLabels = {
   'article.publish': 'نشر مقال',
   'article.hide': 'إخفاء مقال',
   'article.delete': 'حذف مسودة مقال',
+  'media.create': 'إضافة حلقة',
+  'media.update': 'تعديل حلقة',
+  'media.publish': 'إظهار حلقة',
+  'media.hide': 'إخفاء حلقة',
+  'media.delete': 'حذف حلقة مخفية',
+  'media.check': 'فحص روابط الحلقات',
 }
 
 export async function listAdmins() {

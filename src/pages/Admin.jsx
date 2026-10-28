@@ -5,7 +5,6 @@ import { adminErrorMessage, auditLabels, listAdmins, listAudit, setAdmin } from 
 const dateTime = new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' })
 
 const upcoming = [
-  { title: 'الحلقات', text: 'إضافة الفيديو والبودكاست وفحص الروابط.' },
   { title: 'رسائل التواصل', text: 'قراءة وحالة الرد والحذف.' },
   { title: 'أرقام الطوارئ', text: 'تعديل أرقام صفحة المساعدة.' },
   { title: 'الإحصاءات', text: 'أعداد مجمّعة فقط، بلا أي محتوى شخصي.' },
@@ -204,6 +203,11 @@ export default function Admin() {
                 <p className="text-lg font-bold leading-7">المقالات</p>
                 <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">كتابة وتعديل ونشر وإخفاء، ومتابعة مراجعة المتخصص.</p>
                 <Link to="/admin/articles" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح المقالات</Link>
+              </li>
+              <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">الحلقات</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">إضافة الفيديو والبودكاست من رابط، وفحص أن الروابط ما زالت تعمل.</p>
+                <Link to="/admin/media" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الحلقات</Link>
               </li>
             </ul>
           </section>
