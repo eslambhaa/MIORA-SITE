@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './supabase.js'
 
-const CACHE_KEY = 'miora-resources-v4'
-const CACHE_MS = 60 * 60 * 1000
+const CACHE_KEY = 'miora-resources-v5'
+const CACHE_MS = 2 * 60 * 1000
 
 // Players are only ever built from these hosts (the database and the CSP enforce the same list).
 const EMBED_HOSTS = {
@@ -42,7 +42,7 @@ function writeCache(rows) {
   }
 }
 
-// One small read per hour per browser tab session, and only when a video or podcast tab is opened,
+// One small read every two minutes per browser tab session, and only when a video or podcast tab is opened,
 // so the free Supabase plan is barely touched.
 export function useResources(enabled) {
   const [rows, setRows] = useState(() => (enabled ? readCache() : null))
