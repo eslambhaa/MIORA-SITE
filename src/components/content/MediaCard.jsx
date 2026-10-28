@@ -33,11 +33,11 @@ export default function MediaCard({ item, headingLevel = 'h2' }) {
           <KindIcon kind={item.kind} />
         </span>
         <span className="rounded-full bg-(--color-page-card) px-3 py-[5px] text-xs leading-[21px] font-bold">{kindLabel[item.kind]}</span>
-        {item.topic && <span className="text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.topic}</span>}
+        {item.topic && <span className="min-w-0 truncate text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.topic}</span>}
       </div>
-      <Heading className="pt-4 text-[21px] leading-[1.5] tracking-[-0.02em]">{item.title}</Heading>
-      <p className="pt-1 text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.source}</p>
-      <p className="pt-2.5 text-base leading-7 text-(color:--color-page-muted)">{excerpt(item.details || item.description)}</p>
+      <Heading title={item.title} className="line-clamp-2 min-h-[calc(1rem+63px)] pt-4 text-[21px] leading-[1.5] tracking-[-0.02em]">{item.title}</Heading>
+      <p className="truncate pt-1 text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.source}</p>
+      <p className="line-clamp-3 min-h-[calc(0.625rem+84px)] pt-2.5 text-base leading-7 text-(color:--color-page-muted)">{excerpt(item.details || item.description)}</p>
       <Link
         to={mediaPath(item)}
         className="mt-auto inline-flex items-center gap-[7px] pt-4 text-base leading-7 font-bold text-(color:--color-page-primary) outline-(--color-page-primary) hover:underline"

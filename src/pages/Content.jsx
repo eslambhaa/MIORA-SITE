@@ -145,7 +145,7 @@ export default function Content() {
                 </p>
               )}
               {results.length > 0 ? (
-                <ul className="grid gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
+                <ul className="grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
                   {results.map((item) => (
                     <li key={item.slug ?? item.id}>
                       {isMedia ? <MediaCard item={item} headingLevel="h2" /> : <ArticleCard article={item} headingLevel="h2" />}
