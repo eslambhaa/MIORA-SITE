@@ -18,24 +18,28 @@ const text = (xml, tag) => {
   return match ? match[1].replace(/^<!\[CDATA\[|\]\]>$/g, '').trim() : ''
 }
 
+export function readItems(xml) {
+  return [...xml.matchAll(/<item[\s>][\s\S]*?<\/item>/gi)].map(([item]) => ({
+    title: text(item, 'title'),
+    date: text(item, 'pubDate'),
+    duration: text(item, 'itunes:duration'),
+    audio: item.match(/<enclosure[^>]*\burl=["']([^"']+)["']/i)?.[1]?.replaceAll('&amp;', '&') ?? '',
+  }))
+}
+
 export function parseFeed(xml) {
-  return [...xml.matchAll(/<item[\s>][\s\S]*?<\/item>/gi)]
-    .map(([item]) => ({
-      title: text(item, 'title'),
-      date: text(item, 'pubDate'),
-      duration: text(item, 'itunes:duration'),
-      audio: item.match(/<enclosure[^>]*\burl=["']([^"']+)["']/i)?.[1]?.replaceAll('&amp;', '&') ?? '',
-    }))
-    .filter((episode) => episode.title && episode.audio.startsWith('https://'))
+  return readItems(xml).filter((episode) => episode.title && episode.audio.startsWith('https://'))
 }
 
 export async function findEpisodes(show, words) {
   const lookup = await (await fetch(`https://itunes.apple.com/lookup?id=${show}`)).json()
   const feed = lookup.results?.[0]?.feedUrl
   if (!feed) throw new Error('Apple did not return a feed address for this podcast.')
-  const episodes = parseFeed(await (await fetch(feed)).text())
+  const items = readItems(await (await fetch(feed)).text())
+  const episodes = items.filter((episode) => episode.title && episode.audio.startsWith('https://'))
   const needle = words.trim()
-  return { feed, episodes: needle ? episodes.filter((episode) => episode.title.includes(needle)) : episodes.slice(0, 15) }
+  const matches = needle ? episodes.filter((episode) => episode.title.includes(needle)) : episodes.slice(0, 15)
+  return { feed, items: items.length, usable: episodes.length, matches, latest: episodes.slice(0, 15) }
 }
 
 async function main() {
@@ -45,9 +49,13 @@ async function main() {
     console.log('Usage: node scripts/podcast-audio.mjs "<Apple Podcasts link>" "<words from the episode title>"')
     process.exit(1)
   }
-  const { feed, episodes } = await findEpisodes(show, words)
-  console.log(`Feed: ${feed}\n${episodes.length} episode(s) found\n`)
-  for (const episode of episodes.slice(0, 15)) {
+  const { feed, items, usable, matches, latest } = await findEpisodes(show, words)
+  console.log(`Feed: ${feed}`)
+  console.log(`${items} item(s) in the feed, ${usable} with a secure (https) audio link, ${matches.length} matching "${words}"\n`)
+  // Nothing matched the words: show the latest episodes so the right one can be picked by eye.
+  const list = matches.length ? matches : latest
+  if (!matches.length && latest.length) console.log('No title matched; the latest episodes are:\n')
+  for (const episode of list.slice(0, 15)) {
     console.log(`${episode.title}\n  ${episode.date}  ${episode.duration}\n  update public.resources set audio_url = '${episode.audio.replaceAll("'", "''")}' where id = <ROW ID>;\n`)
   }
 }
