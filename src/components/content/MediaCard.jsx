@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { mediaPath } from '../../lib/resources.js'
+import { excerpt, mediaPath } from '../../lib/resources.js'
 
 export const kindLabel = { video: 'فيديو', podcast: 'بودكاست' }
 
@@ -37,7 +37,7 @@ export default function MediaCard({ item, headingLevel = 'h2' }) {
       </div>
       <Heading className="pt-4 text-[21px] leading-[1.5] tracking-[-0.02em]">{item.title}</Heading>
       <p className="pt-1 text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.source}</p>
-      <p className="pt-2.5 text-base leading-7 text-(color:--color-page-muted)">{item.description}</p>
+      <p className="pt-2.5 text-base leading-7 text-(color:--color-page-muted)">{excerpt(item.details || item.description)}</p>
       <Link
         to={mediaPath(item)}
         className="mt-auto inline-flex items-center gap-[7px] pt-4 text-base leading-7 font-bold text-(color:--color-page-primary) outline-(--color-page-primary) hover:underline"

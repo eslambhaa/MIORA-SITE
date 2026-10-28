@@ -13,6 +13,14 @@ const EMBED_HOSTS = {
 // Every episode has its own page, like an article.
 export const mediaPath = (item) => `/content/${item.kind === 'video' ? 'video' : 'podcast'}/${item.id}`
 
+// The start of the episode text, cut at a word, so a card shows the same words the episode page opens with.
+export function excerpt(text, max = 150) {
+  const first = (text ?? '').split(/\n\s*\n/)[0].replace(/\s+/g, ' ').trim()
+  if (first.length <= max) return first
+  const cut = first.slice(0, max)
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(' '), max * 0.6))}…`
+}
+
 export function safeEmbedUrl(value) {
   try {
     const url = new URL(value)
