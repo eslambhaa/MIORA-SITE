@@ -3,6 +3,11 @@ import { supabase } from './supabase.js'
 export const auditLabels = {
   'admin.add': 'إضافة مشرف',
   'admin.remove': 'سحب صلاحية مشرف',
+  'article.create': 'إنشاء مقال',
+  'article.update': 'تعديل مقال',
+  'article.publish': 'نشر مقال',
+  'article.hide': 'إخفاء مقال',
+  'article.delete': 'حذف مسودة مقال',
 }
 
 export async function listAdmins() {

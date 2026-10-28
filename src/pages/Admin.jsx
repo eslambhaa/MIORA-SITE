@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { adminErrorMessage, auditLabels, listAdmins, listAudit, setAdmin } from '../lib/admin.js'
 
 const dateTime = new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' })
 
 const upcoming = [
-  { title: 'المقالات', text: 'كتابة وتعديل وإخفاء، وقائمة مراجعة المتخصص.' },
   { title: 'الحلقات', text: 'إضافة الفيديو والبودكاست وفحص الروابط.' },
   { title: 'رسائل التواصل', text: 'قراءة وحالة الرد والحذف.' },
   { title: 'أرقام الطوارئ', text: 'تعديل أرقام صفحة المساعدة.' },
@@ -197,6 +197,16 @@ export default function Admin() {
               هذه اللوحة لا تعرض أبدًا نص المذكرات ولا محادثات المساعد ولا نتائج التقييمات ولا تسجيلات المزاج الفردية، ولا تدير حسابات المستخدمين بأسمائهم. الإحصاءات تكون أعدادًا مجمّعة فقط.
             </p>
           </aside>
+          <section aria-labelledby="tools-title">
+            <h2 id="tools-title" className="mb-3 text-2xl leading-[1.4]">الإدارة</h2>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">المقالات</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">كتابة وتعديل ونشر وإخفاء، ومتابعة مراجعة المتخصص.</p>
+                <Link to="/admin/articles" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح المقالات</Link>
+              </li>
+            </ul>
+          </section>
           <section aria-labelledby="soon-title">
             <h2 id="soon-title" className="mb-3 text-2xl leading-[1.4]">أقسام قادمة</h2>
             <ul className="grid gap-3 sm:grid-cols-2">

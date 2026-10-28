@@ -1,10 +1,11 @@
 import { Link } from 'react-router'
-import { articles } from '../../data/articles.js'
+import { useArticleList } from '../../lib/articles.js'
 import ArticleCard from '../content/ArticleCard.jsx'
 import Reveal from '../ui/Reveal.jsx'
 import SectionTitle from './SectionTitle.jsx'
 
 export default function ArticleHighlights() {
+  const { articles } = useArticleList()
   return (
     <section aria-labelledby="articles-title" className="px-6 pt-0.5 pb-[105px]">
       <div className="mx-auto max-w-[1026px]">
@@ -19,7 +20,7 @@ export default function ArticleHighlights() {
             استكشف كل المحتوى
           </Link>
         </div>
-        <ul className="mt-10 grid gap-[22px] md:grid-cols-3">
+        <ul aria-busy={articles.length === 0} className="mt-10 grid gap-[22px] md:min-h-[470px] md:grid-cols-3">
           {articles.slice(0, 3).map((article, index) => (
             <Reveal as="li" key={article.slug} index={index + 1}>
               <ArticleCard article={article} />

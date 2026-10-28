@@ -2,7 +2,8 @@ import { useMemo, useRef } from 'react'
 import { useSearchParams } from 'react-router'
 import ArticleCard from '../components/content/ArticleCard.jsx'
 import MediaCard from '../components/content/MediaCard.jsx'
-import { articles, categories } from '../data/articles.js'
+import { categories } from '../data/articles.js'
+import { useArticleList } from '../lib/articles.js'
 import { normalizeArabic } from '../lib/arabicSearch.js'
 import { useResources } from '../lib/resources.js'
 
@@ -34,6 +35,7 @@ export default function Content() {
 
   const isMedia = tab.id !== 'articles'
   const { rows, status } = useResources(isMedia)
+  const { articles, loading: articlesLoading } = useArticleList()
   const mediaKind = tab.id === 'videos' ? 'video' : 'podcast'
 
   const needle = normalizeArabic(query)
@@ -43,7 +45,7 @@ export default function Content() {
       return articles.filter((article) => matches(`${article.title} ${article.excerpt} ${article.category}`, article.category))
     }
     return (rows ?? []).filter((row) => row.kind === mediaKind && matches(`${row.title} ${row.description} ${row.source} ${row.topic ?? ''}`, row.topic))
-  }, [tab.id, rows, mediaKind, needle, category])
+  }, [tab.id, rows, mediaKind, needle, category, articles])
 
   const kindTotal = isMedia ? (rows ?? []).filter((row) => row.kind === mediaKind).length : articles.length
 
@@ -69,7 +71,7 @@ export default function Content() {
     tabRefs.current[tabs[target].id]?.focus()
   }
 
-  const loading = isMedia && !rows && status !== 'error'
+  const loading = isMedia ? !rows && status !== 'error' : articlesLoading
   const failed = isMedia && !rows && status === 'error'
   const nothingYet = isMedia && rows && kindTotal === 0
 

@@ -11,6 +11,8 @@ import Home from './pages/Home.jsx'
 const pages = {
   About: () => import('./pages/About.jsx'),
   Admin: () => import('./pages/Admin.jsx'),
+  AdminArticles: () => import('./pages/AdminArticles.jsx'),
+  AdminArticleEdit: () => import('./pages/AdminArticleEdit.jsx'),
   ComingSoon: () => import('./pages/ComingSoon.jsx'),
   Article: () => import('./pages/Article.jsx'),
   Assessment: () => import('./pages/Assessment.jsx'),
@@ -35,6 +37,8 @@ const pages = {
 
 const About = lazy(pages.About)
 const Admin = lazy(pages.Admin)
+const AdminArticles = lazy(pages.AdminArticles)
+const AdminArticleEdit = lazy(pages.AdminArticleEdit)
 const ComingSoon = lazy(pages.ComingSoon)
 const Article = lazy(pages.Article)
 const Assessment = lazy(pages.Assessment)
@@ -90,6 +94,9 @@ export default function App() {
           <Route path="content" element={<Content />} />
           <Route path="addiction" element={<ComingSoon title="الوعي بالإدمان" />} />
           <Route path="admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
+          <Route path="admin/articles" element={<RequireAdmin><AdminArticles /></RequireAdmin>} />
+          <Route path="admin/articles/new" element={<RequireAdmin><AdminArticleEdit key="new" isNew /></RequireAdmin>} />
+          <Route path="admin/articles/:id" element={<RequireAdmin><AdminArticleEdit key="edit" /></RequireAdmin>} />
           <Route path="notifications"element={<Notifications />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
