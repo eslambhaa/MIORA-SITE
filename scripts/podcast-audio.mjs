@@ -98,8 +98,10 @@ async function main() {
     process.exit(1)
   }
   const { feed, name, items, usable, matches, latest, sample } = await findEpisodes(show, words)
-  console.log(`Feed: ${feed}`)
-  console.log(`${items} item(s) in the feed, ${usable} with an audio link (http is upgraded to https), ${matches.length} matching "${words}"\n`)
+  // With --add the output is pasted into the SQL editor, so the info lines are written as SQL comments.
+  const note = add ? '-- ' : ''
+  console.log(`${note}Feed: ${feed}`)
+  console.log(`${note}${items} item(s) in the feed, ${usable} with an audio link (http is upgraded to https), ${matches.length} matching "${words}"\n`)
   if (!usable) console.log(`Nothing usable. The first items look like this:\n  ${sample.join('\n  ')}\n`)
   if (add) {
     if (!matches.length) console.log('No episode title matched: nothing to add.')
