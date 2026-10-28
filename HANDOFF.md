@@ -451,3 +451,7 @@ react 19.3.1، react-dom 19.3.1، react-router 8.5.0، vite 8.3.5، @vitejs/plug
 - **قاعدة عمل (طلب المستخدم):** بعد كل جزء ننتهي منه: commit، ثم PR ودمج على `main`، ثم `git pull origin main` ليتحدث الموقع عند المستخدم.
 - Git: مفعّل على الفرع main، مع commit بعد كل مرحلة.
 - GitHub: https://github.com/eslambhaa/MIORA-SITE (خاص). يُرفع التحديث بعد كل مرحلة.
+
+## الاختبارات (أُضيفت بعد المرحلة 17، الجزء 1)
+- Vitest 5 + Testing Library + jsdom مثبّتة. الأمر `npm test` (26 اختبارًا: `safeRedirect` و`passwordProblem` و`moodStreak` و`normalizeArabic`). التفاصيل في `TESTING.md`، وملف CI في `.github/workflows/test.yml`.
+- فحص `/qa` بالمتصفح كزائر (21 مسارًا على 1166 و17 على 375، البحث، التقييم، المعاملات الخاطئة، قائمة الموبايل، البناء): صفر أخطاء. غير مغطّى: صفحات المسجّل ولوحة الأدمن.
