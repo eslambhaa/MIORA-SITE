@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 import ArticleCard from '../components/content/ArticleCard.jsx'
+import ResourceSection from '../components/content/ResourceSection.jsx'
 import { articles, categories } from '../data/articles.js'
 import { normalizeArabic } from '../lib/arabicSearch.js'
 
@@ -91,6 +92,7 @@ export default function Content() {
             )}
           </div>
         </section>
+        <ResourceSection />
       </main>
     </>
   )

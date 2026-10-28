@@ -12,12 +12,18 @@ export const categories = [
 ]
 
 const images = {
-  notebook: { src: '/images/home/article-naming-feelings.webp', width: 660, height: 440, alt: 'دفتر ملاحظات مفتوح وقلم بجوار نبتة خضراء' },
-  book: { src: '/images/home/article-calm-space.webp', width: 660, height: 880, alt: 'كتاب مفتوح وقلم على سطح هادئ' },
-  desk: { src: '/images/home/article-mindful-breathing.webp', width: 660, height: 440, alt: 'دفتر فارغ على مكتب خشبي' },
-  evening: { src: '/images/content/evening-routine.webp', width: 660, height: 990, alt: 'فنجان قهوة وورق ملاحظات في ضوء هادئ' },
-  window: { src: '/images/content/writing-desk.webp', width: 660, height: 990, alt: 'نافذة يدخل منها ضوء الشمس على مكتب' },
-  morning: { src: '/images/home/hero-morning-window.webp', width: 860, height: 1290, alt: 'ضوء صباح هادئ بجوار نافذة وكوب دافئ' },
+  'naming-feelings': { src: '/images/articles/naming-feelings.svg', width: 1200, height: 800, alt: 'دفتر مفتوح بجانب وجوه صغيرة بألوان مختلفة تعبّر عن مشاعر متنوعة' },
+  'calm-space': { src: '/images/articles/calm-space.svg', width: 1200, height: 800, alt: 'ركن هادئ فيه كرسي مريح ونافذة ومصباح ونبتة' },
+  'mindful-breathing': { src: '/images/articles/mindful-breathing.svg', width: 1200, height: 800, alt: 'شخص جالس يتنفس بهدوء داخل دوائر متسعة كالموجات' },
+  'evening-routine': { src: '/images/articles/evening-routine.svg', width: 1200, height: 800, alt: 'مساء هادئ بقمر ونجوم وكوب شاي دافئ وكتب' },
+  'writing-reflection': { src: '/images/articles/writing-reflection.svg', width: 1200, height: 800, alt: 'مكتب عليه ورقة وقلم ومصباح وفقاعة فكرة بقلب' },
+  'small-habits': { src: '/images/articles/small-habits.svg', width: 1200, height: 800, alt: 'درجات صغيرة متصاعدة عليها علامات إنجاز وتنمو فوقها نبتة' },
+  'understanding-urges': { src: '/images/articles/understanding-urges.svg', width: 1200, height: 800, alt: 'موجة عالية ترتفع ثم تهدأ بينما شخص يراقبها من الشاطئ' },
+  'addiction-compassion': { src: '/images/articles/addiction-compassion.svg', width: 1200, height: 800, alt: 'شخص يضع يده بلطف على كتف شخص آخر وفوقهما قلب' },
+  'stress-and-habits': { src: '/images/articles/stress-and-habits.svg', width: 1200, height: 800, alt: 'خط متشابك يتحول إلى مسار منتظم من خطوات صغيرة' },
+  'healthy-boundaries': { src: '/images/articles/healthy-boundaries.svg', width: 1200, height: 800, alt: 'شخص داخل دائرة منقطة تمثل حدوده، حولها أشخاص آخرون' },
+  'asking-for-support': { src: '/images/articles/asking-for-support.svg', width: 1200, height: 800, alt: 'شخصان يمدّان أيديهما نحو بعضهما وفوقهما فقاعتا حوار' },
+  'setbacks-are-not-failure': { src: '/images/articles/setbacks-are-not-failure.svg', width: 1200, height: 800, alt: 'خط يرتفع مع هبوط صغير ثم يواصل الصعود نحو علم' },
 }
 
 export const articles = [
@@ -27,7 +33,7 @@ export const articles = [
     excerpt: 'حين نعطي شعورنا اسمًا، يصبح التعامل معه أوضح وأقل إرباكًا.',
     category: 'فهم المشاعر',
     minutes: 4,
-    image: images.notebook,
+    image: images['naming-feelings'],
     idea: {
       heading: 'ابدأ بالملاحظة، لا بالحكم',
       paragraphs: [
@@ -54,7 +60,7 @@ export const articles = [
     excerpt: 'خطوات عملية قصيرة تساعدك على تهدئة إيقاع يوم مزدحم.',
     category: 'التوتر والضغط النفسي',
     minutes: 5,
-    image: images.book,
+    image: images['calm-space'],
     idea: {
       heading: 'الضغط إشارة، وليس عيبًا فيك',
       paragraphs: [
@@ -82,7 +88,7 @@ export const articles = [
     excerpt: 'تمرين بسيط يمكنك استخدامه عندما تحتاج إلى لحظة توقف.',
     category: 'مهارات التعامل',
     minutes: 6,
-    image: images.desk,
+    image: images['mindful-breathing'],
     idea: {
       heading: 'لماذا التنفس؟',
       paragraphs: [
@@ -109,7 +115,7 @@ export const articles = [
     excerpt: 'تغييرات واقعية تهيّئ جسمك وذهنك للراحة دون مثالية.',
     category: 'النوم والراحة',
     minutes: 7,
-    image: images.evening,
+    image: images['evening-routine'],
     idea: {
       heading: 'النوم يبدأ قبل السرير',
       paragraphs: [
@@ -137,7 +143,7 @@ export const articles = [
     excerpt: 'استخدم الورق لترتيب أفكارك بلا حكم أو ضغط.',
     category: 'التأمل الذاتي',
     minutes: 4,
-    image: images.window,
+    image: images['writing-reflection'],
     idea: {
       heading: 'الأفكار المكتوبة أخف',
       paragraphs: [
@@ -164,7 +170,7 @@ export const articles = [
     excerpt: 'ابدأ بخطوة تناسب يومك بدل مطاردة تغيير كبير ومفاجئ.',
     category: 'العادات الصحية',
     minutes: 5,
-    image: images.morning,
+    image: images['small-habits'],
     idea: {
       heading: 'لماذا تفشل البدايات الكبيرة؟',
       paragraphs: [
@@ -192,7 +198,7 @@ export const articles = [
     excerpt: 'تعلّم ملاحظة الرغبة وعبورها بخطوات آمنة وغير وصمية.',
     category: 'الوعي بالإدمان',
     minutes: 6,
-    image: images.notebook,
+    image: images['understanding-urges'],
     idea: {
       heading: 'الرغبة موجة، وللموجة نهاية',
       paragraphs: [
@@ -220,7 +226,7 @@ export const articles = [
     excerpt: 'لغة محترمة ومعلومات هادئة تساعد على الوقاية وطلب الدعم.',
     category: 'الوعي بالإدمان',
     minutes: 7,
-    image: images.book,
+    image: images['addiction-compassion'],
     idea: {
       heading: 'الوصم يبعد الناس عن المساعدة',
       paragraphs: [
@@ -248,7 +254,7 @@ export const articles = [
     excerpt: 'لاحظ الرابط بين المواقف الصعبة والسلوك المتكرر بهدوء.',
     category: 'التوتر والضغط النفسي',
     minutes: 4,
-    image: images.desk,
+    image: images['stress-and-habits'],
     idea: {
       heading: 'العادة قد تكون محاولة للراحة',
       paragraphs: [
@@ -275,7 +281,7 @@ export const articles = [
     excerpt: 'طرق واضحة ومحترمة للتعبير عن احتياجاتك في العلاقات.',
     category: 'العلاقات',
     minutes: 5,
-    image: images.evening,
+    image: images['healthy-boundaries'],
     idea: {
       heading: 'الحدود تحمي العلاقة',
       paragraphs: [
@@ -302,7 +308,7 @@ export const articles = [
     excerpt: 'خطوات صغيرة لبدء حديث صادق مع شخص تثق به.',
     category: 'طلب المساعدة',
     minutes: 6,
-    image: images.window,
+    image: images['asking-for-support'],
     idea: {
       heading: 'طلب الدعم مهارة يمكن تعلّمها',
       paragraphs: [
@@ -329,7 +335,7 @@ export const articles = [
     excerpt: 'نظرة واقعية للانتكاسات وكيفية العودة بخطة أكثر لطفًا.',
     category: 'تغيير العادات',
     minutes: 7,
-    image: images.morning,
+    image: images['setbacks-are-not-failure'],
     idea: {
       heading: 'التغيير ليس خطًا مستقيمًا',
       paragraphs: [
