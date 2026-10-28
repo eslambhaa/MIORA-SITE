@@ -68,7 +68,7 @@ export default function MediaPage({ kind }) {
               <h2 id="more-episodes" className="text-[26px] leading-[39px] tracking-[-0.02em] md:text-[30px]">
                 {isVideo ? 'فيديوهات أخرى' : 'حلقات أخرى'}
               </h2>
-              <ul className="mt-6 grid gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="mt-6 grid grid-cols-1 gap-[22px] sm:grid-cols-2 lg:grid-cols-3">
                 {more.map((row) => (
                   <li key={row.id}>
                     <MediaCard item={row} headingLevel="h3" />
