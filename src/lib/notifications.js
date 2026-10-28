@@ -5,6 +5,10 @@ import { supabase } from './supabase.js'
 // Email reminders need an email provider on the server; the toggles stay locked until it is connected.
 export const EMAIL_LIVE = false
 
+// A link in a notification must stay inside the site: one slash, then path characters. "//host" is rejected
+// because the router treats it as another website.
+export const isInternalLink = (value) => typeof value === 'string' && /^\/(?!\/)[A-Za-z0-9/_?=&%.-]*$/.test(value)
+
 const SEEN_KEY = 'miora-announcements-seen'
 const FRESH_MS = 60 * 1000
 
@@ -53,8 +57,18 @@ export async function refreshNotifications(userId, { force = false } = {}) {
   set({ status: sameUser && state.items.length ? 'ready' : 'loading', userId, items: sameUser ? state.items : [] })
 
   loading = (async () => {
+    // Admins can read every announcement (hidden, scheduled, ended), so the live window is filtered here too:
+    // the bell shows an admin exactly what a visitor sees.
+    const now = new Date().toISOString()
     const [announcements, mine] = await Promise.all([
-      supabase.from('announcements').select('id, title, body, link, created_at').order('created_at', { ascending: false }).limit(10),
+      supabase
+        .from('announcements')
+        .select('id, title, body, link, starts_at')
+        .eq('published', true)
+        .lte('starts_at', now)
+        .or(`expires_at.is.null,expires_at.gt.${now}`)
+        .order('starts_at', { ascending: false })
+        .limit(10),
       userId
         ? supabase.from('notifications').select('id, kind, title, body, link, read_at, created_at').order('created_at', { ascending: false }).limit(40)
         : Promise.resolve({ data: [] }),
@@ -63,7 +77,7 @@ export async function refreshNotifications(userId, { force = false } = {}) {
     if (announcements.error || mine.error) return set({ status: 'error' })
     const seen = readSeen()
     const items = [
-      ...(announcements.data ?? []).map((row) => ({ ...row, key: `a-${row.id}`, source: 'announcement', read: seen.has(row.id) })),
+      ...(announcements.data ?? []).map((row) => ({ ...row, created_at: row.starts_at, key: `a-${row.id}`, source: 'announcement', read: seen.has(row.id) })),
       ...(mine.data ?? []).map((row) => ({ ...row, key: `n-${row.id}`, source: 'notification', read: Boolean(row.read_at) })),
     ].sort(byNewest)
     set({ items, status: 'ready', fetchedAt: Date.now() })

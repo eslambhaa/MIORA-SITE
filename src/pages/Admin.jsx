@@ -5,10 +5,6 @@ import { countMessages } from '../lib/adminMessages.js'
 
 const dateTime = new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' })
 
-const upcoming = [
-  { title: 'الإشعارات والنسخ الاحتياطي', text: 'رسائل الإشعارات وتصدير المحتوى.' },
-]
-
 const card = 'rounded-[20px] border border-(--color-page-border) bg-(--color-page-surface)'
 const primaryButton =
   'min-h-11 cursor-pointer rounded-(--radius-page-button) bg-(--color-page-button) px-5 text-base font-bold text-(color:--color-page-surface) outline-(--color-page-primary) disabled:cursor-not-allowed disabled:opacity-60'
@@ -230,22 +226,20 @@ export default function Admin() {
                 <Link to="/admin/stats" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الإحصاءات</Link>
               </li>
               <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">الإشعارات</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">إعلانات الموقع مع جدولتها، ونصوص التذكيرات اليومية والأسبوعية.</p>
+                <Link to="/admin/notifications" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الإشعارات</Link>
+              </li>
+              <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">النسخة الاحتياطية</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">تنزيل محتوى الموقع (مقالات وحلقات وأرقام وإعلانات ونصوص) في ملف JSON.</p>
+                <Link to="/admin/backup" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح النسخة الاحتياطية</Link>
+              </li>
+              <li className={`${card} p-5`}>
                 <p className="text-lg font-bold leading-7">أرقام الطوارئ</p>
                 <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">تعديل الأرقام في بطاقة «إذا كنت في خطر الآن» بصفحة المساعدة.</p>
                 <Link to="/admin/emergency" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح أرقام الطوارئ</Link>
               </li>
-            </ul>
-          </section>
-          <section aria-labelledby="soon-title">
-            <h2 id="soon-title" className="mb-3 text-2xl leading-[1.4]">أقسام قادمة</h2>
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {upcoming.map((item) => (
-                <li key={item.title} className={`${card} p-5`}>
-                  <p className="text-lg font-bold leading-7">{item.title}</p>
-                  <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">{item.text}</p>
-                  <p className="mt-2 text-sm font-bold text-(color:--color-page-primary)">قريبًا</p>
-                </li>
-              ))}
             </ul>
           </section>
           <AdminsSection onChanged={() => setAuditKey((n) => n + 1)} />

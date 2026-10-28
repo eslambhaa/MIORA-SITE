@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { markRead, removeNotification, timeAgo } from '../../lib/notifications.js'
+import { isInternalLink, markRead, removeNotification, timeAgo } from '../../lib/notifications.js'
 
 // One notification, in the bell and on the notifications page. The title is the link when there is one.
 export default function NotificationItem({ item, onNavigate, canDelete = false }) {
@@ -20,7 +20,7 @@ export default function NotificationItem({ item, onNavigate, canDelete = false }
 
   return (
     <li className="flex items-start gap-1 border-b border-(--color-page-border) last:border-b-0">
-      {item.link ? (
+      {isInternalLink(item.link) ? (
         <Link
           to={item.link}
           onClick={() => {
