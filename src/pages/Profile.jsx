@@ -4,6 +4,7 @@ import { useAuth } from '../auth/AuthProvider.jsx'
 import { FormAlert, inputClass, secondaryButton } from '../components/auth/fields.jsx'
 import AvatarCropDialog from '../components/profile/AvatarCropDialog.jsx'
 import DeleteAccountDialog from '../components/profile/DeleteAccountDialog.jsx'
+import NotificationSettings from '../components/profile/NotificationSettings.jsx'
 import { AVATAR_ACCEPT, AvatarError, loadAvatarBitmap, removeAvatar, uploadAvatar } from '../lib/avatar.js'
 import { clearAvatar, refreshAvatar, useAvatar } from '../lib/avatarStore.js'
 import { downloadMyData } from '../lib/exportData.js'
@@ -468,6 +469,8 @@ export default function Profile() {
                   </div>
                 </section>
               </div>
+
+              <NotificationSettings email={user.email} card={card} />
 
               <section
                 aria-labelledby="danger-title"

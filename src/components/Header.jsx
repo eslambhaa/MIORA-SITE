@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router'
 import { useAuth } from '../auth/AuthProvider.jsx'
 import { useAvatar } from '../lib/avatarStore.js'
+import NotificationBell from './notifications/NotificationBell.jsx'
 
 const links = [
   { to: '/', label: 'الرئيسية', end: true },
@@ -60,6 +61,7 @@ export default function Header() {
           ))}
         </ul>
         <div className="col-start-3 flex items-center gap-2 justify-self-end">
+          <NotificationBell buttonClass={iconButton} />
           <Link to={user ? '/profile' : '/login'} aria-label={user ? 'ملفي الشخصي' : 'تسجيل الدخول'} className={`${iconButton} overflow-hidden`}>
             {avatar ? (
               <img src={avatar} alt="" width="44" height="44" className="size-full object-cover" />
