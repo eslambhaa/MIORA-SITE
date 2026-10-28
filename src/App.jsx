@@ -9,6 +9,7 @@ import Home from './pages/Home.jsx'
 // Every page except the home page loads on demand (smaller first download).
 const pages = {
   About: () => import('./pages/About.jsx'),
+  ComingSoon: () => import('./pages/ComingSoon.jsx'),
   Article: () => import('./pages/Article.jsx'),
   Assessment: () => import('./pages/Assessment.jsx'),
   Assistant: () => import('./pages/Assistant.jsx'),
@@ -31,6 +32,7 @@ const pages = {
 }
 
 const About = lazy(pages.About)
+const ComingSoon = lazy(pages.ComingSoon)
 const Article = lazy(pages.Article)
 const Assessment = lazy(pages.Assessment)
 const Assistant = lazy(pages.Assistant)
@@ -83,7 +85,8 @@ export default function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="content" element={<Content />} />
-          <Route path="notifications" element={<Notifications />} />
+          <Route path="addiction" element={<ComingSoon title="الوعي بالإدمان" />} />
+          <Route path="notifications"element={<Notifications />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
           <Route path="assistant" element={<Assistant />} />
