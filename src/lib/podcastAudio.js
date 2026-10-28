@@ -29,22 +29,24 @@ export async function loadTracks(item, signal) {
   if (stored) return [{ id: 'stored', title: item.title, src: stored }]
 
   const { show, episode, country } = appleIds(item.url)
-  const id = episode ?? show
-  if (!id) throw new Error('no apple id')
+  if (!show) throw new Error('no apple id')
 
-  // Try the row's own store first, then Apple's default one.
+  // Apple's lookup does not find an episode by its own number, so the show's recent episodes
+  // (up to 200) are listed and the episode is picked out. Older episodes need audio_url instead.
+  const limit = episode ? 200 : 25
   for (const store of [country, null]) {
-    const params = new URLSearchParams({ id, entity: 'podcastEpisode', limit: '25' })
+    const params = new URLSearchParams({ id: show, entity: 'podcastEpisode', limit: String(limit) })
     if (store) params.set('country', store)
     const response = await fetch(`${LOOKUP}?${params}`, { signal })
     if (!response.ok) continue
     const { results } = await response.json()
     const tracks = (Array.isArray(results) ? results : [])
+      .filter((entry) => !episode || String(entry.trackId) === episode)
       .map((entry) => ({ id: String(entry.trackId), title: entry.trackName, src: httpsOnly(entry.episodeUrl) }))
       .filter((track) => track.src && track.title)
     if (tracks.length > 0) return tracks
   }
-  throw new Error(`no playable episodes for ${id}`)
+  throw new Error(`no playable episodes for ${episode ?? show}: add audio_url to this row`)
 }
 
 export function formatTime(seconds) {
