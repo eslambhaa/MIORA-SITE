@@ -49,7 +49,7 @@ export default function MediaPage({ kind }) {
             <p className="pt-1 text-[13px] leading-[22.75px] text-(color:--color-page-muted)">{item.source}</p>
           </header>
           <div className="mx-auto mt-[45px] max-w-[800px]">
-            <MediaPlayer item={item} />
+            <MediaPlayer key={item.id} item={item} />
           </div>
           <div className="mx-auto mt-[55px] max-w-[800px]">
             <section aria-labelledby="about-episode">
