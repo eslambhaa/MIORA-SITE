@@ -41,7 +41,7 @@ export default function Header() {
   }, [menuOpen])
 
   return (
-    <header className="relative z-50 px-4 py-5 md:sticky md:top-0 lg:px-[5%]">
+    <header className="relative z-50 px-4 py-5 before:absolute before:inset-x-0 before:top-0 before:-z-10 before:hidden before:h-5 before:bg-(--color-page-bg) md:sticky md:top-0 md:before:block lg:px-[5%]">
       <nav
         aria-label="التنقل الرئيسي"
         className="mx-auto grid min-h-[72px] max-w-[1600px] grid-cols-[auto_1fr_auto] items-center gap-[22px] rounded-full px-4 py-[7px] shadow-(--shadow-page-header) backdrop-blur-[18px] lg:grid-cols-[96px_1fr_96px]"
