@@ -19,6 +19,7 @@ const pages = {
   Journal: () => import('./pages/Journal.jsx'),
   Journey: () => import('./pages/Journey.jsx'),
   Login: () => import('./pages/Login.jsx'),
+  MediaPage: () => import('./pages/MediaPage.jsx'),
   NotFound: () => import('./pages/NotFound.jsx'),
   Privacy: () => import('./pages/Privacy.jsx'),
   Profile: () => import('./pages/Profile.jsx'),
@@ -39,6 +40,7 @@ const Help = lazy(pages.Help)
 const Journal = lazy(pages.Journal)
 const Journey = lazy(pages.Journey)
 const Login = lazy(pages.Login)
+const MediaPage = lazy(pages.MediaPage)
 const NotFound = lazy(pages.NotFound)
 const Privacy = lazy(pages.Privacy)
 const Profile = lazy(pages.Profile)
@@ -82,6 +84,8 @@ export default function App() {
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />
           <Route path="assistant" element={<Assistant />} />
+          <Route path="content/podcast/:id" element={<MediaPage kind="podcast" />} />
+          <Route path="content/video/:id" element={<MediaPage kind="video" />} />
           <Route path="content/:slug" element={<Article />} />
           <Route path="journal" element={<RequireAuth><Journal /></RequireAuth>} />
           <Route path="*" element={<NotFound />} />
