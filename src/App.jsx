@@ -17,6 +17,7 @@ const pages = {
   AdminMediaEdit: () => import('./pages/AdminMediaEdit.jsx'),
   AdminMessages: () => import('./pages/AdminMessages.jsx'),
   AdminEmergency: () => import('./pages/AdminEmergency.jsx'),
+  AdminStats: () => import('./pages/AdminStats.jsx'),
   ComingSoon: () => import('./pages/ComingSoon.jsx'),
   Article: () => import('./pages/Article.jsx'),
   Assessment: () => import('./pages/Assessment.jsx'),
@@ -47,6 +48,7 @@ const AdminMedia = lazy(pages.AdminMedia)
 const AdminMediaEdit = lazy(pages.AdminMediaEdit)
 const AdminMessages = lazy(pages.AdminMessages)
 const AdminEmergency = lazy(pages.AdminEmergency)
+const AdminStats = lazy(pages.AdminStats)
 const ComingSoon = lazy(pages.ComingSoon)
 const Article = lazy(pages.Article)
 const Assessment = lazy(pages.Assessment)
@@ -110,6 +112,7 @@ export default function App() {
           <Route path="admin/media/:id" element={<RequireAdmin><AdminMediaEdit key="edit" /></RequireAdmin>} />
           <Route path="admin/messages" element={<RequireAdmin><AdminMessages /></RequireAdmin>} />
           <Route path="admin/emergency" element={<RequireAdmin><AdminEmergency /></RequireAdmin>} />
+          <Route path="admin/stats" element={<RequireAdmin><AdminStats /></RequireAdmin>} />
           <Route path="notifications"element={<Notifications />} />
           <Route path="assessment" element={<Assessment />} />
           <Route path="relaxation" element={<Relaxation />} />

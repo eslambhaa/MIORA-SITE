@@ -6,7 +6,6 @@ import { countMessages } from '../lib/adminMessages.js'
 const dateTime = new Intl.DateTimeFormat('ar-EG', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Africa/Cairo' })
 
 const upcoming = [
-  { title: 'الإحصاءات', text: 'أعداد مجمّعة فقط، بلا أي محتوى شخصي.' },
   { title: 'الإشعارات والنسخ الاحتياطي', text: 'رسائل الإشعارات وتصدير المحتوى.' },
 ]
 
@@ -224,6 +223,11 @@ export default function Admin() {
                 <p className="text-lg font-bold leading-7">رسائل التواصل{fresh > 0 && <span className="ms-2 rounded-full bg-(--color-page-card) px-3 py-1 text-sm">{fresh} جديدة</span>}</p>
                 <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">قراءة ما أرسله الزوار، وتعليم الرد، والحذف.</p>
                 <Link to="/admin/messages" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الرسائل</Link>
+              </li>
+              <li className={`${card} p-5`}>
+                <p className="text-lg font-bold leading-7">الإحصاءات والخطة المجانية</p>
+                <p className="mt-1 text-base leading-7 text-(color:--color-page-muted)">أعداد مجمّعة أسبوعية، وحجم القاعدة والتخزين، وتنبيه قبل التوقف.</p>
+                <Link to="/admin/stats" className="mt-3 inline-flex min-h-11 items-center text-base font-bold text-(color:--color-page-primary) underline underline-offset-4 outline-(--color-page-primary)">فتح الإحصاءات</Link>
               </li>
               <li className={`${card} p-5`}>
                 <p className="text-lg font-bold leading-7">أرقام الطوارئ</p>
