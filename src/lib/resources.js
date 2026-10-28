@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from './supabase.js'
 
-const CACHE_KEY = 'miora-resources-v3'
+const CACHE_KEY = 'miora-resources-v4'
 const CACHE_MS = 60 * 60 * 1000
 
 // Players are only ever built from these hosts (the database and the CSP enforce the same list).
@@ -58,7 +58,7 @@ export function useResources(enabled) {
     setStatus('loading')
     supabase
       .from('resources')
-      .select('id, kind, title, source, description, details, topic, embed_url')
+      .select('id, kind, title, source, description, details, topic, url, audio_url, embed_url')
       .order('sort_order')
       .then(({ data, error }) => {
         if (ignore) return

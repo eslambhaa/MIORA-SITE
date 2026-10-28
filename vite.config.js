@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite'
 // inline scripts for hot reload). Only our own files, Supabase and two player hosts are allowed.
 function contentSecurityPolicy(supabaseUrl) {
   const supabase = supabaseUrl ? new URL(supabaseUrl) : null
-  const connect = ["'self'"]
+  const connect = ["'self'", 'https://itunes.apple.com'] // Apple's public podcast lookup, only after a visitor presses play
   const images = ["'self'", 'data:']
   if (supabase) {
     connect.push(supabase.origin, `wss://${supabase.host}`)
@@ -19,6 +19,8 @@ function contentSecurityPolicy(supabaseUrl) {
     `img-src ${images.join(' ')}`,
     "font-src 'self'",
     `connect-src ${connect.join(' ')}`,
+    // Podcast audio plays straight from each show's own file host (any https address, audio only).
+    'media-src https:',
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

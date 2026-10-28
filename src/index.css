@@ -130,6 +130,7 @@
   --color-page-guide-panel: #223b94;
   --color-page-guide-panel-muted: #cbd4f4;
   --color-page-guide-panel-text: #d8dff6;
+  --gradient-podcast-player: linear-gradient(135deg, var(--color-page-guide-panel), var(--color-page-button));
   --color-page-guide-backdrop: rgb(32 36 58 / 0.6);
   --shadow-page-guide: 0 18px 60px 0 rgb(31 43 82 / 0.1);
   --gradient-page-auth: radial-gradient(433px circle at 233px 138px, #e9eeff 0%, rgb(233 238 255 / 0) 100%);
