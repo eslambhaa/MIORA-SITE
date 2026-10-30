@@ -24,6 +24,10 @@ export const articleImages = {
   'healthy-boundaries': { src: '/images/articles/healthy-boundaries.svg', width: 1200, height: 800, alt: 'شخص داخل دائرة منقطة تمثل حدوده، حولها أشخاص آخرون' },
   'asking-for-support': { src: '/images/articles/asking-for-support.svg', width: 1200, height: 800, alt: 'شخصان يمدّان أيديهما نحو بعضهما وفوقهما فقاعتا حوار' },
   'setbacks-are-not-failure': { src: '/images/articles/setbacks-are-not-failure.svg', width: 1200, height: 800, alt: 'خط يرتفع مع هبوط صغير ثم يواصل الصعود نحو علم' },
+  'addiction-warning-signs': { src: '/images/articles/addiction-warning-signs.svg', width: 1200, height: 800, alt: 'شخص يقف عند بداية طريق متعرج عليه ثلاث لافتات تنبيه صفراء' },
+  'behavioral-addiction': { src: '/images/articles/behavioral-addiction.svg', width: 1200, height: 800, alt: 'شخص يمد يده نحو هاتف كبير تخرج منه إشعارات، وبجانبه يد تحكم ألعاب وساعة' },
+  'helping-someone-close': { src: '/images/articles/helping-someone-close.svg', width: 1200, height: 800, alt: 'شخصان على مقعد في حديقة، أحدهما يضع يده على كتف الآخر، وبجانبهما كوب شاي دافئ' },
+  'addiction-myths': { src: '/images/articles/addiction-myths.svg', width: 1200, height: 800, alt: 'فقاعة كلام مشطوبة بعلامة خطأ، وأخرى زرقاء بعلامة صح، وشخص يقف بينهما' },
 }
 
 export const articles = [
