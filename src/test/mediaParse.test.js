@@ -79,3 +79,11 @@ describe('feeds and text', () => {
     expect(secure('https://a.example')).toBe('https://a.example')
   })
 })
+
+describe('invisible direction marks', () => {
+  it('plain and metaDescription drop every bidi mark and the BOM, and keep the text', () => {
+    const marks = '‎‏‪‫‬‭‮⁦⁧⁨⁩﻿'
+    expect(plain(`${marks}حلقة ${marks}جديدة`)).toBe('حلقة جديدة')
+    expect(metaDescription(`<meta name="description" content="${marks}وصف">`)).toBe('وصف')
+  })
+})

@@ -1,7 +1,7 @@
 // Pure helpers for admin-media-tools (no network, no Deno APIs), so they can be unit-tested with Vitest.
 
 const ENTITIES: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'", '&nbsp;': ' ' }
-const INVISIBLE = /[‎‏‪-‮⁦-⁩﻿]/g
+const INVISIBLE = /[\u200e\u200f\u202a-\u202e\u2066-\u2069\ufeff]/g
 
 export function decodeEntities(value: string): string {
   return value.replace(/&(?:amp|lt|gt|quot|#39|nbsp);/g, (match) => ENTITIES[match])
