@@ -6,3 +6,8 @@ dist
 
 # gstack
 .gstack/
+
+# graphify (local knowledge graph, rebuilt on each machine)
+graphify-out/
+# Claude Code local hooks (machine-specific paths)
+.claude/
