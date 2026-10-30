@@ -1,0 +1,80 @@
+<!-- Source of public/images/og-image.png (1200x630 share image). Re-render: node scripts/og/render.cjs -->
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Almarai; font-weight: 400; src: url(../../node_modules/@fontsource/almarai/files/almarai-arabic-400-normal.woff2) format('woff2'); }
+  @font-face { font-family: Almarai; font-weight: 700; src: url(../../node_modules/@fontsource/almarai/files/almarai-arabic-700-normal.woff2) format('woff2'); }
+  @font-face { font-family: Almarai; font-weight: 800; src: url(../../node_modules/@fontsource/almarai/files/almarai-arabic-800-normal.woff2) format('woff2'); }
+  * { margin: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  .stage { position: absolute; inset: 0; overflow: hidden; direction: ltr; }
+  body {
+    font-family: Almarai, sans-serif;
+    background: #f7f8fc;
+    position: relative;
+    overflow: hidden;
+    color: #20243a;
+  }
+  .arch {
+    position: absolute;
+    left: -60px; bottom: -260px;
+    width: 640px; height: 820px;
+    border-radius: 320px 320px 0 0;
+    background: #cfd8f8;
+  }
+  .arch.inner {
+    left: 0; bottom: -260px;
+    width: 400px; height: 640px;
+    border-radius: 200px 200px 0 0;
+    background: #e9eeff;
+  }
+  .logo {
+    position: absolute;
+    left: 70px; top: 135px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: #203a96;
+    box-shadow: 0 20px 60px rgb(32 58 150 / 0.28);
+    display: grid; place-items: center;
+  }
+  .logo img { width: 280px; height: 280px; object-fit: contain; }
+  .text {
+    position: absolute;
+    right: 80px; top: 0; bottom: 0;
+    width: 640px;
+    display: flex; flex-direction: column; justify-content: center; gap: 22px;
+  }
+  .eyebrow {
+    align-self: flex-start;
+    font-size: 26px; font-weight: 700;
+    color: #2a3b9e;
+    background: #e9eeff;
+    padding: 10px 22px;
+    border-radius: 999px;
+  }
+  h1 { font-size: 112px; font-weight: 800; color: #203a96; line-height: 1.1; }
+  .tag { font-size: 40px; font-weight: 700; line-height: 1.45; }
+  .desc { font-size: 28px; font-weight: 400; color: #656b80; line-height: 1.6; }
+  .bar {
+    position: absolute; right: 0; left: 0; bottom: 0; height: 14px;
+    background: linear-gradient(90deg, #22c55e, #5468c4 45%, #2a3b9e);
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+  <div class="arch"></div>
+  <div class="arch inner"></div>
+  <div class="logo"><img src="../../public/images/splash-logo.webp" alt=""></div>
+  <div class="text" dir="rtl">
+    <span class="eyebrow">مساحة تعليمية للعافية النفسية</span>
+    <h1>ميورا</h1>
+    <p class="tag">افهم مشاعرك، خطوة بخطوة</p>
+    <p class="desc">تمارين استرخاء، ومذكرات خاصة، ومحتوى توعوي.</p>
+  </div>
+  <div class="bar"></div>
+  </div>
+</body>
+</html>
