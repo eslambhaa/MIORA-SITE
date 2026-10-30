@@ -501,21 +501,21 @@ react 19.3.1، react-dom 19.3.1، react-router 8.5.0، vite 8.3.5، @vitejs/plug
 | 18 | Cloudflare Workers (ملفات النشر ✓، باقي ربط الحساب وGitHub وتحديث روابط Supabase وGoogle و`ALLOWED_ORIGIN`) |
 
 ## المرحلة 18: النشر على Cloudflare
-**القرارات:** Workers Static Assets بلا كود Worker، عنوان `miora.<اسم-الحساب>.workers.dev` مجانًا، والنشر تلقائي من GitHub (Workers Builds) عند كل دمج في `main`.
+**القرارات:** Workers Static Assets بلا كود Worker، العنوان المجاني **`https://www.miora.workers.dev`** (subdomain الحساب `miora` واسم الـ Worker `www`، لأن `workers.dev` يعطي دائمًا جزأين قبل النطاق، و`miora.pages.dev` محجوز لغيرنا)، والنشر تلقائي من GitHub (Workers Builds) عند كل دمج في `main`.
 
 **الملفات (الجزء الأول):**
-- `wrangler.jsonc`: الاسم `miora`، الأصول من `./dist`، و`not_found_handling: single-page-application` (كل مسار غير موجود يرجع `index.html` لـ React Router).
+- `wrangler.jsonc`: الاسم `www`، الأصول من `./dist`، و`not_found_handling: single-page-application` (كل مسار غير موجود يرجع `index.html` لـ React Router).
 - `public/_headers` (يُنسخ إلى `dist/` ولا يُقدَّم كملف): HSTS، `nosniff`، `Content-Security-Policy: frame-ancestors 'none'` (ومعه `X-Frame-Options: DENY`)، `Referrer-Policy`، `Permissions-Policy` يقفل الكاميرا والميكروفون والموقع والدفع (الموقع لا يستخدمها). وملفات `/assets/*` تُخزَّن سنة (`immutable`) لأن أسماءها مُجزّأة. الـ CSP الرئيسي يبقى meta من `vite.config.js`، والسياستان تُطبَّقان معًا.
 - `wrangler` 4.156.0 في devDependencies، وأمر `npm run deploy` (بناء ثم `wrangler deploy`) للرفع اليدوي عند الحاجة. `.wrangler/` في `.gitignore`.
 
 **الاختبار:** `npm run build` نجح، و`wrangler deploy --dry-run` قرأ 165 ملفًا بلا أخطاء. وتحت `wrangler dev` محليًا: `/journal` و`/admin/articles` يرجعان `index.html` بحالة 200، والرؤوس كلها ظاهرة، و`/assets/*.js` بـ `immutable`، و`/_headers` لا يُكشف. صفحة `/content` فتحت في المتصفح وحمّلت المقالات من Supabase بلا أخطاء في الـ console. و`npm test`: 191 ناجحًا.
 
 **خطوات المستخدم (بالترتيب):**
-1. إنشاء حساب على dash.cloudflare.com (بنفسه)، واختيار اسم الـ subdomain لـ `workers.dev`.
-2. Workers & Pages ← Create ← Import a repository ← ربط GitHub واختيار `eslambhaa/MIORA-SITE`، الفرع `main`، Root directory `/`، Build command `npm run build`، Deploy command `npx wrangler deploy`.
+1. ✓ الحساب أنشأه المستخدم، وClaude مربوط به عبر إضافة Cloudflare (MCP)، والـ subdomain `miora` ضُبط بالـ API، وتطبيق Cloudflare على GitHub مثبّت للمستودع وحده.
+2. Workers & Pages ← Create ← Import a repository ← ربط GitHub واختيار `eslambhaa/MIORA-SITE`، Project name `www` (يطابق `wrangler.jsonc`)، Preview builds مقفولة، الفرع `main`، Root directory `/`، Build command `npm run build`، Deploy command `npx wrangler deploy`.
 3. في إعدادات البناء (Build variables): `VITE_SUPABASE_URL` و`VITE_SUPABASE_PUBLISHABLE_KEY` بنفس قيم `.env` (عامة وليست أسرارًا، لكنها لازمة وقت البناء لأن `.env` غير مرفوع).
 4. بعد أول نشر ومعرفة العنوان: Supabase ← Authentication ← URL Configuration: Site URL للعنوان الجديد، وإضافته في Redirect URLs (مع إبقاء `http://localhost:5173` للتطوير).
-5. Supabase ← Edge Functions ← Secrets: `ALLOWED_ORIGIN` = `https://miora.<اسم-الحساب>.workers.dev,http://localhost:5173` (قائمة مفصولة بفواصل، انظر الجزء الثاني)، والدوال الثلاث منشورة بالكود الذي يقبل القائمة.
+5. Supabase ← Edge Functions ← Secrets: `ALLOWED_ORIGIN` = `https://www.miora.workers.dev,http://localhost:5173` (قائمة مفصولة بفواصل، انظر الجزء الثاني)، والدوال الثلاث منشورة بالكود الذي يقبل القائمة.
 6. Google Cloud ← Credentials ← "miora web": إضافة العنوان في Authorized JavaScript origins، ثم OAuth consent screen ← Publish app.
 7. صورة Open Graph (`og:image`) تحتاج رابطًا كاملًا، فتُضاف بعد معرفة العنوان.
 
