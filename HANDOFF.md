@@ -523,7 +523,10 @@ react 19.3.1، react-dom 19.3.1، react-router 8.5.0، vite 8.3.5، @vitejs/plug
 - 2 و3 ✓: Worker باسم `www` مربوط بـ GitHub (فرع `main` فقط، Preview builds مقفولة، توكن البناء "www build token" أنشأته اللوحة). متغيرا البناء `VITE_SUPABASE_URL` و`VITE_SUPABASE_PUBLISHABLE_KEY` أُضيفا بالـ API (عامّان، ليسا سرًا)، ثم بناء ثانٍ نجح.
 - الفحص: `/journal` و`/admin/articles` يرجعان 200، ورؤوس الأمان كلها موجودة، و`/_headers` لا يُكشف، وصفحة `/content` حمّلت المقالات من Supabase بلا أخطاء في الـ console.
 - يمكن متابعة البناءات من Claude عبر إضافة Cloudflare (MCP): الحساب `fd944bb61bc16207cabe7d9b30cdef6c`، والـ trigger `8322da7b-ec7e-4bec-9b20-85029e5004b1`.
-- **باقٍ على المستخدم (إعدادات حسابات):** الخطوات 4 و5 و6 أعلاه بالعنوان `https://www.miora.workers.dev`، ثم صورة Open Graph.
+- **إعدادات الحسابات (نفّذها المستخدم):** Supabase Site URL وRedirect URLs بالعنوان الجديد، و`ALLOWED_ORIGIN` = `https://www.miora.workers.dev,http://localhost:5173`، وGoogle: العنوان في Authorized JavaScript origins، وصفحة Branding (الاسم، والإيميل، وروابط الرئيسية و`/privacy` و`/terms`، والنطاق المعتمد `miora.workers.dev`، **بلا لوجو** حتى لا يطلب Google مراجعة)، ثم Publish app فصار التطبيق In production.
+- **فحص Claude:** الطلب التمهيدي للدوال الثلاث يرجع `https://www.miora.workers.dev` و`http://localhost:5173` كلٌّ لطالبه. وزر جوجل في `/login` على الموقع المنشور يفتح صفحة دخول Google بلا خطأ، مع `redirect_to` للموقع المنشور. لم يُجرَّب دخول حقيقي (يحتاج حساب المستخدم).
+- شاشة Google تقول "continue to coryhyailrfivsuoektx.supabase.co"، وتغييرها يحتاج Custom Domain في Supabase (مدفوع)، فتُرك.
+- **باقٍ:** تجربة المستخدم للدخول (إيميل وجوجل) والمساعد من الموقع المنشور، ثم صورة Open Graph.
 
 **الجزء الثاني (`ALLOWED_ORIGIN` كقائمة):**
 - `supabase/functions/_shared/cors.ts` مشترك بين الدوال الثلاث: `parseOrigins` يقرأ أصلًا واحدًا أو قائمة مفصولة بفواصل (يحذف المسافات والشرطة الأخيرة والتكرار، والافتراضي `http://localhost:5173`)، و`pickOrigin` يرجع أصل الطالب إن كان في القائمة وإلا أول أصل (فيرفضه المتصفح، ولا يُرجَع أصل غريب أبدًا)، و`corsByOrigin` يبني معالج `withSupabase` لكل أصل مرة واحدة ويختار حسب رأس `Origin`. الرؤوس نفسها كما كانت، مع `Vary: Origin`.
