@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Public pages only. Articles and episodes are reached through /content and /addiction. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.miora.workers.dev/</loc></url>
+  <url><loc>https://www.miora.workers.dev/content</loc></url>
+  <url><loc>https://www.miora.workers.dev/addiction</loc></url>
+  <url><loc>https://www.miora.workers.dev/relaxation</loc></url>
+  <url><loc>https://www.miora.workers.dev/assessment</loc></url>
+  <url><loc>https://www.miora.workers.dev/journey</loc></url>
+  <url><loc>https://www.miora.workers.dev/assistant</loc></url>
+  <url><loc>https://www.miora.workers.dev/about</loc></url>
+  <url><loc>https://www.miora.workers.dev/help</loc></url>
+  <url><loc>https://www.miora.workers.dev/contact</loc></url>
+  <url><loc>https://www.miora.workers.dev/privacy</loc></url>
+  <url><loc>https://www.miora.workers.dev/terms</loc></url>
+</urlset>

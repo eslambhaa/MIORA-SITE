@@ -42,7 +42,7 @@ export default function SplashScreen() {
       aria-hidden="true"
       className={`fixed inset-0 z-[100] flex items-center justify-center bg-(--color-page-button) transition-opacity duration-400 motion-reduce:transition-none ${stage === 'fading' ? 'opacity-0' : 'opacity-100'}`}
     >
-      <img src="/images/splash-logo.webp" alt="" width="482" height="482" className="size-[min(482px,70vw)]" />
+      <img src="/images/splash-logo.webp" srcSet="/images/splash-logo-480.webp 480w, /images/splash-logo.webp 964w" sizes="min(482px, 70vw)" alt="" width="482" height="482" className="size-[min(482px,70vw)]" />
     </div>
   )
 }

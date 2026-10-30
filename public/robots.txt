@@ -1,0 +1,10 @@
+# Miora: public pages may be indexed; signed-in and admin pages are private.
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /profile
+Disallow: /journal
+Disallow: /notifications
+Disallow: /reset-password
+
+Sitemap: https://www.miora.workers.dev/sitemap.xml
