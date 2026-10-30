@@ -27,6 +27,8 @@ export default function HomeHero({ onExplore }) {
           <div className="step-rise [--from:26%] [--to:52%] absolute inset-0">
           <img
             src="/images/home/hero-morning-window.webp"
+            srcSet="/images/home/hero-morning-window-430.webp 430w, /images/home/hero-morning-window.webp 860w"
+            sizes="(min-width: 480px) 430px, 90vw"
             alt="ضوء صباح هادئ بجوار نافذة وكوب دافئ"
             width="860"
             height="1290"
