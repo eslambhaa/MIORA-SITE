@@ -3,19 +3,12 @@
 //   { action: 'check', ids? }  -> checks that each episode's video, audio and page still work, and stores the result
 //                                 in resource_checks (written here with the service role; admins can only read it).
 // The caller must be a signed-in admin (checked against admin_users with the caller's own token).
-// Nothing personal is read or stored. Secrets: ALLOWED_ORIGIN optional, default "http://localhost:5173".
+// Nothing personal is read or stored. Secrets: ALLOWED_ORIGIN optional, one origin or a comma-separated list, default "http://localhost:5173".
 import { withSupabase } from 'npm:@supabase/server@1.9.2'
+import { corsByOrigin, parseOrigins } from '../_shared/cors.ts'
 import { checkRow, lookupLink, ToolError, type Deps, type RowToCheck } from './tools.ts'
 
-const allowedOrigin = Deno.env.get('ALLOWED_ORIGIN') ?? 'http://localhost:5173'
-const cors = {
-  headers: {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    Vary: 'Origin',
-  },
-}
+const origins = parseOrigins(Deno.env.get('ALLOWED_ORIGIN'))
 
 const reply = (status: number, body: Record<string, unknown>) => Response.json(body, { status })
 
@@ -43,7 +36,7 @@ async function inPool<T, R>(items: T[], size: number, work: (item: T) => Promise
 }
 
 export default {
-  fetch: withSupabase({ auth: 'user', cors }, async (req, ctx) => {
+  fetch: corsByOrigin(origins, (cors) => withSupabase({ auth: 'user', cors }, async (req, ctx) => {
     if (req.method !== 'POST') return reply(405, { error: 'method_not_allowed' })
     const userId = ctx.userClaims?.id
     if (!userId) return reply(401, { error: 'unauthorized' })
@@ -92,5 +85,5 @@ export default {
     }
 
     return reply(400, { error: 'unknown_action' })
-  }),
+  })),
 }

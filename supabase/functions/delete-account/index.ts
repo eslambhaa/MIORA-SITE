@@ -4,27 +4,20 @@
 // journal_entries, assistant_conversations, assistant_messages) references
 // auth.users with ON DELETE CASCADE, so deleting the auth user removes all of it.
 // The profile picture in Storage (avatars/<id>/avatar.webp) is removed explicitly.
-// Secrets: ALLOWED_ORIGIN optional, default "http://localhost:5173".
+// Secrets: ALLOWED_ORIGIN optional, one origin or a comma-separated list, default "http://localhost:5173".
 import { withSupabase } from 'npm:@supabase/server@1.9.2'
+import { corsByOrigin, parseOrigins } from '../_shared/cors.ts'
 
 const CONFIRMATION = 'DELETE_MY_ACCOUNT'
 
-const allowedOrigin = Deno.env.get('ALLOWED_ORIGIN') ?? 'http://localhost:5173'
-const cors = {
-  headers: {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    Vary: 'Origin',
-  },
-}
+const origins = parseOrigins(Deno.env.get('ALLOWED_ORIGIN'))
 
 function reply(status: number, body: Record<string, unknown>) {
   return Response.json(body, { status })
 }
 
 export default {
-  fetch: withSupabase({ auth: 'user', cors }, async (req, ctx) => {
+  fetch: corsByOrigin(origins, (cors) => withSupabase({ auth: 'user', cors }, async (req, ctx) => {
     if (req.method !== 'POST') return reply(405, { error: 'method_not_allowed' })
     const userId = ctx.userClaims?.id
     if (!userId) return reply(401, { error: 'unauthorized' })
@@ -53,5 +46,5 @@ export default {
       return reply(500, { error: 'server_error' })
     }
     return reply(200, { deleted: true })
-  }),
+  })),
 }
