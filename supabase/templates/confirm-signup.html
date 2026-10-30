@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Supabase → Authentication → Emails → Confirm signup. Subject: أكّد حسابك في ميورا -->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>أكّد حسابك في ميورا</title>
+</head>
+<body style="margin:0;padding:0;background:#f7f8fc;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f8fc;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" dir="rtl" style="max-width:520px;background:#ffffff;border:1px solid #dfe3ed;border-radius:16px;font-family:Tahoma,Arial,sans-serif;color:#20243a;text-align:right;">
+        <tr>
+          <td align="center" style="padding:32px 32px 8px;">
+            <img src="https://www.miora.workers.dev/logo.png" width="72" height="72" alt="ميورا" style="display:block;border:0;">
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:8px 32px 0;">
+            <h1 style="margin:0 0 12px;font-size:22px;line-height:1.5;color:#203a96;text-align:center;">أهلًا بك في ميورا</h1>
+            <p style="margin:0 0 20px;font-size:16px;line-height:1.8;">شكرًا لتسجيلك. اضغط الزر لتأكيد بريدك الإلكتروني وتفعيل حسابك.</p>
+          </td>
+        </tr>
+        <tr>
+          <td align="center" style="padding:0 32px 24px;">
+            <a href="{{ .ConfirmationURL }}" style="display:inline-block;background:#2946ae;color:#ffffff;text-decoration:none;font-size:16px;font-weight:bold;padding:14px 32px;border-radius:999px;">تأكيد الحساب</a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 32px 24px;">
+            <p style="margin:0 0 8px;font-size:14px;line-height:1.8;color:#656b80;">إن لم يعمل الزر، انسخ هذا الرابط وافتحه في المتصفح:</p>
+            <p dir="ltr" style="margin:0;font-size:13px;line-height:1.6;word-break:break-all;text-align:left;"><a href="{{ .ConfirmationURL }}" style="color:#203a96;">{{ .ConfirmationURL }}</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 32px 28px;border-top:1px solid #dfe3ed;">
+            <p style="margin:0;font-size:13px;line-height:1.8;color:#656b80;">الرابط صالح لفترة محدودة. إن لم تنشئ حسابًا في ميورا فتجاهل هذه الرسالة، ولن يُفعَّل أي حساب.</p>
+          </td>
+        </tr>
+      </table>
+      <p style="margin:16px 0 0;font-family:Tahoma,Arial,sans-serif;font-size:12px;color:#656b80;">ميورا، مساحة تعليمية للعافية النفسية</p>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

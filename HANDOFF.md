@@ -537,10 +537,16 @@ react 19.3.1، react-dom 19.3.1، react-router 8.5.0، vite 8.3.5، @vitejs/plug
 - **منشورة بموافقة المستخدم** (Supabase MCP `deploy_edge_function`، Verify JWT مفعّل للثلاث): `delete-account` الإصدار 3، و`admin-media-tools` الإصدار 2، و`assistant` الإصدار 8. يُرفع `index.ts` لكل دالة مع `../_shared/cors.ts` (و`tools.ts` و`parse.ts` لـ `admin-media-tools`). قبل النشر صار نمط الحروف الخفية في `parse.ts` مكتوبًا بـ `\u` بدل الحروف نفسها (نفس المعنى، ونسخه آمن)، مع اختبار يغطيه. ونص `assistant` قورن بايتًا ببايت بالملف قبل نشره لأن فيه رد الطوارئ.
 - **فحص بعد النشر** على الخادم الحقيقي (السر الحالي ما زال `localhost` فقط): الطلب التمهيدي للدوال الثلاث يرجع `http://localhost:5173` لأي طالب، وطلب POST بلا دخول يرجع 401.
 
+## البريد: Gmail SMTP وقوالب عربية (بعد المرحلة 18)
+**القرار:** لا دومين الآن، فيُرسل بريد Supabase (تأكيد الحساب واستعادة كلمة المرور) عبر حساب Gmail مخصص للمشروع أنشأه المستخدم، بـ App Password يضعه المستخدم بنفسه في Supabase (لا تمر كلمة السر بـ Claude). الحد نحو 500 رسالة يوميًا. Resend يحتاج دومينًا، وBrevo يغيّر عنوان المرسل للعناوين المجانية.
+- **القوالب:** `supabase/templates/confirm-signup.html` و`reset-password.html`: عربية RTL، جداول وأنماط مضمّنة (تعمل في عملاء البريد)، الشعار من `https://www.miora.workers.dev/logo.png`، زر ورابط نصي لـ `{{ .ConfirmationURL }}`، وسطر الموضوع مكتوب في تعليق أول الملف. الموقع يستخدم `signUp` و`resetPasswordForEmail` فقط، فلا حاجة لقوالب تغيير الإيميل أو الرابط السحري.
+- **الاختبار:** `src/test/emailTemplates.test.js` (6 اختبارات: العربية والاتجاه والموضوع، والروابط كلها `{{ .ConfirmationURL }}`، ولا سكربت ولا `http://`، والشعار https مع نص بديل). ومعاينة مرسومة على عرض الهاتف 375 بكسل.
+- **باقٍ على المستخدم:** SMTP Settings في Supabase، ولصق القالبين مع الموضوعين، ورفع حد الإرسال في Rate Limits، ثم تجربة التسجيل واستعادة كلمة السر.
+
 ## مفتوح
 - أسئلة التوتر والنوم والعادات ونصوص الخلاصات ونصوص تمارين الاسترخاء كتبها Claude وتحتاج مراجعة متخصص مع المقالات.
 - إعدادات لوحة Supabase المضبوطة: Confirm email، الحد الأدنى 8، متطلبات كلمة المرور (صغير/كبير/رقم/رمز)، Site URL و Redirect URLs على `http://localhost:5173`، الدخول المجهول مقفول. وGoogle OAuth مفعّل ومجرّب (مشروع Google Cloud "EslamBahaa"، Client "miora web"، التطبيق في وضع Testing بمستخدمين تجريبيين فقط). الدخول بجوجل بنفس الإيميل ربط الحسابين في مستخدم واحد. عند النشر: تغيير Site URL و Redirect URLs و Authorized JavaScript origins لعنوان الموقع الحقيقي، ونشر تطبيق Google (Publish app).
-- البريد الافتراضي في Supabase محدود (رسائل قليلة في الساعة) ومناسب للتجربة فقط؛ قبل النشر نحتاج SMTP خاص.
+- البريد: يُنقل إلى Gmail SMTP (انظر «البريد: Gmail SMTP وقوالب عربية»). عند شراء دومين لاحقًا يمكن الانتقال لمزوّد بريد بالدومين.
 - عند اختيار الاستضافة: (1) توجيه كل المسارات لـ `index.html` (SPA)، (2) رؤوس من الخادم: `Strict-Transport-Security`، `X-Content-Type-Options: nosniff`، `frame-ancestors 'none'` (لا يعمل في meta)، (3) تغيير `ALLOWED_ORIGIN` وروابط Supabase وGoogle للدومين، (4) صورة Open Graph بعنوان كامل.
 - أوصاف الوجهات في النافذة (عدا الرئيسية) كتبتها أنا لأن Figma فيه وصف الرئيسية فقط.
 - مفتاح Gemini: يحطه المستخدم بنفسه كسر `GEMINI_API_KEY` في Supabase (لا يُكتب في الشات أو الملفات).
