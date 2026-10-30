@@ -4,8 +4,9 @@
 //   GEMINI_API_KEY   required
 //   GEMINI_MODEL     optional, first model to try (default "gemini-flash-latest");
 //                    on overload or timeout it falls back to lighter models
-//   ALLOWED_ORIGIN   optional, default "http://localhost:5173"
+//   ALLOWED_ORIGIN   optional, one origin or a comma-separated list, default "http://localhost:5173"
 import { withSupabase } from 'npm:@supabase/server@1.9.2'
+import { corsByOrigin, parseOrigins } from '../_shared/cors.ts'
 
 const MAX_MESSAGE = 1000
 const MAX_OUTPUT_TOKENS = 4096
@@ -42,15 +43,7 @@ const CRISIS_PATTERNS = [
   /\b(suicide|suicidal|kill myself|end my life|self[- ]?harm|hurt myself)\b/i,
 ]
 
-const allowedOrigin = Deno.env.get('ALLOWED_ORIGIN') ?? 'http://localhost:5173'
-const cors = {
-  headers: {
-    'Access-Control-Allow-Origin': allowedOrigin,
-    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    Vary: 'Origin',
-  },
-}
+const origins = parseOrigins(Deno.env.get('ALLOWED_ORIGIN'))
 
 function reply(status: number, body: Record<string, unknown>) {
   return Response.json(body, { status })
@@ -151,7 +144,7 @@ async function askGemini(history: { role: string; content: string }[]) {
 }
 
 export default {
-  fetch: withSupabase({ auth: 'user', cors }, async (req, ctx) => {
+  fetch: corsByOrigin(origins, (cors) => withSupabase({ auth: 'user', cors }, async (req, ctx) => {
     if (req.method !== 'POST') return reply(405, { error: 'method_not_allowed' })
     const userId = ctx.userClaims?.id
     if (!userId) return reply(401, { error: 'unauthorized' })
@@ -278,5 +271,5 @@ export default {
     if (saveError) return reply(500, { error: 'server_error' })
 
     return reply(200, { conversation, messages: saved, crisis })
-  }),
+  })),
 }
