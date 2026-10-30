@@ -11,3 +11,6 @@ dist
 graphify-out/
 # Claude Code local hooks (machine-specific paths)
 .claude/
+
+# Cloudflare local runtime files
+.wrangler/
