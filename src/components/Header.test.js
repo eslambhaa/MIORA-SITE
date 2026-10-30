@@ -1,20 +1,21 @@
 import { describe, expect, it } from 'vitest'
 import { headerClass } from './Header.jsx'
 
-describe('header top panel', () => {
-  it('is white and only as wide as the bar, not the whole page', () => {
-    expect(headerClass).toContain('before:bg-(--color-page-surface)')
-    expect(headerClass).toContain('before:w-[calc(100%-2rem)]')
-    expect(headerClass).toContain('lg:before:w-[90%]')
-    expect(headerClass).toContain('before:max-w-[1600px]')
-    expect(headerClass).not.toContain('before:inset-x-0')
+describe('header top strip', () => {
+  it('is see-through at the top of the page, so the page background shows above the bar', () => {
+    expect(headerClass(false)).toContain('md:before:opacity-0')
+    expect(headerClass(false)).not.toContain('md:before:opacity-100')
   })
 
-  it('reaches from the top edge to behind the middle of the bar, on the sticky desktop header only', () => {
-    expect(headerClass).toContain('before:top-0')
-    expect(headerClass).toContain('before:h-14')
-    expect(headerClass).toContain('before:hidden')
-    expect(headerClass).toContain('md:before:block')
-    expect(headerClass).toContain('md:sticky')
+  it('covers the 20px above the bar once the page scrolls, so text never shows there', () => {
+    expect(headerClass(true)).toContain('md:before:opacity-100')
+    expect(headerClass(true)).toContain('before:bg-(--color-page-bg)')
+  })
+
+  it('keeps the sticky header and respects reduced motion in both states', () => {
+    for (const scrolled of [false, true]) {
+      expect(headerClass(scrolled)).toContain('md:sticky')
+      expect(headerClass(scrolled)).toContain('motion-reduce:before:transition-none')
+    }
   })
 })

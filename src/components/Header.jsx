@@ -21,13 +21,16 @@ const navLink =
 const menuLink =
   'flex h-12 items-center rounded-(--radius-page-menu-item) px-4 text-base text-(color:--color-page-muted) outline-(--color-page-primary) transition-colors duration-200 hover:bg-(--color-page-nav-active) hover:text-(color:--color-page-surface) focus-visible:bg-(--color-page-nav-active) focus-visible:text-(color:--color-page-surface) aria-[current=page]:bg-(--color-page-nav-active) aria-[current=page]:text-(color:--color-page-surface) motion-reduce:transition-none'
 
-// Above the floating bar (desktop, sticky header): a white panel exactly as wide as the bar that runs from the
-// top edge down behind the bar's middle, so bar and panel read as one white shape and nothing scrolls into view above it.
-export const headerClass =
-  'relative z-50 px-4 py-5 before:absolute before:top-0 before:left-1/2 before:-z-10 before:hidden before:h-14 before:w-[calc(100%-2rem)] before:max-w-[1600px] before:-translate-x-1/2 before:bg-(--color-page-surface) md:sticky md:top-0 md:before:block lg:px-[5%] lg:before:w-[90%]'
+// The 20px above the floating bar: plain page colour once the page scrolls (so text never shows
+// above the header), see-through at the very top so the page's own background stays one piece.
+export function headerClass(scrolled) {
+  const strip = scrolled ? 'md:before:opacity-100' : 'md:before:opacity-0'
+  return `relative z-50 px-4 py-5 before:absolute before:inset-x-0 before:top-0 before:-z-10 before:hidden before:h-5 before:bg-(--color-page-bg) before:transition-opacity before:duration-200 motion-reduce:before:transition-none md:sticky md:top-0 md:before:block ${strip} lg:px-[5%]`
+}
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
   const { user } = useAuth()
   const avatar = useAvatar()
@@ -35,6 +38,13 @@ export default function Header() {
   useEffect(() => {
     setMenuOpen(false)
   }, [pathname])
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 0)
+    update()
+    window.addEventListener('scroll', update, { passive: true })
+    return () => window.removeEventListener('scroll', update)
+  }, [])
 
   useEffect(() => {
     if (!menuOpen) return
@@ -46,10 +56,10 @@ export default function Header() {
   }, [menuOpen])
 
   return (
-    <header className={headerClass}>
+    <header className={headerClass(scrolled)}>
       <nav
         aria-label="التنقل الرئيسي"
-        className="mx-auto grid min-h-[72px] max-w-[1600px] grid-cols-[auto_1fr_auto] items-center gap-[22px] rounded-full bg-(--color-page-surface) px-4 py-[7px] shadow-(--shadow-page-header) lg:grid-cols-[96px_1fr_96px]"
+        className="mx-auto grid min-h-[72px] max-w-[1600px] grid-cols-[auto_1fr_auto] items-center gap-[22px] rounded-full px-4 py-[7px] shadow-(--shadow-page-header) backdrop-blur-[18px] lg:grid-cols-[96px_1fr_96px]"
       >
         <Link
           to="/"
