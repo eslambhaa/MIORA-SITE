@@ -30,7 +30,7 @@ export default function Help() {
             {groups.map((group) => (
               <div key={group.country}>
                 {groups.length > 1 && <h3 className="pt-5 text-lg leading-7 font-bold">{group.country}</h3>}
-                <ul className={`grid gap-3 sm:grid-cols-3 ${groups.length > 1 ? 'pt-2' : 'pt-5'}`}>
+                <ul className={`grid gap-3 sm:grid-cols-2 ${groups.length > 1 ? 'pt-2' : 'pt-5'}`}>
                   {group.lines.map((line) => (
                     <li key={line.id}>
                       <a

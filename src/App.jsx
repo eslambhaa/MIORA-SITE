@@ -10,6 +10,7 @@ import Home from './pages/Home.jsx'
 // Every page except the home page loads on demand (smaller first download).
 const pages = {
   About: () => import('./pages/About.jsx'),
+  Addiction: () => import('./pages/Addiction.jsx'),
   Admin: () => import('./pages/Admin.jsx'),
   AdminArticles: () => import('./pages/AdminArticles.jsx'),
   AdminArticleEdit: () => import('./pages/AdminArticleEdit.jsx'),
@@ -20,7 +21,6 @@ const pages = {
   AdminStats: () => import('./pages/AdminStats.jsx'),
   AdminNotifications: () => import('./pages/AdminNotifications.jsx'),
   AdminBackup: () => import('./pages/AdminBackup.jsx'),
-  ComingSoon: () => import('./pages/ComingSoon.jsx'),
   Article: () => import('./pages/Article.jsx'),
   Assessment: () => import('./pages/Assessment.jsx'),
   Assistant: () => import('./pages/Assistant.jsx'),
@@ -43,6 +43,7 @@ const pages = {
 }
 
 const About = lazy(pages.About)
+const Addiction = lazy(pages.Addiction)
 const Admin = lazy(pages.Admin)
 const AdminArticles = lazy(pages.AdminArticles)
 const AdminArticleEdit = lazy(pages.AdminArticleEdit)
@@ -53,7 +54,6 @@ const AdminEmergency = lazy(pages.AdminEmergency)
 const AdminStats = lazy(pages.AdminStats)
 const AdminNotifications = lazy(pages.AdminNotifications)
 const AdminBackup = lazy(pages.AdminBackup)
-const ComingSoon = lazy(pages.ComingSoon)
 const Article = lazy(pages.Article)
 const Assessment = lazy(pages.Assessment)
 const Assistant = lazy(pages.Assistant)
@@ -106,7 +106,7 @@ export default function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="profile" element={<RequireAuth><Profile /></RequireAuth>} />
           <Route path="content" element={<Content />} />
-          <Route path="addiction" element={<ComingSoon title="الوعي بالإدمان" />} />
+          <Route path="addiction" element={<Addiction />} />
           <Route path="admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
           <Route path="admin/articles" element={<RequireAdmin><AdminArticles /></RequireAdmin>} />
           <Route path="admin/articles/new" element={<RequireAdmin><AdminArticleEdit key="new" isNew /></RequireAdmin>} />

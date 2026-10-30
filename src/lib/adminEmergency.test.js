@@ -50,8 +50,8 @@ describe('public helpers', () => {
     expect(isDialable('javascript:alert(1)')).toBe(false)
   })
 
-  it('keeps the three saved numbers as the fallback', () => {
-    expect(fallbackLines.map((line) => line.number)).toEqual(['123', '16328', '105'])
+  it('keeps the four saved numbers as the fallback, matching the database order', () => {
+    expect(fallbackLines.map((line) => line.number)).toEqual(['123', '16328', '105', '16023'])
   })
 
   it('groups by country keeping order', () => {

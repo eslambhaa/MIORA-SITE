@@ -7,6 +7,7 @@ export const fallbackLines = [
   { id: 'f1', country: 'مصر', title: 'الإسعاف', number: '123', note: 'إذا كنت أنت أو غيرك في خطر الآن.' },
   { id: 'f2', country: 'مصر', title: 'الخط الساخن للدعم النفسي', number: '16328', note: 'من وزارة الصحة، على مدار الساعة.' },
   { id: 'f3', country: 'مصر', title: 'الخط الساخن الموحد لوزارة الصحة', number: '105', note: 'استفسارات صحية وتوجيه للخدمات.' },
+  { id: 'f4', country: 'مصر', title: 'الخط الساخن لعلاج الإدمان', number: '16023', note: 'صندوق مكافحة وعلاج الإدمان، مجاني وسري، على مدار الساعة.' },
 ]
 
 // Only digits and an optional leading + can reach a tel: link (the database enforces the same rule).
