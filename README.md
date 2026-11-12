@@ -115,6 +115,7 @@ Server secrets live only in Supabase (Edge Functions → Secrets):
 1. Apply the SQL files in `supabase/migrations/` in order (Supabase CLI or SQL Editor).
 2. Deploy the three Edge Functions in `supabase/functions/` with **Verify JWT** on.
 3. In Supabase Auth, set the Site URL and Redirect URLs, enable Google if needed, and paste the templates from `supabase/templates/`.
+4. Make yourself the first admin with the commented `insert` at the top of `20261029000000_admin_foundation.sql` (replace `<owner email>`). Later admins can be added from the dashboard.
 
 ## Scripts
 
