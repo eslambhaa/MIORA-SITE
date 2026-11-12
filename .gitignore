@@ -14,3 +14,10 @@ graphify-out/
 
 # Cloudflare local runtime files
 .wrangler/
+
+# Private working notes and assistant instructions (kept locally, not published)
+CLAUDE.md
+HANDOFF.md
+TESTING.md
+.graphifyignore
+.gitattributes
