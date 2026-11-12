@@ -1,5 +1,7 @@
 # Miora (ميورا)
 
+[![Tests](https://github.com/eslambhaa/MIORA-SITE/actions/workflows/test.yml/badge.svg)](https://github.com/eslambhaa/MIORA-SITE/actions/workflows/test.yml)
+
 ![Miora: an educational space for mental wellbeing](public/images/og-image.png)
 
 **Miora** is an Arabic, right-to-left web platform for mental wellbeing education. It helps people understand their feelings, try short relaxation exercises, keep a private journal and learn from carefully written content, at their own pace and without judgment.
