@@ -19,10 +19,9 @@ grant select on table public.admin_users to authenticated;
 create policy "admin_users_select_own" on public.admin_users
   for select to authenticated using ((select auth.uid()) = user_id);
 
--- The first admin: the project owner.
-insert into public.admin_users (user_id)
-select id from auth.users where lower(email) = 'eslam.bahaa.elbadawy@gmail.com'
-on conflict do nothing;
+-- The first admin is added by hand after this migration (the owner's email is kept out of the repository):
+--   insert into public.admin_users (user_id)
+--   select id from auth.users where lower(email) = '<owner email>' on conflict do nothing;
 
 -- 2. Audit log: who changed what and when. Admins read and append only; nobody edits or deletes rows.
 --    Keep "details" to ids and field names, never personal text.
