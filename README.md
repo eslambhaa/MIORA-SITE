@@ -2,7 +2,7 @@
 
 [![Tests](https://github.com/eslambhaa/MIORA-SITE/actions/workflows/test.yml/badge.svg)](https://github.com/eslambhaa/MIORA-SITE/actions/workflows/test.yml)
 
-![Miora: an educational space for mental wellbeing](public/images/og-image.png)
+![Miora on desktop and mobile](docs/screenshots/showcase.jpg)
 
 **Miora** is an Arabic, right-to-left web platform for mental wellbeing education. It helps people understand their feelings, try short relaxation exercises, keep a private journal and learn from carefully written content, at their own pace and without judgment.
 
@@ -26,6 +26,23 @@ This is a graduation project from Zagazig University.
 - **In-site notifications** with scheduled reminders.
 - **Admin dashboard**: manage articles and episodes, check broken media links, read contact messages, edit emergency numbers, see aggregate statistics only, send announcements and export a content backup.
 - **Accounts**: email and password (with confirmation and password reset) or Google sign-in, and full account deletion.
+
+## Screenshots
+
+| Desktop | Mobile |
+|---|---|
+| **Home**<br>![Home page on desktop](docs/screenshots/home-desktop.jpg) | ![Home page on mobile](docs/screenshots/home-mobile.jpg) |
+| **Awareness library** (articles, videos, podcasts)<br>![Content library on desktop](docs/screenshots/content-desktop.jpg) | ![Content library on mobile](docs/screenshots/content-mobile.jpg) |
+| **Article**<br>![Article page on desktop](docs/screenshots/article-desktop.jpg) | ![Article page on mobile](docs/screenshots/article-mobile.jpg) |
+| **Addiction awareness** with a help path<br>![Addiction awareness page on desktop](docs/screenshots/addiction-desktop.jpg) | ![Addiction awareness page on mobile](docs/screenshots/addiction-mobile.jpg) |
+| **Relaxation exercises**<br>![Relaxation exercises on desktop](docs/screenshots/relaxation-desktop.jpg) | ![Relaxation exercises on mobile](docs/screenshots/relaxation-mobile.jpg) |
+| **Self-assessments**<br>![Self-assessments on desktop](docs/screenshots/assessment-desktop.jpg) | ![Self-assessments on mobile](docs/screenshots/assessment-mobile.jpg) |
+| **Help and emergency numbers**<br>![Help page on desktop](docs/screenshots/help-desktop.jpg) | ![Help page on mobile](docs/screenshots/help-mobile.jpg) |
+| **Sign in** (email or Google)<br>![Sign-in page on desktop](docs/screenshots/login-desktop.jpg) | ![Sign-in page on mobile](docs/screenshots/login-mobile.jpg) |
+
+**Daily mood check-in** on the home page:
+
+![Mood check-in on desktop](docs/screenshots/mood-desktop.jpg)
 
 ## Tech stack
 
@@ -77,6 +94,7 @@ miora-app/
 │   └── templates/       # Arabic email templates (confirm signup, reset password)
 ├── public/              # Images, icons, _headers (security headers), robots.txt, sitemap.xml
 ├── scripts/             # Helper scripts (share image renderer, podcast feed reader)
+├── docs/screenshots/    # README images
 ├── vite.config.js       # Build config, including the Content Security Policy
 └── wrangler.jsonc       # Cloudflare Workers config
 ```
